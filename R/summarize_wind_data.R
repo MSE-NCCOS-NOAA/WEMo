@@ -5,7 +5,7 @@
 #'
 #' @return A data frame summarizing wind by direction, with columns:
 #'   \describe{
-#'     \item{directions}{Wind direction (degrees, with 360 converted to 0)}
+#'     \item{direction}{Wind direction (degrees, with 360 converted to 0)}
 #'     \item{n}{Count of observations in each direction}
 #'     \item{proportion}{Percentage of total observations in each direction}
 #'     \item{speed}{Mean or percentile wind speed for each direction}
@@ -34,8 +34,8 @@ summarize_wind_data <- function(wind_data, wind_percentile) {
   # user determines how the wind will be summarized - by mean or percentile
   if (wind_percentile == "mean") {
     wind_data_summary <- wind_data %>%
-      dplyr::mutate(directions = .data$wind_direction) %>%
-      dplyr::group_by(.data$directions) %>%
+      dplyr::mutate(direction = .data$wind_direction) %>%
+      dplyr::group_by(.data$direction) %>%
       dplyr::summarize(
         n = dplyr::n(),
         proportion = 100 * .data$n / nrow(wind_data),
@@ -44,8 +44,8 @@ summarize_wind_data <- function(wind_data, wind_percentile) {
       )
   } else {
     wind_data_summary <- wind_data %>%
-      dplyr::mutate(directions = .data$wind_direction) %>%
-      dplyr::group_by(.data$directions) %>%
+      dplyr::mutate(direction = .data$wind_direction) %>%
+      dplyr::group_by(.data$direction) %>%
       dplyr::summarize(
         n = dplyr::n(),
         proportion = 100 * .data$n / nrow(wind_data),

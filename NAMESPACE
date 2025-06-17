@@ -3,7 +3,6 @@
 export("%>%")
 export(build_wind_wave)
 export(compassDegrees_to_radianDegrees)
-export(create_bounding_box)
 export(extract_bathy_along_fetch)
 export(find_fetch)
 export(generate_grid_points)
