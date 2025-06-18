@@ -153,8 +153,7 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
 
     # ---- Shoaling and wave growth ----
     if(depths[j] / deep_wave_length < 0.5){
-      # cat('j =', j, 'SHALLOW WAVE GROWING \n')
-      # wave grows according to CERC curve
+      # Shallow water wave growth using CERC empirical growth
       gf <- (0.0125 * (G * (new_fetch + k * distances[j-1]) / wind_speed ^ 2) ^ 0.42)
       wave_height[j] <- (0.283 * tanh(gf) * wind_speed ^ 2 / G)
 
