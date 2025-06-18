@@ -7,31 +7,64 @@
 WEMo(fetch, site_points)
 }
 \arguments{
-\item{fetch}{A data frame or \code{sf} object containing fetch geometry and required variables:
-\code{efetch}, \code{depths}, \code{distances}, \code{speed}, \code{proportion}, and \code{site}.
-Each row corresponds to a fetch ray.}
+\item{fetch}{A data frame or \code{sf} object containing fetch geometry and
+required variables: \code{efetch}, \code{depths}, \code{distances}, \code{speed}, \code{proportion}.
+Expects the output from \code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}} and \code{site}. Each row
+corresponds to a fetch ray.}
 
 \item{site_points}{An \code{sf} object of site points to join results with.}
 }
 \value{
 A list of two elements:
 \describe{
-\item{\code{wemo_details}}{a data frame of detailed wave outputs (one per fetch ray).}
-\item{\code{wemo_output}}{a summarized data frame of wave energy estimates for each site.}
+\item{\code{wemo_details}}{the original \code{fetch} object with the following stats about each wave arriving at the site from the direction of the fetch ray added:
+\itemize{
+\item \code{wave_height_final} – Final wave height at the end of the fetch (m)
+\item \code{WEI} – Wave Energy Index
+\item \code{wave_period} – Estimated wave period (s)
+\item \code{wave_number} – Average wave number (rad/m)
+\item \code{celerity_final} – Final wave phase speed (m/s)
+\item \code{nnumber_final} – Final group velocity coefficient
+}}
+\item{\code{wemo_output}}{sf object with all the variables from \code{site_point} in addition to the following:\itemize{
+\item \code{RWE} – Total relative wave exposure at the site
+\item \code{avg_wave_height} – Mean wave height across all fetch rays (m)
+\item \code{max_wave_height} – Maximum wave height across all fetch rays (m)
+\item \code{direction_of_max_wave} – Direction(s) of maximum wave height (Degrees from North)
+}}
 }
 }
 \description{
-Combines fetch, bathymetry, and wind data to estimate wave height and energy metrics
-at each site using the WEMo (Wave Energy Model) approach. This function wraps
-several core components: calculating wave height via \verb{[build_wind_wave()]} and aggregating
-results for each site.
+\code{WEMo()} Combines fetch, bathymetry, and wind data to estimate
+wave height and energy metrics at each site using WEMo (Wave Energy Model)
+from wind-waves.
+
+First, the function builds a wind-wave over input bathymetry and returns an
+estimate of final wave height and related wave characteristics (e.g., wave
+energy index, wave period, wave number, celerity).
+
+Then, the function summarizes the waves from every direction for each site
+and computes the summary statistic \code{RWE}.
 }
 \details{
-This function loops over each fetch ray, estimates wave height and related wave
-characteristics using \verb{[build_wind_wave()]}, calculates the relative wave energy
-(RWE) using the wind direction proportion, and returns both detailed and summarized
-results.
+This function builds and propagates waves arriving at the site from
+each fetch ray segment-by-segment, adjusting for shoaling, wave breaking,
+and changing depth. Deep and shallow water regimes are handled using
+different formulas. The function uses a Newton-Raphson method to compute
+wave number. The values in the \code{wemo_output} return are calculated from
+summarizing (mean and max wave height) of all fetch rays. Relative Wave
+Energy (\code{RWE}) is calculated by multiplying the \code{REI} from each wave by the
+proportion of time that wind blows from the direction of the ray each ray
+and summing for all fetch rays
+}
+\examples{
+\dontrun{
+# Example assumes fetch object includes efetch, depths, distances, speed, and direction
+result <- WEMo(fetch = fetch, site_points = site_pts)
+details <- result$wemo_details
+summary <- result$wemo_output
+}
 }
 \seealso{
-\code{\link[=build_wind_wave]{build_wind_wave()}}
+\code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}}
 }

@@ -1,18 +1,25 @@
 #' Generate and Propagate a Wind Wave Over Variable Bathymetry
 #'
-#' This function builds a wind-wave over input bathymetry and distances returning
-#' an estimate of final wave height and related wave characteristics
+#' This function builds a wind-wave over input bathymetry and distances
+#' returning an estimate of final wave height and related wave characteristics
 #' (e.g., wave energy index, wave period, wave number, celerity)
 #'
+#' @details Wave growth is calculated segment-by-segment, adjusting for
+#' shoaling, wave breaking, and changing depth. Deep and shallow water regimes
+#' are handled using different formulas. The function uses a Newton-Raphson
+#' method to compute wave number.
+#'
 #' @param fetch Numeric. Total wind fetch distance (in meters).
-#' @param depths Numeric vector Water depths (in meters) at each segment; must be one element longer than `distances`.
-#' @param distances Numeric vector Horizontal distances (in meters) between each depth point.
-#' @param wind_speed Numeric. Wind speed (in m/s).
+#' @param depths Numeric vector Water depths (in meters) at each segment; must
+#'   be one element longer than `distances`.
+#' @param distances Numeric vector. Horizontal distances (in meters) between successive
+#'   depth points. Must be one element shorter than `depths`.
+#' @param wind_speed Numeric. Wind speed blowing from direction (in m/s).
 #'
 #' @return A data frame with the following columns:
 #' \describe{
 #'   \item{wave_height_final}{Final wave height at the end of the fetch (in meters).}
-#'   \item{WEI}{Wave Energy Index (proportional to energy flux).}
+#'   \item{WEI}{Wave Energy Index}
 #'   \item{wave_period}{Estimated wave period (in seconds).}
 #'   \item{wave_number}{Average wave number (radians per meter).}
 #'   \item{celerity_final}{Final wave celerity (phase speed, in m/s).}
@@ -160,13 +167,9 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
       # shoaling coefficient to describe the local wave height relative to the deep-water wave height
       shoaling_coef <- ((n1 * celer1) / (n2 * celer2)) ^ 0.5
       shoaling_coef <- ((group_velocity[j-1] * celerity[j-1]) / (group_velocity[j] * celerity[j])) ^ 0.5
-      # shoaling_coef <- (n1 * celer1 / (n2 * celer2)) ^ 0.5
-      # cat('shoaling coef = ', round(shoaling_coef, 3), ', wave height prior = ', round(wave_height[j], 3), '')
-
       wave_height[j] <- shoaling_coef * wave_height[j]
-      # cat('wave height post = ', round(wave_height[j], 3), '\n')
 
-      # Goda's Formula
+      # ---- Breaking check using Goda's formula ----
       breaking_ht <- deep_wave_length * A_goda * (1 - exp(-1.5 * pi * depths[j] / deep_wave_length * (1 + 15 * (tan(alpha * pi / 180) ^ 1.333))))
 
       if(breaking_ht > 0.7 * depths[j]){
@@ -177,31 +180,21 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
         # breaking occurred
         wave_height[j] <- breaking_ht
         breaking_flag[j] <- 1
-        # cat('breaking occured, breaking ht:', round(breaking_ht, 3), '')
       }
-      # cat('depth =', round(depths[j], 3), 'wave height:', round(wave_height[j], 3), '\n')
+
     } else{
-      # cat('j =', j, 'DEEP WAVE GROWING; ')
+      # deep water wave growth
       # wave grows according to CERC curve
       gf <- (0.0125 * (G * (new_fetch + distances[j-1]) / wind_speed ^ 2) ^ 0.42)
       wave_height[j] <- (0.283 * tanh(gf) * wind_speed ^ 2 / G)
 
-      # # shoaling coefficient to describe the local wave height relative to the deep-water wave height
-      # shoaling_coef <- ((n1 * celer1)/(n2 * celer2))^0.5
-      # # shoaling_coef <- (n1 * celer1 / (n2 * celer2)) ^ 0.5
-      # cat('\nshoaling coef = ', round(shoaling_coef, 3), ', wave height prior = ', round(wave_height[j], 3), '')
-      #
-      # wave_height[j] <- shoaling_coef * wave_height[j]
-      # cat('wave height post = ', round(wave_height[j], 3), '\n')
-
       # deep wave breaking criteria
       if((2 * wave_height[j] / deep_wave_length) > 0.3){
-        # cat('Wave breaks ')
         wave_height[j] <- deep_wave_length / 2 * 0.3
       }
-      # cat('depth =', round(depths[j], 3), 'wave height:', round(wave_height[j], 3), '\n')
     }
 
+    # ---- Update values for next iteration ----
     k <- 1
     avg_k <- avg_k + k1
     n1 <- n2
@@ -210,10 +203,12 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
     l1 <- l2
 
   }
+  # ---- Final calculations ----
   wave_height_final <- round(wave_height[j], 5)
   wave_number <- avg_k / j
   WEI <- Con * G * wave_height_final ^ 2 * wave_period^2 * tanh(wave_number * depths[j])
 
+  # ---- Output dataframe ----
   df <- data.frame(
     wave_height_final = wave_height_final,
     WEI = WEI,

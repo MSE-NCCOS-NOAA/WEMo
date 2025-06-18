@@ -7,7 +7,7 @@ prepare_WEMo_inputs <- function(site,
                                 sample_dist = 5,
                                 water_level,
                                 depths_or_elev = 'elev',
-                                extra_at_start = T ) {
+                                extra_at_start = T) {
   # calculate fetch
   fetch <- find_fetch(
     site_layer = site,

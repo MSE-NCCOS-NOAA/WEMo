@@ -9,17 +9,19 @@ build_wind_wave(fetch, depths, distances, wind_speed)
 \arguments{
 \item{fetch}{Numeric. Total wind fetch distance (in meters).}
 
-\item{depths}{Numeric vector Water depths (in meters) at each segment; must be one element longer than \code{distances}.}
+\item{depths}{Numeric vector Water depths (in meters) at each segment; must
+be one element longer than \code{distances}.}
 
-\item{distances}{Numeric vector Horizontal distances (in meters) between each depth point.}
+\item{distances}{Numeric vector. Horizontal distances (in meters) between successive
+depth points. Must be one element shorter than \code{depths}.}
 
-\item{wind_speed}{Numeric. Wind speed (in m/s).}
+\item{wind_speed}{Numeric. Wind speed blowing from direction (in m/s).}
 }
 \value{
 A data frame with the following columns:
 \describe{
 \item{wave_height_final}{Final wave height at the end of the fetch (in meters).}
-\item{WEI}{Wave Energy Index (proportional to energy flux).}
+\item{WEI}{Wave Energy Index}
 \item{wave_period}{Estimated wave period (in seconds).}
 \item{wave_number}{Average wave number (radians per meter).}
 \item{celerity_final}{Final wave celerity (phase speed, in m/s).}
@@ -27,9 +29,15 @@ A data frame with the following columns:
 }
 }
 \description{
-This function builds a wind-wave over input bathymetry and distances returning
-an estimate of final wave height and related wave characteristics
+This function builds a wind-wave over input bathymetry and distances
+returning an estimate of final wave height and related wave characteristics
 (e.g., wave energy index, wave period, wave number, celerity)
+}
+\details{
+Wave growth is calculated segment-by-segment, adjusting for
+shoaling, wave breaking, and changing depth. Deep and shallow water regimes
+are handled using different formulas. The function uses a Newton-Raphson
+method to compute wave number.
 }
 \examples{
 fetch <- 90
