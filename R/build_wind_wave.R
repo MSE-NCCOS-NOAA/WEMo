@@ -5,8 +5,8 @@
 #' (e.g., wave energy index, wave period, wave number, celerity)
 #'
 #' @param fetch Numeric. Total wind fetch distance (in meters).
-#' @param depths Numeric list. Water depths (in meters) at each segment; must be one element longer than `distances`.
-#' @param distances Numeric list. Horizontal distances (in meters) between each depth point.
+#' @param depths Numeric vector Water depths (in meters) at each segment; must be one element longer than `distances`.
+#' @param distances Numeric vector Horizontal distances (in meters) between each depth point.
 #' @param wind_speed Numeric. Wind speed (in m/s).
 #'
 #' @return A data frame with the following columns:
@@ -23,13 +23,13 @@
 #'
 #' @examples
 #' fetch <- 90
-#' depths <- list(1, 2, 3, 5, 5)
-#' distances <- list(25, 25, 25, 15)
+#' depths <- c(1, 2, 3, 5, 5)
+#' distances <- c(25, 25, 25, 15)
 #' wind_speed <- 10
 #' wind_proportion <- 0.25
-#' result <- wind_wave_height_new(fetch, depths, distances, wind_speed)
+#' result <- build_wind_wave(fetch, depths, distances, wind_speed)
 #'
-build_wind_wave <- function(fetch, depths = list(), distances = list(), wind_speed){
+build_wind_wave <- function(fetch, depths, distances, wind_speed){
   # Check if the input list lengths are consistent: depths should have one more element than distances
   if(length(depths) != length(distances) + 1) {
     stop("Distance vector must be shorter than depth vectors by length of one")

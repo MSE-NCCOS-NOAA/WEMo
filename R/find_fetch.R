@@ -76,9 +76,9 @@ find_fetch <- function(site_layer, polygon_layer,
                           directions = c(0, 45, 90, 135, 180, 225, 270, 315),
                           max_fetch = 10000) {
   # Ensure CRS match
-  if (st_crs(site_layer) != st_crs(polygon_layer)) {
+  if (sf::st_crs(site_layer) != sf::st_crs(polygon_layer)) {
     warning("CRS mismatch: transforming site_layer to match polygon_layer")
-    site_layer <- st_transform(site_layer, st_crs(polygon_layer))
+    site_layer <- sf::st_transform(site_layer, sf::st_crs(polygon_layer))
   }
 
   # Ensure fetch has site column for calculations
@@ -90,11 +90,11 @@ find_fetch <- function(site_layer, polygon_layer,
   }
 
   # Remove points on land
-  sites_on_land <- st_intersects(site_layer, polygon_layer, sparse = FALSE)
+  sites_on_land <- sf::st_intersects(site_layer, polygon_layer, sparse = FALSE)
   site_layer <- site_layer[!sites_on_land, ]
 
   # Store coordinates for speed
-  coords <- st_coordinates(site_layer)
+  coords <- sf::st_coordinates(site_layer)
 
   # Setup progress bar
   # pb <- progress_bar$new(
@@ -105,7 +105,7 @@ find_fetch <- function(site_layer, polygon_layer,
   # Generate rays from each site in all directions
   fetch_rays <- lapply(1:nrow(site_layer), function(i) {
     # pb$tick()
-    site_geom <- st_geometry(site_layer[i,])
+    site_geom <- sf::st_geometry(site_layer[i,])
     site_coord <- coords[i, ]
 
     # heading = directions[1]
@@ -117,42 +117,42 @@ find_fetch <- function(site_layer, polygon_layer,
       dest_x <- site_coord[1] + max_fetch * cos(heading_rad)
       dest_y <- site_coord[2] + max_fetch * sin(heading_rad)
 
-      ray <- st_linestring(rbind(site_coord, c(dest_x, dest_y))) %>%
-        st_sfc(crs = st_crs(site_layer)) %>%
-        st_sf()
+      ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y))) %>%
+        sf::st_sfc(crs = sf::st_crs(site_layer)) %>%
+        sf::st_sf()
 
       # Find intersection with shoreline
-      inter <- suppressWarnings(st_intersection(ray, polygon_layer))
+      inter <- suppressWarnings(sf::st_intersection(ray, polygon_layer))
 
-      if (!inherits(inter, "sf") || nrow(inter) == 0 || all(st_is_empty(inter))) {
-        final_ray <- st_linestring(rbind(site_coord, c(dest_x, dest_y)))
+      if (!inherits(inter, "sf") || nrow(inter) == 0 || all(sf::st_is_empty(inter))) {
+        final_ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y)))
         dist_val <- max_fetch
       } else {
         # Cast to points
         inter_points <- suppressWarnings(tryCatch({
-          inter_geom <- st_geometry(inter)
+          inter_geom <- sf::st_geometry(inter)
           if (!inherits(inter_geom, "sfc_POINT")) {
-            st_cast(inter_geom, "POINT")
+            sf::st_cast(inter_geom, "POINT")
           } else {
             inter_geom
           }
         }, error = function(e) NULL))
 
-        if (!is.null(inter_points) && length(inter_points) > 0 && !all(st_is_empty(inter_points))) {
-          dists <- st_distance(site_geom, inter_points)
+        if (!is.null(inter_points) && length(inter_points) > 0 && !all(sf::st_is_empty(inter_points))) {
+          dists <- sf::st_distance(site_geom, inter_points)
           min_idx <- which.min(dists[1,])
-          closest_pt <- st_coordinates(inter_points[min_idx])
+          closest_pt <- sf::st_coordinates(inter_points[min_idx])
 
-          final_ray <- st_linestring(rbind(site_coord, closest_pt))
+          final_ray <- sf::st_linestring(rbind(site_coord, closest_pt))
           dist_val <- as.numeric(dists[min_idx])
         } else {
-          final_ray <- st_linestring(rbind(site_coord, c(dest_x, dest_y)))
+          final_ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y)))
           dist_val <- max_fetch
         }
       }
 
-      tibble(
-        geometry = st_sfc(final_ray, crs = st_crs(site_layer)),
+      tibble::tibble(
+        geometry = sf::st_sfc(final_ray, crs = sf::st_crs(site_layer)),
         direction = heading,
         fetch = dist_val,
         site = i
@@ -160,11 +160,11 @@ find_fetch <- function(site_layer, polygon_layer,
 
     })
     site_fetch_rays <- do.call(rbind, site_fetch_rays)
-    site_fetch_rays <- st_as_sf(site_fetch_rays)
+    site_fetch_rays <- sf::st_as_sf(site_fetch_rays)
     return(site_fetch_rays)
   })
 
   fetch_rays <- do.call(rbind, fetch_rays)
-  fetch_rays <- st_as_sf(fetch_rays)
+  fetch_rays <- sf::st_as_sf(fetch_rays)
   return(fetch_rays)
 }

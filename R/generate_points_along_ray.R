@@ -24,17 +24,16 @@
 #' whether this shorter distance occurs near the site (TRUE) or away from it (FALSE).
 #' For example, with a 90m ray and 25m sample distance, two points will be 15m apart.
 #'
-#' @export
 generate_points_along_ray <- function(fetch_ray, sample_dist, extra_at_start = T) {
   # Check if input is SpatVector, convert if necessary
   if (inherits(fetch_ray, "SpatVector")) {
     ray_vect <- fetch_ray
   } else {
-    ray_vect <- vect(fetch_ray)
+    ray_vect <- terra::vect(fetch_ray)
   }
 
   # Get line coordinates
-  coords <- geom(ray_vect)[, c("x", "y")]
+  coords <- terra::geom(ray_vect)[, c("x", "y")]
 
   # Calculate total ray length
   total_length <- terra::perim(ray_vect)
@@ -55,12 +54,12 @@ generate_points_along_ray <- function(fetch_ray, sample_dist, extra_at_start = T
   target_distances <- rev(target_distances)
 
   # Interpolate coordinates at target distances
-  x_interp <- approx(c(0, total_length), coords[, 1], xout = target_distances)$y
-  y_interp <- approx(c(0, total_length), coords[, 2], xout = target_distances)$y
+  x_interp <- stats::approx(c(0, total_length), coords[, 1], xout = target_distances)$y
+  y_interp <- stats::approx(c(0, total_length), coords[, 2], xout = target_distances)$y
 
   # Create SpatVector points
   sample_coords <- cbind(x_interp, y_interp)
-  ray_points_vect <- vect(sample_coords, type = "points", crs = crs(ray_vect))
+  ray_points_vect <- terra::vect(sample_coords, type = "points", crs = terra::crs(ray_vect))
 
   return(list(points = ray_points_vect, distances = distances))
 }

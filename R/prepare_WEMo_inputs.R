@@ -7,7 +7,7 @@ prepare_WEMo_inputs <- function(site,
                                 sample_dist = 5,
                                 water_level,
                                 depths_or_elev = 'elev',
-                                extra_at_start = T, ) {
+                                extra_at_start = T ) {
   # calculate fetch
   fetch <- find_fetch(
     site_layer = site,
@@ -21,7 +21,7 @@ prepare_WEMo_inputs <- function(site,
 
   # interrogate the bathy and get list of depths and distances for each depth point
   e_fetch_with_bathy <- interrogate_bathy(
-    fetch = eff_fetch_sf,
+    fetch = e_fetch,
     bathy_raster = bathy,
     sample_dist = sample_dist,
     depths_or_elev = depths_or_elev,
@@ -31,10 +31,7 @@ prepare_WEMo_inputs <- function(site,
 
   e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data)
 
-  e_fetch_with_bathy_wind <- st_as_sf(e_fetch_with_bathy_wind)
+  e_fetch_with_bathy_wind <- sf::st_as_sf(e_fetch_with_bathy_wind)
 
-  # WEMo(fetch,
-  #     depths = list(),
-  #     distances = list(),
-  #     wind_speed)
+  return(e_fetch_with_bathy_wind)
 }

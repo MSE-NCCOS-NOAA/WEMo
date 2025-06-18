@@ -18,6 +18,10 @@ extract_bathy_along_fetch(
 a linear geometry (fetch ray)}
 
 \item{sample_dist}{Numeric. The distance between sampling points along the ray}
+
+\item{extra_at_start}{Logical. If TRUE (default), when ray length doesn't
+divide evenly by sample_dist places extra point at the start. If FALSE,
+places extra point at the end}
 }
 \value{
 A list containing:

@@ -1,0 +1,12 @@
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+## usethis namespace: end
+NULL
+
+## quiets concerns of R CMD check re: the .'s that appear in pipelines
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+# https://github.com/STAT545-UBC/Discussion/issues/451#issuecomment-264598618

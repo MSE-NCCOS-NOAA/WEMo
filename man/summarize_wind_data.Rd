@@ -14,7 +14,7 @@ summarize_wind_data(wind_data, wind_percentile)
 \value{
 A data frame summarizing wind by direction, with columns:
 \describe{
-\item{directions}{Wind direction (degrees, with 360 converted to 0)}
+\item{direction}{Wind direction (degrees, with 360 converted to 0)}
 \item{n}{Count of observations in each direction}
 \item{proportion}{Percentage of total observations in each direction}
 \item{speed}{Mean or percentile wind speed for each direction}

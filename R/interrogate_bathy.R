@@ -9,8 +9,14 @@
 #' @param fetch A spatial dataframe (sf) containing fetch ray geometries
 #' @param bathy_raster A SpatRaster object containing bathymetry data
 #' @param sample_dist Numeric. The distance between sampling points along each ray (default: 10)
-#' @param extra_at_start Logical. Controls point positioning when ray length doesn't
-#'   divide evenly by sample_dist (default: TRUE). See generate_points_along_ray() for details
+#' @param depths_or_elev Character string denoting if `bathy_raster` stores depths or elevation values. Defaults to `'elev'`.
+#'   Must be either `'depths'` or `'elev'`.
+#'   - `'depths'`: bathymetry values are depths (more positive values are deeper). `bathy_raster` values are added with `water_level` directly.
+#'   - `'elev'`: (Default) bathymetry values are elevations (more positive values are shallower/above water). `bathy_rater` values are multiplied by -1 before adding `water_level`.
+#' @param water_level the water level that you want to calculate depths for
+#' @param extra_at_start Logical. If TRUE (default), when ray length doesn't
+#'    divide evenly by sample_dist places extra point at the start. If FALSE,
+#'    places extra point at the end.
 #'
 #' @return A spatial dataframe with added list columns:
 #'   \item{bathy}{List column containing bathymetry values for each fetch ray}
@@ -21,20 +27,17 @@
 #' values along the corresponding geometry. Results are stored as list columns, allowing
 #' each row to contain vectors of different lengths.
 #'
-#' @seealso
-#' [extract_bathy_along_fetch] for single ray processing
-#' [generate_points_along_ray] for point generation details
-#'
 #' @examples
+#' \dontrun{
 #' # Process all fetch rays with 10m sampling
 #' fetch_with_bathy <- interrogate_bathy(fetch_rays, bathy_raster, sample_dist = 10)
-#'
+#' }
 #' @export
 interrogate_bathy <- function(fetch, bathy_raster, sample_dist = 10, depths_or_elev = "elev", water_level = 0, extra_at_start = T){
   fetch_with_bathy <-
     lapply(seq_along(fetch$geometry), function(i){
       fetch_ray <- fetch[i, ]
-      extracted_bathy <- extract_bathy_along_fetch(bathy, fetch_ray, sample_dist = sample_dist)
+      extracted_bathy <- extract_bathy_along_fetch(bathy_raster, fetch_ray, sample_dist = sample_dist)
 
       if(depths_or_elev == 'depths') {
         depths <- extracted_bathy[["bathy"]] + water_level
@@ -48,7 +51,7 @@ interrogate_bathy <- function(fetch, bathy_raster, sample_dist = 10, depths_or_e
         distances = list(extracted_bathy[["distances"]]),
         depths = list(depths)
       ) %>%
-        bind_cols(sf::st_drop_geometry(fetch_ray), .)
+        dplyr::bind_cols(sf::st_drop_geometry(fetch_ray), .)
     }) %>%
     dplyr::bind_rows()
   return(fetch_with_bathy)

@@ -20,8 +20,18 @@ interrogate_bathy(
 
 \item{sample_dist}{Numeric. The distance between sampling points along each ray (default: 10)}
 
-\item{extra_at_start}{Logical. Controls point positioning when ray length doesn't
-divide evenly by sample_dist (default: TRUE). See generate_points_along_ray() for details}
+\item{depths_or_elev}{Character string denoting if \code{bathy_raster} stores depths or elevation values. Defaults to \code{'elev'}.
+Must be either \code{'depths'} or \code{'elev'}.
+\itemize{
+\item \code{'depths'}: bathymetry values are depths (more positive values are deeper). \code{bathy_raster} values are added with \code{water_level} directly.
+\item \code{'elev'}: (Default) bathymetry values are elevations (more positive values are shallower/above water). \code{bathy_rater} values are multiplied by -1 before adding \code{water_level}.
+}}
+
+\item{water_level}{the water level that you want to calculate depths for}
+
+\item{extra_at_start}{Logical. If TRUE (default), when ray length doesn't
+divide evenly by sample_dist places extra point at the start. If FALSE,
+places extra point at the end.}
 }
 \value{
 A spatial dataframe with added list columns:
@@ -40,11 +50,8 @@ values along the corresponding geometry. Results are stored as list columns, all
 each row to contain vectors of different lengths.
 }
 \examples{
+\dontrun{
 # Process all fetch rays with 10m sampling
 fetch_with_bathy <- interrogate_bathy(fetch_rays, bathy_raster, sample_dist = 10)
-
 }
-\seealso{
-\link{extract_bathy_along_fetch} for single ray processing
-\link{generate_points_along_ray} for point generation details
 }

@@ -7,51 +7,64 @@
 get_wind_data(site_point, years, which_station = "ask")
 }
 \arguments{
-\item{site_point}{A spatial point object (either \code{sf} or coercible to \code{sf}) indicating the target location.}
+\item{site_point}{A spatial point object (either \code{sf} or coercible to \code{sf})
+indicating the target location.}
 
-\item{years}{A vector of years (e.g., 2002:2024) for which to download wind data.}
+\item{years}{A vector of years (e.g., 2002:2024) for which to download wind
+data.}
 
 \item{which_station}{Either:
 \itemize{
-\item "ask": interactively choose from 5 closest stations;
+\item \code{"ask"}: interactively choose from 5 closest stations;
 \item an integer (1–5): pick the nth closest station;
 \item a string station code in the form "USAF-WBAN".
 }}
 }
 \value{
-A data frame with cleaned wind direction and wind speed, along with station code, timestamp,
-and date components (year, month, day).
+A data frame with cleaned wind direction and wind speed, along with
+station code, timestamp, and date components (year, month, day).
 }
 \description{
-This function is a wrapper around the \link{worldmet} package's \link[worldmet:getMeta]{worldmet::getMeta} and \link[worldmet:importNOAA]{worldmet::importNOAA}
-functions. It finds up to 5 nearby NOAA weather stations based on a geographic point, allows the user
-to select a station (interactively or by index/code), and downloads wind direction and speed data
-for specified years.
+This function is a wrapper around the \link[worldmet:getMeta]{\code{getMeta()}}
+and \link[worldmet:importNOAA]{\code{importNOAA()}} functions from the
+\strong{\link[worldmet]{worldmet}} package. It finds up to 5 nearby NOAA weather stations based
+on a geographic point, allows the user to select a station (interactively or
+by index/code), and downloads wind direction and speed data for specified
+years.
 }
 \examples{
-require(sf)
-require(dplyr)
-
 # Create a POINT geometry from coordinates and cast explicitly
-site_point <- st_sf(
-  geometry = st_sfc(st_point(c(-76.67587, 34.71413))),
+site_point <- sf::st_sf(
+  geometry = sf::st_sfc(sf::st_point(c(-76.67587, 34.71413))),
   crs = 4326
   )
 
 # 1. Prompt user to select a station interactively
 \dontrun{
-wind_data_ask <- get_wind_data(site_point, years = 2022:2023, which_station = "ask")
+wind_data_ask <- get_wind_data(
+  site_point,
+  years = 2022:2023,
+  which_station = "ask"
+ )
 }
 
 # 2. Automatically use the 2nd closest station
 \dontrun{
-wind_data_index <- get_wind_data(site_point, years = 2022:2023, which_station = 2)
+wind_data_index <- get_wind_data(
+  site_point,
+  years = 2022:2023,
+  which_station = 2
+ )
 }
 
 # 3. Manually specify a station code using getMeta
 \dontrun{
 # this way you don't need a site_point
-wind_data_manual <- get_wind_data(site_point = NULL, years = 2022:2023, which_station = "723037-93765")
+wind_data_manual <- get_wind_data(
+  site_point = NULL,
+  years = 2022:2023,
+  which_station = "723037-93765"
+ )
 }
 
 }

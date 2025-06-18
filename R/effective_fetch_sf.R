@@ -99,16 +99,16 @@ effective_fetch <- function(fetch, wind_energy_transfer_degrees = 45) {
     fetch_filtered <- fetch[fetch[[site_var]]==site, ]
 
     # Get center coordinates
-    center_coords <- st_coordinates(fetch_filtered)[1,c("X", "Y")]
+    center_coords <- sf::st_coordinates(fetch_filtered)[1,c("X", "Y")]
 
     # Create a dataframe without geometry for calculations
-    fetch_df <- st_drop_geometry(fetch_filtered)
+    fetch_df <- sf::st_drop_geometry(fetch_filtered)
 
     # Expand directions by ±360° to handle edge cases
     fetch_df <- dplyr::bind_rows(fetch_df,
                                  fetch_df %>% dplyr::mutate(direction = .data$direction - 360),
                                  fetch_df %>% dplyr::mutate(direction = .data$direction + 360)) %>%
-      dplyr::arrange(direction) %>%
+      dplyr::arrange(.data$direction) %>%
       dplyr::distinct()
 
     # Calculate effective fetch for each direction
@@ -119,48 +119,48 @@ effective_fetch <- function(fetch, wind_energy_transfer_degrees = 45) {
 
       # Calculate weighted fetch
       df <- df %>%
-        dplyr::mutate(a = fetch * cos((direction - theta) * pi / 180),
-                      b = cos((direction - theta) * pi / 180)) %>%
-        dplyr::summarize(suma = sum(a),
-                         sumb = sum(b)) %>%
+        dplyr::mutate(a = fetch * cos((.data$direction - theta) * pi / 180),
+                      b = cos((.data$direction - theta) * pi / 180)) %>%
+        dplyr::summarize(suma = sum(.data$a),
+                         sumb = sum(.data$b)) %>%
         dplyr::mutate(direction = theta,
-                      efetch = suma/sumb,
+                      efetch = .data$suma/.data$sumb,
                       suma = NULL, sumb = NULL)
       return(df)
     }) %>%
       dplyr::bind_rows() %>%
-      dplyr::arrange(direction)
+      dplyr::arrange(.data$direction)
 
     # Join with original data
     eff_fetch <- eff_fetch %>%
-      dplyr::left_join(st_drop_geometry(fetch_filtered), ., by = "direction") %>%
+      dplyr::left_join(sf::st_drop_geometry(fetch_filtered), ., by = "direction") %>%
       dplyr::mutate(X0 = center_coords[[1]],
                     Y0 = center_coords[[2]])
 
     # Convert compass degrees to radians and calculate endpoints
     eff_fetch <- eff_fetch %>%
-      dplyr::mutate(radianDegrees = compassDegrees_to_radianDegrees(direction),
-                    f = ifelse(fetch > efetch, efetch, fetch),
-                    xdist = f * cos(radianDegrees * pi / 180),
-                    ydist = f * sin(radianDegrees * pi / 180),
-                    X1 = X0 + xdist,
-                    Y1 = Y0 + ydist,
-                    efetch = f,
+      dplyr::mutate(radianDegrees = compassDegrees_to_radianDegrees(.data$direction),
+                    f = ifelse(.data$fetch > .data$efetch, .data$efetch, .data$fetch),
+                    xdist = .data$f * cos(.data$radianDegrees * pi / 180),
+                    ydist = .data$f * sin(.data$radianDegrees * pi / 180),
+                    X1 = .data$X0 + .data$xdist,
+                    Y1 = .data$Y0 + .data$ydist,
+                    efetch = .data$f,
                     f = NULL) %>%
-      filter(direction>=0, direction<360)
+      dplyr::filter(.data$direction>=0, .data$direction<360)
 
     # Create list of LINESTRING geometries
     lines_list <- lapply(1:nrow(eff_fetch), function(i) {
       make_line(X0 = eff_fetch$X0[i], X1 = eff_fetch$X1[i], Y0 = eff_fetch$Y0[i], Y1 = eff_fetch$Y1[i])
     })
 
-    eff_fetch_sf <- st_as_sf(
+    eff_fetch_sf <- sf::st_as_sf(
       eff_fetch,
-      geometry = st_sfc(lines_list, crs = st_crs(fetch))
+      geometry = sf::st_sfc(lines_list, crs = sf::st_crs(fetch))
     )
 
     eff_fetch_sf %>%
-      mutate(X0 = NULL,
+      dplyr::mutate(X0 = NULL,
              Y0 = NULL,
              X1 = NULL,
              Y1 = NULL,

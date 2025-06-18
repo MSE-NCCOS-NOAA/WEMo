@@ -1,44 +1,57 @@
 #' Retrieve and clean wind data for WEMo
 #'
-#' This function is a wrapper around the [worldmet] package's [worldmet::getMeta] and [worldmet::importNOAA]
-#' functions. It finds up to 5 nearby NOAA weather stations based on a geographic point, allows the user
-#' to select a station (interactively or by index/code), and downloads wind direction and speed data
-#' for specified years.
+#' This function is a wrapper around the \link[worldmet:getMeta]{`getMeta()`}
+#' and \link[worldmet:importNOAA]{`importNOAA()`} functions from the
+#' **\link[worldmet]{worldmet}** package. It finds up to 5 nearby NOAA weather stations based
+#' on a geographic point, allows the user to select a station (interactively or
+#' by index/code), and downloads wind direction and speed data for specified
+#' years.
 #'
-#' @param site_point A spatial point object (either `sf` or coercible to `sf`) indicating the target location.
-#' @param years A vector of years (e.g., 2002:2024) for which to download wind data.
+#' @param site_point A spatial point object (either `sf` or coercible to `sf`)
+#'   indicating the target location.
+#' @param years A vector of years (e.g., 2002:2024) for which to download wind
+#'   data.
 #' @param which_station Either:
-#'   - "ask": interactively choose from 5 closest stations;
+#'   - `"ask"`: interactively choose from 5 closest stations;
 #'   - an integer (1–5): pick the nth closest station;
 #'   - a string station code in the form "USAF-WBAN".
 #'
-#' @return A data frame with cleaned wind direction and wind speed, along with station code, timestamp,
-#'         and date components (year, month, day).
+#' @return A data frame with cleaned wind direction and wind speed, along with
+#'   station code, timestamp, and date components (year, month, day).
 #'
 #' @examples
-#' require(sf)
-#' require(dplyr)
-#'
 #' # Create a POINT geometry from coordinates and cast explicitly
-#' site_point <- st_sf(
-#'   geometry = st_sfc(st_point(c(-76.67587, 34.71413))),
+#' site_point <- sf::st_sf(
+#'   geometry = sf::st_sfc(sf::st_point(c(-76.67587, 34.71413))),
 #'   crs = 4326
 #'   )
 #'
 #' # 1. Prompt user to select a station interactively
 #' \dontrun{
-#' wind_data_ask <- get_wind_data(site_point, years = 2022:2023, which_station = "ask")
+#' wind_data_ask <- get_wind_data(
+#'   site_point,
+#'   years = 2022:2023,
+#'   which_station = "ask"
+#'  )
 #' }
 #'
 #' # 2. Automatically use the 2nd closest station
 #' \dontrun{
-#' wind_data_index <- get_wind_data(site_point, years = 2022:2023, which_station = 2)
+#' wind_data_index <- get_wind_data(
+#'   site_point,
+#'   years = 2022:2023,
+#'   which_station = 2
+#'  )
 #' }
 #'
 #' # 3. Manually specify a station code using getMeta
 #' \dontrun{
 #' # this way you don't need a site_point
-#' wind_data_manual <- get_wind_data(site_point = NULL, years = 2022:2023, which_station = "723037-93765")
+#' wind_data_manual <- get_wind_data(
+#'   site_point = NULL,
+#'   years = 2022:2023,
+#'   which_station = "723037-93765"
+#'  )
 #' }
 #'
 #' @export
@@ -75,7 +88,7 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
 
       # Prompt user
       cat("Choose a met station\n")
-      selection <- menu(options, title = "Available stations:")
+      selection <- utils::menu(options, title = "Available stations:")
 
       # Handle cancel
       if (!(selection %in% c(1:5))) stop("invalid station selected.")
@@ -99,13 +112,13 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
 
   # Clean and restructure the data
   wind <- met_data %>%
-    dplyr::mutate(id = code,
-           time = (date), .before = 0) %>%
-    dplyr::select(code, time, wind_direction = wd, wind_speed = ws) %>%
+    dplyr::mutate(id = .data$code,
+           time = (.data$date), .before = 0) %>%
+    dplyr::select(.data$code, .data$time, wind_direction = .data$wd, wind_speed = .data$ws) %>%
     dplyr::mutate(
-      year = lubridate::year(time),
-      month = lubridate::month(time),
-      day = lubridate::day(time),
+      year = lubridate::year(.data$time),
+      month = lubridate::month(.data$time),
+      day = lubridate::day(.data$time),
       .before = 3
     )
 

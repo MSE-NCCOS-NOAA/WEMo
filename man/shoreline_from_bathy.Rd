@@ -12,20 +12,26 @@ shoreline_from_bathy(
 )
 }
 \arguments{
-\item{bathy}{A \code{SpatRaster} object representing bathymetric or elevation data.}
+\item{bathy}{A \code{SpatRaster} object representing bathymetric or elevation
+data.}
 
-\item{contour}{A numeric value representing the elevation threshold to define land.}
+\item{contour}{A numeric value representing the elevation threshold to define
+land.}
 
-\item{save_output}{Logical. If \code{TRUE}, the output polygon will be saved to a shapefile. Default is \code{FALSE}.}
+\item{save_output}{Logical. If \code{TRUE}, the output polygon will be saved to a
+shapefile. Default is \code{FALSE}.}
 
-\item{filename}{A string giving the name of the shapefile to save if \code{save_output = TRUE}. Default is \code{"shoreline.shp"}.}
+\item{filename}{A string giving the name of the shapefile to save if
+\code{save_output = TRUE}. Default is \code{"shoreline.shp"}.}
 }
 \value{
-A \code{SpatVector} polygon object representing the extracted land areas (shoreline).
+A \code{SpatVector} polygon object representing the extracted land areas
+(shoreline).
 }
 \description{
-This function identifies land areas from a bathymetric raster by applying a contour threshold,
-converts the result into polygon geometry, and optionally saves it to a shapefile.
+This function identifies land areas from a bathymetric raster by applying a
+contour threshold, converts the result into polygon geometry, and optionally
+saves it to a shapefile.
 }
 \examples{
 \dontrun{
@@ -33,7 +39,12 @@ converts the result into polygon geometry, and optionally saves it to a shapefil
 shoreline <- shoreline_from_bathy(bathy = bathy_raster, contour = 0)
 
 # Save the result to a shapefile
-shoreline <- shoreline_from_bathy(bathy_raster, contour = 0, save_output = TRUE, filename = "shoreline.shp")
+shoreline <- shoreline_from_bathy(
+  bathy_raster,
+  contour = 0,
+  save_output = TRUE,
+  filename = "shoreline.shp"
+ )
 }
 
 }

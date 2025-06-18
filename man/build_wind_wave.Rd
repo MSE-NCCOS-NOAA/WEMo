@@ -4,14 +4,14 @@
 \alias{build_wind_wave}
 \title{Generate and Propagate a Wind Wave Over Variable Bathymetry}
 \usage{
-build_wind_wave(fetch, depths = list(), distances = list(), wind_speed)
+build_wind_wave(fetch, depths, distances, wind_speed)
 }
 \arguments{
 \item{fetch}{Numeric. Total wind fetch distance (in meters).}
 
-\item{depths}{Numeric list. Water depths (in meters) at each segment; must be one element longer than \code{distances}.}
+\item{depths}{Numeric vector Water depths (in meters) at each segment; must be one element longer than \code{distances}.}
 
-\item{distances}{Numeric list. Horizontal distances (in meters) between each depth point.}
+\item{distances}{Numeric vector Horizontal distances (in meters) between each depth point.}
 
 \item{wind_speed}{Numeric. Wind speed (in m/s).}
 }
@@ -33,10 +33,10 @@ an estimate of final wave height and related wave characteristics
 }
 \examples{
 fetch <- 90
-depths <- list(1, 2, 3, 5, 5)
-distances <- list(25, 25, 25, 15)
+depths <- c(1, 2, 3, 5, 5)
+distances <- c(25, 25, 25, 15)
 wind_speed <- 10
 wind_proportion <- 0.25
-result <- wind_wave_height_new(fetch, depths, distances, wind_speed)
+result <- build_wind_wave(fetch, depths, distances, wind_speed)
 
 }
