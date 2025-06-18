@@ -12,8 +12,8 @@
 #'
 #' @return A list of two elements:
 #' \describe{
-#'   \item{1}{`wemo_details`: a data frame of detailed wave outputs (one per fetch ray).}
-#'   \item{2}{`wemo_output`: a summarized data frame of wave energy estimates for each site.}
+#'   \item{`wemo_details`}{a data frame of detailed wave outputs (one per fetch ray).}
+#'   \item{`wemo_output`}{a summarized data frame of wave energy estimates for each site.}
 #' }
 #'
 #' @details

@@ -147,7 +147,7 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
     }
     celerity[j] <- celer2
 
-    # Calculate wave group velocity
+    # ---- Calculate wave group velocity ----
     n2 <- 1 / 2 * (1 + 2 * k2 * depths[j] / sinh(2 * k2 * depths[j]))
     group_velocity[j] <- n2
 
@@ -216,9 +216,6 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
   WEI <- Con * G * wave_height_final ^ 2 * wave_period^2 * tanh(wave_number * depths[j])
 
   df <- data.frame(
-    # fetch,
-    # wind_speed,
-    # wind_proportion,
     wave_height_final = wave_height_final,
     WEI = WEI,
     wave_period = wave_period,
@@ -226,11 +223,6 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
     celerity_final = celer2,
     nnumber_final = n2
   )
-
-  # df$heights = list(round(wave_height, 5))
-  # df$depths = list(depths)
-  # df$distances = list(distances)
-
 
   return(df)
 }

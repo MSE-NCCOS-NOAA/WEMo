@@ -16,8 +16,8 @@ Each row corresponds to a fetch ray.}
 \value{
 A list of two elements:
 \describe{
-\item{1}{\code{wemo_details}: a data frame of detailed wave outputs (one per fetch ray).}
-\item{2}{\code{wemo_output}: a summarized data frame of wave energy estimates for each site.}
+\item{\code{wemo_details}}{a data frame of detailed wave outputs (one per fetch ray).}
+\item{\code{wemo_output}}{a summarized data frame of wave energy estimates for each site.}
 }
 }
 \description{
