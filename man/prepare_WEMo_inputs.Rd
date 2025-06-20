@@ -5,7 +5,7 @@
 \title{Prepare Input Data for WEMo Model}
 \usage{
 prepare_WEMo_inputs(
-  site,
+  site_points,
   shoreline,
   bathy,
   wind_data,
@@ -18,7 +18,7 @@ prepare_WEMo_inputs(
 )
 }
 \arguments{
-\item{site}{An \code{sf} or \code{SpatVector} point object representing the location(s)
+\item{site_points}{An \code{sf} or \code{SpatVector} point object representing the location(s)
 for wave exposure analysis. Will be coerced to \code{sf}.}
 
 \item{shoreline}{An \code{sf} or \code{SpatVector} polygon representing land or

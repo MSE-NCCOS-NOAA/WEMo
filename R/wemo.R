@@ -13,9 +13,8 @@
 #'
 #' @param fetch A data frame or `sf` object containing fetch geometry and
 #'   required variables: `efetch`, `depths`, `distances`, `speed`, `proportion`.
-#'   Expects the output from [`prepare_WEMo_inputs()`] and `site`. Each row
+#'   Expects the output from [`prepare_WEMo_inputs()`]. Each row
 #'   corresponds to a fetch ray.
-#' @param site_points An `sf` object of site points to join results with.
 #'
 #' @return A list of two elements:
 #' \describe{
@@ -57,7 +56,7 @@
 #' details <- result$wemo_details
 #' summary <- result$wemo_output
 #' }
-WEMo <- function(fetch, site_points){
+WEMo <- function(fetch){
 
   wemo_details <- lapply(seq_along(fetch$geometry), function(i){
     dplyr::bind_cols(
@@ -72,6 +71,17 @@ WEMo <- function(fetch, site_points){
   }) %>%
     dplyr::bind_rows()
 
+  vertices <- st_coordinates(fetch)
+  # Extract first point of each LINESTRING
+
+  start_points <- unique(vertices[seq(1, nrow(vertices), by = 2), c("X", "Y")]) %>% as.data.frame()
+
+  start_points$site = unique(fetch$site)
+
+  # Convert to POINT geometries
+  start_points <- st_as_sf(as.data.frame(start_points), coords = c("X", "Y"), crs = st_crs(fetch))
+
+
   wemo_output <- wemo_details %>%
     dplyr::mutate(RWE = .data$WEI * .data$proportion/100,
                   site_name = as.character(.data$site)) %>%
@@ -80,13 +90,18 @@ WEMo <- function(fetch, site_points){
       RWE = sum(.data$RWE, na.rm = T),
       avg_wave_height = mean(.data$wave_height_final, na.rm = T),
       max_wave_height = max(.data$wave_height_final, na.rm = T),
-      direction_of_max_wave = paste(list(.data$direction[which(.data$wave_height_final == .data$max_wave_height)]))
+      direction_of_max_wave = paste(list(.data$direction[which(.data$wave_height_final == .data$max_wave_height)])),
+      avg_fetch = mean(.data$fetch, na.rm = T),
+      max_fetch = max(.data$fetch, na.rm = T),
+      avg_efetch = mean(.data$efetch, na.rm = T),
+      max_efetch = max(.data$efetch, na.rm = T)
     ) %>%
-    dplyr::right_join(site_points)
+    dplyr::right_join(start_points, by = join_by(site)) %>%
+    st_as_sf()
 
   return(list(
-    wemo_details,
-    wemo_output
+    wemo_details = wemo_details,
+    wemo_output = wemo_output
   ))
 
 }

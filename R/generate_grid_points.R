@@ -72,6 +72,16 @@ generate_grid_points <- function(site_point, expansion_dist, resolution){
     resolution[2] <- resolution[1]
   }
 
+
+  # check if the site object is SpatVector or can be coerced to a SpatVector
+  if (!inherits(try(terra::vect(site_point), silent = TRUE), "try-error")) {
+    site_point <- terra::vect(site_point)
+  }else {
+    if(!inherits(site_point, "SpatVector")){
+      stop("site_point cannot be coerced to a SpatVector.")
+    }
+  }
+
   # Get the bounding box of the site point
   bbox <- terra::ext(site_point)
 

@@ -81,16 +81,33 @@ find_fetch <- function(site_points, polygon_layer,
     site_points <- sf::st_transform(site_points, sf::st_crs(polygon_layer))
   }
 
-  # Ensure fetch has site column for calculations
-  if("site" %in% names(site_points)){
-    site_var <- "site"
-  } else {
-    site_var <- names(site_points)[which(startsWith(names(site_points), "site"))]
-    cat("using", site_var, "as site variable")
+  if(!("site" %in% names(site_points))){
+    cat(
+      "No variable named `site` found.",
+      ifelse(
+        nrow(site_points) == 1,
+        "Adding site column with site label '1'",
+        paste0("Adding site column with site labels '1 - ", nrow(site_point), "'")
+      ),
+      "\n"
+    )
+    site_point$site <- 1:nrow(site_point)
   }
+  site_var <- "site"
+
+  # # Ensure fetch has site column for calculations
+  # if("site" %in% names(site_points)){
+  #   site_var <- "site"
+  # } else {
+  #   site_var <- names(site_points)[which(startsWith(names(site_points), "site"))]
+  #   cat("using", site_var, "as site variable")
+  # }
 
   # Remove points on land
   sites_on_land <- sf::st_intersects(site_points, polygon_layer, sparse = FALSE)
+  if(nrows(sites_on_land)>=1){
+    cat("Removing", nrow(sites_on_land), "sites on that are on land. \n")
+  }
   site_points <- site_points[!sites_on_land, ]
 
   # Store coordinates for speed

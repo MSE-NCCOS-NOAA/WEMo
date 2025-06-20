@@ -4,15 +4,13 @@
 \alias{WEMo}
 \title{Run the WEMo Wave Energy Model}
 \usage{
-WEMo(fetch, site_points)
+WEMo(fetch)
 }
 \arguments{
 \item{fetch}{A data frame or \code{sf} object containing fetch geometry and
 required variables: \code{efetch}, \code{depths}, \code{distances}, \code{speed}, \code{proportion}.
-Expects the output from \code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}} and \code{site}. Each row
+Expects the output from \code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}}. Each row
 corresponds to a fetch ray.}
-
-\item{site_points}{An \code{sf} object of site points to join results with.}
 }
 \value{
 A list of two elements:

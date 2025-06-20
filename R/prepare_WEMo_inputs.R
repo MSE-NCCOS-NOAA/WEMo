@@ -52,7 +52,7 @@ prepare_WEMo_inputs <- function(site_points,
                                 extra_at_start = T) {
   # calculate fetch
   fetch <- find_fetch(
-    site_layer = site_points,
+    site_points = site_points,
     polygon_layer = shoreline,
     directions = directions,
     max_fetch = max_fetch

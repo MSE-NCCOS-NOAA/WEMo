@@ -5,14 +5,14 @@
 \title{Calculate Wind Fetch Distances to Shoreline}
 \usage{
 find_fetch(
-  site_layer,
+  site_points,
   polygon_layer,
   directions = c(0, 45, 90, 135, 180, 225, 270, 315),
   max_fetch = 10000
 )
 }
 \arguments{
-\item{site_layer}{An \code{sf} object containing point geometries representing the sites
+\item{site_points}{An \code{sf} object containing point geometries representing the sites
 where fetch distances will be calculated. Sites located on land (intersecting
 with polygon_layer) are automatically filtered out.}
 
@@ -70,7 +70,7 @@ n_headings = 4
 headings <- seq(0, 360 - 360 / n_headings, length.out = n_headings)
 
 fetch_rays <- find_fetch_sf(
-  site_layer = sites,
+  site_points = sites,
   polygon_layer = coastline,
   directions = headings,
   max_fetch = 5000
@@ -80,7 +80,7 @@ fetch_rays <- find_fetch_sf(
 n_headings = 36
 headings <- seq(0, 360 - 360 / n_headings, length.out = n_headings)
 fetch_rays <- find_fetch_sf(
-  site_layer = sites,
+  site_points = sites,
   polygon_layer = coastline,
   directions = headings,
   max_fetch = 1000
