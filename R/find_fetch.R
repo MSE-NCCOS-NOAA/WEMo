@@ -6,7 +6,7 @@
 #' coastal and marine studies for wave modeling, habitat analysis, and environmental
 #' assessments.
 #'
-#' @param site_layer An `sf` object containing point geometries representing the sites
+#' @param site_points An `sf` object containing point geometries representing the sites
 #'   where fetch distances will be calculated. Sites located on land (intersecting
 #'   with polygon_layer) are automatically filtered out.
 #' @param polygon_layer An `sf` object containing polygon geometries representing
@@ -53,7 +53,7 @@
 #' headings <- seq(0, 360 - 360 / n_headings, length.out = n_headings)
 #'
 #' fetch_rays <- find_fetch_sf(
-#'   site_layer = sites,
+#'   site_points = sites,
 #'   polygon_layer = coastline,
 #'   directions = headings,
 #'   max_fetch = 5000
@@ -63,7 +63,7 @@
 #' n_headings = 36
 #' headings <- seq(0, 360 - 360 / n_headings, length.out = n_headings)
 #' fetch_rays <- find_fetch_sf(
-#'   site_layer = sites,
+#'   site_points = sites,
 #'   polygon_layer = coastline,
 #'   directions = headings,
 #'   max_fetch = 1000
@@ -72,40 +72,40 @@
 #' }
 #'
 #' @export
-find_fetch <- function(site_layer, polygon_layer,
+find_fetch <- function(site_points, polygon_layer,
                           directions = c(0, 45, 90, 135, 180, 225, 270, 315),
                           max_fetch = 10000) {
   # Ensure CRS match
-  if (sf::st_crs(site_layer) != sf::st_crs(polygon_layer)) {
-    warning("CRS mismatch: transforming site_layer to match polygon_layer")
-    site_layer <- sf::st_transform(site_layer, sf::st_crs(polygon_layer))
+  if (sf::st_crs(site_points) != sf::st_crs(polygon_layer)) {
+    warning("CRS mismatch: transforming site_points to match polygon_layer")
+    site_points <- sf::st_transform(site_points, sf::st_crs(polygon_layer))
   }
 
   # Ensure fetch has site column for calculations
-  if("site" %in% names(site_layer)){
+  if("site" %in% names(site_points)){
     site_var <- "site"
   } else {
-    site_var <- names(site_layer)[which(startsWith(names(site_layer), "site"))]
+    site_var <- names(site_points)[which(startsWith(names(site_points), "site"))]
     cat("using", site_var, "as site variable")
   }
 
   # Remove points on land
-  sites_on_land <- sf::st_intersects(site_layer, polygon_layer, sparse = FALSE)
-  site_layer <- site_layer[!sites_on_land, ]
+  sites_on_land <- sf::st_intersects(site_points, polygon_layer, sparse = FALSE)
+  site_points <- site_points[!sites_on_land, ]
 
   # Store coordinates for speed
-  coords <- sf::st_coordinates(site_layer)
+  coords <- sf::st_coordinates(site_points)
 
   # Setup progress bar
   # pb <- progress_bar$new(
   #   format = "  Processing [:bar] :percent eta: :eta",
-  #   total = nrow(site_layer), clear = FALSE, width = 60
+  #   total = nrow(site_points), clear = FALSE, width = 60
   # )
 
   # Generate rays from each site in all directions
-  fetch_rays <- lapply(1:nrow(site_layer), function(i) {
+  fetch_rays <- lapply(1:nrow(site_points), function(i) {
     # pb$tick()
-    site_geom <- sf::st_geometry(site_layer[i,])
+    site_geom <- sf::st_geometry(site_points[i,])
     site_coord <- coords[i, ]
 
     # heading = directions[1]
@@ -118,7 +118,7 @@ find_fetch <- function(site_layer, polygon_layer,
       dest_y <- site_coord[2] + max_fetch * sin(heading_rad)
 
       ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y))) %>%
-        sf::st_sfc(crs = sf::st_crs(site_layer)) %>%
+        sf::st_sfc(crs = sf::st_crs(site_points)) %>%
         sf::st_sf()
 
       # Find intersection with shoreline
@@ -152,7 +152,7 @@ find_fetch <- function(site_layer, polygon_layer,
       }
 
       tibble::tibble(
-        geometry = sf::st_sfc(final_ray, crs = sf::st_crs(site_layer)),
+        geometry = sf::st_sfc(final_ray, crs = sf::st_crs(site_points)),
         direction = heading,
         fetch = dist_val,
         site = i
