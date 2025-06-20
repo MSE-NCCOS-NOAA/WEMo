@@ -87,11 +87,11 @@ find_fetch <- function(site_points, polygon_layer,
       ifelse(
         nrow(site_points) == 1,
         "Adding site column with site label '1'",
-        paste0("Adding site column with site labels '1 - ", nrow(site_point), "'")
+        paste0("Adding site column with site labels '1 - ", nrow(site_points), "'")
       ),
       "\n"
     )
-    site_point$site <- 1:nrow(site_point)
+    site_points$site <- 1:nrow(site_points)
   }
   site_var <- "site"
 
@@ -105,7 +105,7 @@ find_fetch <- function(site_points, polygon_layer,
 
   # Remove points on land
   sites_on_land <- sf::st_intersects(site_points, polygon_layer, sparse = FALSE)
-  if(nrows(sites_on_land)>=1){
+  if(nrow(sites_on_land)>=1){
     cat("Removing", nrow(sites_on_land), "sites on that are on land. \n")
   }
   site_points <- site_points[!sites_on_land, ]
