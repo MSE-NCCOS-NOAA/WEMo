@@ -95,6 +95,7 @@ find_fetch <- function(site_points, polygon_layer,
   }
   site_var <- "site"
 
+  directions <- directions[!is.na(directions)]
   # # Ensure fetch has site column for calculations
   # if("site" %in% names(site_points)){
   #   site_var <- "site"
