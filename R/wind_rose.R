@@ -48,23 +48,17 @@
 #'  # Change the color scale
 #'  wind_rose_plot + scale_fill_continuous(type = 'viridis')
 #'
-#' @import ggplot2
-#' @importFrom dplyr filter arrange
-#' @importFrom scales percent
-#' @importFrom ggplot2 geom_col scale_x_discrete scale_y_continuous coord_polar
-#'   labs theme_bw
 #' @export
 wind_rose <- function(wind_data){
   # Extract calm wind percentage
-  calm_data <- wind_data %>% dplyr::filter(is.na(.data$direction))
+  calm_data <-  dplyr::filter(is.na(wind_data$direction))
   calm_pct <- if (nrow(calm_data) > 0) round(calm_data$proportion, 1) else 0
 
   n_directions <- nrow(dplyr::filter(!is.na(wind_data$direction)))
 
   # Create wind rose plot
-  p <- wind_data %>%
+  p <- dplyr::filter(!is.na(wind_data$direction)) %>%
     dplyr::arrange(.data$direction) %>%
-    dplyr::filter(!is.na(.data$direction)) %>%
     ggplot(aes(as.factor(.data$direction), .data$proportion/100, fill = .data$speed))+
       geom_col()+
       scale_x_discrete(breaks = seq(0, 350, by = 90),
