@@ -71,7 +71,7 @@ WEMo <- function(fetch){
   }) %>%
     dplyr::bind_rows()
 
-  vertices <- st_coordinates(fetch)
+  vertices <- sf::st_coordinates(fetch)
   # Extract first point of each LINESTRING
 
   start_points <- unique(vertices[seq(1, nrow(vertices), by = 2), c("X", "Y")]) %>% as.data.frame()
@@ -79,7 +79,7 @@ WEMo <- function(fetch){
   start_points$site = unique(fetch$site)
 
   # Convert to POINT geometries
-  start_points <- st_as_sf(as.data.frame(start_points), coords = c("X", "Y"), crs = st_crs(fetch))
+  start_points <- sf::st_as_sf(as.data.frame(start_points), coords = c("X", "Y"), crs = sf::st_crs(fetch))
 
 
   wemo_output <- wemo_details %>%
@@ -96,8 +96,8 @@ WEMo <- function(fetch){
       avg_efetch = mean(.data$efetch, na.rm = T),
       max_efetch = max(.data$efetch, na.rm = T)
     ) %>%
-    dplyr::right_join(start_points, by = join_by(site)) %>%
-    st_as_sf()
+    dplyr::right_join(start_points, by = dplyr::join_by(.data$site)) %>%
+    sf::st_as_sf()
 
   return(list(
     wemo_details = wemo_details,

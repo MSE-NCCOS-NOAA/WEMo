@@ -12,8 +12,8 @@ expand_bbox <- function(bbox, X, Y, X2 = X, Y2 = Y,
   bbox["ymax"] <- bbox["ymax"] + Y2
 
   bbox %>%
-    st_as_sfc() %>%
+    sf::st_as_sfc() %>%
     # sf::st_transform(crs = crs_out) %>%
-    st_bbox()
+    sf::st_bbox()
   return(bbox)
 }

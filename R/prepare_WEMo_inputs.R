@@ -67,11 +67,10 @@ prepare_WEMo_inputs <- function(site_points,
     bathy_raster = bathy,
     sample_dist = sample_dist,
     depths_or_elev = depths_or_elev,
-    water_level = water_level,
     extra_at_start = extra_at_start
   )
 
-  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by(direction))
+  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by(.data$direction))
 
   e_fetch_with_bathy_wind <- sf::st_as_sf(e_fetch_with_bathy_wind)
 
