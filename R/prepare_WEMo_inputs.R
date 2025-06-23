@@ -71,7 +71,7 @@ prepare_WEMo_inputs <- function(site_points,
     extra_at_start = extra_at_start
   )
 
-  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data)
+  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by(direction))
 
   e_fetch_with_bathy_wind <- sf::st_as_sf(e_fetch_with_bathy_wind)
 
