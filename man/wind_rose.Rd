@@ -16,16 +16,17 @@ include:
 }}
 }
 \value{
-A ggplot2 object showing the wind rose.
+A ggplot2 object of the wind rose plot.
 }
 \description{
-Generates a polar bar plot (wind rose) showing the distribution of wind
-directions and corresponding wind speeds.
+Generates a wind rose plot where the length of bars corresponds to the
+duration that wind is blowing from a direction and the color to the wind
+speed.
 }
 \details{
-The function filters out rows where direction is \code{NA} for the
-plot, but still uses them to calculate and display the percent of calm winds
-in the caption.
+The function filters out rows where direction is \code{NA} for the plot,
+but still uses them to calculate and display the percent of calm winds in
+the caption.
 
 Wind direction labels are displayed as compass directions (N, E, S, W), and
 the plot is rendered in polar coordinates.
@@ -35,12 +36,13 @@ require(ggplot2)
 set.seed(1)  # for reproducibility
 
 # Create random wind data
-n_directions = 36
+n_directions = 16
 wind_data <- data.frame(
-  direction = c(NA, seq(0, 350,  length.out = n_directions)),
+  direction = c(NA, seq(0, 360,  length.out = n_directions+1)[-(n_directions+1)]),
   proportion = runif(n_directions + 1, min = 0.5, max = 5),
   speed = runif(n_directions + 1, min = 0.1, max = 5)
- )
+ ) \%>\%
+ dplyr::mutate(proportion = proportion/sum(proportion)*100)
 
  wind_rose_plot <- wind_rose(wind_data)
 
@@ -52,10 +54,9 @@ wind_data <- data.frame(
   labs(
     title = "Wind at My Site",
     subtitle = "2000-2025",
-    fill = "95th \%tile\nwind speed"
+    fill = "95th \%tile wind speed"
    )
 
  # Change the color scale
  wind_rose_plot + scale_fill_continuous(type = 'viridis')
-
 }

@@ -1,36 +1,38 @@
 #' Plot a Wind Rose Diagram
 #'
-#' Generates a polar bar plot (wind rose) showing the distribution of wind
-#' directions and corresponding wind speeds.
+#' Generates a wind rose plot where the length of bars corresponds to the
+#' duration that wind is blowing from a direction and the color to the wind
+#' speed.
 #'
 #' @param wind_data A data frame containing summarized wind data. It must
 #'   include:
 #'   \describe{
-#'     \item{\code{direction}}{Wind direction in degrees (0–359), with \code{NA} indicating calm winds.}
-#'     \item{\code{proportion}}{Proportion of time the wind blew from that direction (as a percentage, 0–100).}
-#'     \item{\code{speed}}{Wind speed value to use for color fill.}
+#'     \item{`direction`}{Wind direction in degrees (0–359), with `NA` indicating calm winds.}
+#'     \item{`proportion`}{Proportion of time the wind blew from that direction (as a percentage, 0–100).}
+#'     \item{`speed`}{Wind speed value to use for color fill.}
 #'   }
 #'
-#' @return A ggplot2 object showing the wind rose.
+#' @return A ggplot2 object of the wind rose plot.
 #'
-#' @details The function filters out rows where direction is \code{NA} for the
-#' plot, but still uses them to calculate and display the percent of calm winds
-#' in the caption.
+#' @details The function filters out rows where direction is `NA` for the plot,
+#'   but still uses them to calculate and display the percent of calm winds in
+#'   the caption.
 #'
-#' Wind direction labels are displayed as compass directions (N, E, S, W), and
-#' the plot is rendered in polar coordinates.
+#'   Wind direction labels are displayed as compass directions (N, E, S, W), and
+#'   the plot is rendered in polar coordinates.
 #'
 #' @examples
 #' require(ggplot2)
 #' set.seed(1)  # for reproducibility
 #'
 #' # Create random wind data
-#' n_directions = 36
+#' n_directions = 16
 #' wind_data <- data.frame(
-#'   direction = c(NA, seq(0, 350,  length.out = n_directions)),
+#'   direction = c(NA, seq(0, 360,  length.out = n_directions+1)[-(n_directions+1)]),
 #'   proportion = runif(n_directions + 1, min = 0.5, max = 5),
 #'   speed = runif(n_directions + 1, min = 0.1, max = 5)
-#'  )
+#'  ) %>%
+#'  dplyr::mutate(proportion = proportion/sum(proportion)*100)
 #'
 #'  wind_rose_plot <- wind_rose(wind_data)
 #'
@@ -42,26 +44,30 @@
 #'   labs(
 #'     title = "Wind at My Site",
 #'     subtitle = "2000-2025",
-#'     fill = "95th %tile\nwind speed"
+#'     fill = "95th %tile wind speed"
 #'    )
 #'
 #'  # Change the color scale
 #'  wind_rose_plot + scale_fill_continuous(type = 'viridis')
-#'
 #' @export
+#'
+#' @importFrom ggplot2 geom_col scale_x_discrete scale_y_continuous coord_polar labs aes ggplot expansion
+#' @importFrom scales percent
+#'
 wind_rose <- function(wind_data){
   # Extract calm wind percentage
-  calm_data <-  dplyr::filter(is.na(wind_data$direction))
+  calm_data <-  dplyr::filter(wind_data, is.na(.data$direction))
   calm_pct <- if (nrow(calm_data) > 0) round(calm_data$proportion, 1) else 0
 
-  n_directions <- nrow(dplyr::filter(!is.na(wind_data$direction)))
+  wind_data <- dplyr::filter(wind_data, !is.na(.data$direction))
+  n_directions <- nrow(wind_data)
 
   # Create wind rose plot
-  p <- dplyr::filter(!is.na(wind_data$direction)) %>%
+  rose_plot <- wind_data %>%
     dplyr::arrange(.data$direction) %>%
     ggplot(aes(as.factor(.data$direction), .data$proportion/100, fill = .data$speed))+
       geom_col()+
-      scale_x_discrete(breaks = seq(0, 350, by = 90),
+      scale_x_discrete(breaks = seq(0, 270, by = 90),
                        labels = c("N", "E", "S", "W"), drop = FALSE) +
       scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0.03, 0.05)))+
       coord_polar(start = 2 * pi -pi / n_directions, direction=1)+
@@ -70,6 +76,5 @@ wind_rose <- function(wind_data){
            fill = "Wind Speed",
            caption = paste0("calm winds account for ", calm_pct, "% of the record"))
 
-  return(p)
+  return(rose_plot)
 }
-
