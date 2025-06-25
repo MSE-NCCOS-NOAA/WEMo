@@ -4,14 +4,26 @@
 \alias{summarize_wind_data}
 \title{Summarize wind data by direction and intensity}
 \usage{
-summarize_wind_data(wind_data, wind_percentile, directions = NULL)
+summarize_wind_data(
+  wind_data,
+  wind_percentile,
+  directions = NULL,
+  wind_speed_na.rm = TRUE
+)
 }
 \arguments{
-\item{wind_data}{A data frame containing at least the columns \code{wind_direction} and \code{wind_speed}}
+\item{wind_data}{A data frame containing at least the columns
+\code{wind_direction} and \code{wind_speed}}
 
-\item{wind_percentile}{either 'mean' or a numeric between 0 and 1 specifying the percentile of wind speed to calculate}
+\item{wind_percentile}{either 'mean' or a numeric between 0 and 1 specifying
+the percentile of wind speed to calculate}
 
-\item{directions}{optional. a vector of wind directions}
+\item{directions}{numeric vector of wind directions to snap input
+\code{wind_direction} to. This is useful if input \code{wind_data$wind_data} has
+anomolous \code{wind_direction} readings}
+
+\item{wind_speed_na.rm}{logical. indicating if \code{wind_speed} of \code{NA} indicates
+bad data (\code{TRUE}, the default) or calm wind (\code{FALSE}).}
 }
 \value{
 A data frame summarizing wind by direction, with columns:
@@ -26,16 +38,32 @@ A data frame summarizing wind by direction, with columns:
 Summarize wind data by direction and intensity
 }
 \examples{
-
+set.seed(1) #for reproduceability
+# generate some example data
 wind_data <- data.frame(
   wind_direction = sample(c(90, 180, 270, 360), size = 25, replace = TRUE),
   wind_speed = runif(25, 0, 25)
 )
 
 # Summarize using the 95th percentile for wind speed
-summarize_wind_data(wind_data, 0.95)
+summarize_wind_data(wind_data, wind_percentile = 0.95)
 
 # Summarize using the mean wind speed
-summarize_wind_data(wind_data, "mean")
+summarize_wind_data(wind_data, wind_percentile = "mean")
+
+# create some dummy data with NAs in the speed and direction columns
+wind_data <- data.frame(
+  wind_direction = c(runif(n = 5, min = 0, max = 315),rep(NA, 10)),
+  wind_speed = c(runif(5, 0, 25), rep(NA, 5), rep(0, 5))
+)
+
+# remove the NAs in the speed column perhaps these are data collection errors
+summarize_wind_data(wind_data, wind_percentile = 'mean',
+  directions = c(90, 180, 270, 360), wind_speed_na.rm = TRUE)
+
+# keep the NAs in the speed column because these represent calm data
+# (though normally 0 would indicate calm)
+summarize_wind_data(wind_data, wind_percentile = 'mean',
+  directions = c(90, 180, 270, 360), wind_speed_na.rm = FALSE)
 
 }
