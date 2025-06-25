@@ -56,6 +56,9 @@
 #'
 #' @export
 get_wind_data <- function(site_point, years, which_station = 'ask') {
+  if(missing(site_point)&(which_station %in% c("ask", 1:5))){
+    stop('"site_point" must be supplied when station code isn\'t provided')
+  }
   # If user asks to choose or uses index 1–5, begin by locating closest stations
   if (which_station %in% c("ask", 1:5)) {
     # Ensure site_point is an sf object
@@ -63,7 +66,7 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
       tryCatch({
         site_point <- sf::st_as_sf(site_point)
       }, error = function(e) {
-        stop("`site_point` needs to be sf object or coerable to sf: ", e$message)
+        stop('"site_point" needs to be sf object or coerable to sf: ', e$message)
       })
     }
 

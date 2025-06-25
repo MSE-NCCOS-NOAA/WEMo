@@ -4,12 +4,14 @@
 \alias{summarize_wind_data}
 \title{Summarize wind data by direction and intensity}
 \usage{
-summarize_wind_data(wind_data, wind_percentile)
+summarize_wind_data(wind_data, wind_percentile, directions = NULL)
 }
 \arguments{
 \item{wind_data}{A data frame containing at least the columns \code{wind_direction} and \code{wind_speed}}
 
 \item{wind_percentile}{either 'mean' or a numeric between 0 and 1 specifying the percentile of wind speed to calculate}
+
+\item{directions}{optional. a vector of wind directions}
 }
 \value{
 A data frame summarizing wind by direction, with columns:
