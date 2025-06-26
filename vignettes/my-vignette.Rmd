@@ -1,0 +1,60 @@
+---
+title: "Getting Started with WEMo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with WEMo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+# **Overview**
+*WEMo* (Wave Exposure Model) is an easy-to-use numerical model that uses linear wave theory to calculate actual wave height and derived wave energy while taking into consideration wind generation and local water depth characteristics such as shoaling and dissipation from breaking waves. 
+
+The model was originally written in [insert the language it was written in] and depended on calls to a local installation of ESRI's ArcGIS. The version here was rewritten in R in an effort to break the model out of dependence on an expensive ArcGIS licence and to bring the model to broader audience.
+
+
+The model takes as inputs a bathymetry raster, a shoreline polygon, and wind history data. In addition to the model, this package also contains functions prepare input data for the model and visualization. There are functions to download, summarize, and plot wind history data, create shoreline polygons from bathymetry rasters, generate grids of points for the model, and calculate fetch. 
+
+# Installation
+
+To install the development version of WEMo from GitHub:
+
+```{r eval=FALSE}
+if(!require(remotes)) install.packages("remotes")
+remotes::install_github("QAWalker/WEMo")
+
+library(WEMo)
+```
+
+To install the development version of WEMo from GitHub:
+
+```{r setup}
+# install.packages("remotes")
+# 
+
+```
+Overview
+The WEMo R package provides tools for modeling wave exposure in aquatic environments using bathymetry data, shoreline information, and wind conditions. The package includes functions for preparing spatial inputs, calculating fetch and effective fetch, extracting bathymetric profiles, and visualizing wind patterns with wind roses.
+
+This vignette introduces the main features of WEMo and demonstrates a typical workflow.
+
+Installation
+To install the development version of WEMo from GitHub:
+
+{r
+Copy
+Edit
+# install.packages("remotes")
+remotes::install_github("YourGitHubUsername/WEMo")
+(Replace "YourGitHubUsername/WEMo" with your actual GitHub repository path.)
+
+Example Workflow
+This example shows a basic wave exposure modeling workflow using WEMo.
+
+Load libraries
