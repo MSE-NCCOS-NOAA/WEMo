@@ -51,7 +51,7 @@
 #'  wind_rose_plot + scale_fill_continuous(type = 'viridis')
 #' @export
 #'
-#' @importFrom ggplot2 geom_col scale_x_discrete scale_y_continuous coord_polar labs aes ggplot expansion
+#' @importFrom ggplot2 geom_col scale_x_discrete scale_y_continuous coord_polar labs aes ggplot expansion ggplot_build
 #' @importFrom scales percent
 #'
 wind_rose <- function(wind_data){
@@ -66,15 +66,27 @@ wind_rose <- function(wind_data){
   rose_plot <- wind_data %>%
     dplyr::arrange(.data$direction) %>%
     ggplot(aes(as.factor(.data$direction), .data$proportion/100, fill = .data$speed))+
-      geom_col()+
-      scale_x_discrete(breaks = seq(0, 270, by = 90),
-                       labels = c("N", "E", "S", "W"), drop = FALSE) +
-      scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0.03, 0.05)))+
-      coord_polar(start = 2 * pi -pi / n_directions, direction=1)+
-      labs(x = NULL,
-           y = "Percent Time Wind Blows from Direction",
-           fill = "Wind Speed",
-           caption = paste0("calm winds account for ", calm_pct, "% of the record"))
+    geom_col()+
+    scale_x_discrete(breaks = seq(0, 270, by = 90),
+                     labels = c("N", "E", "S", "W"), drop = FALSE) +
+    scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0.03, 0)))+
+    coord_polar(start = 2 * pi -pi / n_directions, direction=1)+
+    labs(x = NULL,
+         y = "Percent Time Wind Blows from Direction",
+         fill = "Wind Speed",
+         caption = paste0("calm winds account for ", calm_pct, "% of the record"))
+
+  built_plot <- ggplot_build(rose_plot)
+
+  suppressMessages(
+    rose_plot <- rose_plot +
+      scale_y_continuous(
+        limits = built_plot$layout$panel_params[[1]]$r.range,
+        breaks = built_plot$layout$panel_params[[1]]$r.major,
+        labels = scales::percent,
+        expand = expansion(mult = c(0.03, 0))
+      )
+  )
 
   return(rose_plot)
 }

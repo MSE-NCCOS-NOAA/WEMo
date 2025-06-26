@@ -57,11 +57,11 @@ wind_data <- data.frame(
   wind_speed = c(runif(5, 0, 25), rep(NA, 5), rep(0, 5))
 )
 
-# remove the NAs in the speed column perhaps these are data collection errors
+# remove the NAs in the speed column. perhaps these are data collection errors
 summarize_wind_data(wind_data, wind_percentile = 'mean',
   directions = c(90, 180, 270, 360), wind_speed_na.rm = TRUE)
 
-# keep the NAs in the speed column because these represent calm data
+# keep the NAs in the speed column. perhaps these represent calm data
 # (though normally 0 would indicate calm)
 summarize_wind_data(wind_data, wind_percentile = 'mean',
   directions = c(90, 180, 270, 360), wind_speed_na.rm = FALSE)
