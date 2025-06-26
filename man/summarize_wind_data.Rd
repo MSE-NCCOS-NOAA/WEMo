@@ -16,17 +16,19 @@ summarize_wind_data(
 \code{wind_direction} and \code{wind_speed}}
 
 \item{wind_percentile}{either 'mean' or a numeric between 0 and 1 specifying
-the percentile of wind speed to calculate}
+the percentile of \code{wind_speed} to calculate}
 
 \item{directions}{numeric vector of wind directions to snap input
 \code{wind_direction} to. This is useful if input \code{wind_data$wind_data} has
 anomolous \code{wind_direction} readings}
 
 \item{wind_speed_na.rm}{logical. indicating if \code{wind_speed} of \code{NA} indicates
-bad data (\code{TRUE}, the default) or calm wind (\code{FALSE}).}
+bad data (\code{TRUE}, the default) or calm wind (\code{FALSE}). If \code{FALSE}, the \code{NA}
+value will increase the \code{n} and \code{proportion} values but not effect the \code{speed}
+value in the returned object}
 }
 \value{
-A data frame summarizing wind by direction, with columns:
+A tibble summarizing wind by direction and intensity, with columns:
 \describe{
 \item{direction}{Wind direction (degrees, with 360 converted to 0)}
 \item{n}{Count of observations in each direction}
@@ -35,7 +37,15 @@ A data frame summarizing wind by direction, with columns:
 }
 }
 \description{
-Summarize wind data by direction and intensity
+Generates a summary data.frame suitable for passing to \code{\link[=wind_rose]{wind_rose()}} for
+plotting or \code{\link[=WEMo]{WEMo()}} for modeling. Input data should be a log of wind readings
+and must have columns \code{wind_direction} and \code{wind_speed}. Data generated from
+\code{\link[=get_wind_data]{get_wind_data()}} is ready to be used as input. Input \code{wind_direction}
+values are coerced into values 0-359.9. The function can further coerce or snap input
+\code{wind_direction}s to a user supplied vector of suitable directions
+(\code{directions}). This is often necessary with input data from public data sets
+that have occasional anomalous readings.  If \code{directions} is not supplied the
+output is based on all unique \code{wind_direction}.
 }
 \examples{
 set.seed(1) #for reproduceability

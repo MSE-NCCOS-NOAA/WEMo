@@ -1,16 +1,28 @@
 #' Summarize wind data by direction and intensity
 #'
+#' Generates a summary data.frame suitable for passing to [wind_rose()] for
+#' plotting or [WEMo()] for modeling. Input data should be a log of wind readings
+#' and must have columns `wind_direction` and `wind_speed`. Data generated from
+#' [`get_wind_data()`] is ready to be used as input. Input `wind_direction`
+#' values are coerced into values 0-359.9. The function can further coerce or snap input
+#' `wind_direction`s to a user supplied vector of suitable directions
+#' (`directions`). This is often necessary with input data from public data sets
+#' that have occasional anomalous readings.  If `directions` is not supplied the
+#' output is based on all unique `wind_direction`.
+#'
 #' @param wind_data  A data frame containing at least the columns
 #'   `wind_direction` and `wind_speed`
 #' @param wind_percentile either 'mean' or a numeric between 0 and 1 specifying
-#'   the percentile of wind speed to calculate
+#'   the percentile of `wind_speed` to calculate
 #' @param directions numeric vector of wind directions to snap input
 #'   `wind_direction` to. This is useful if input `wind_data$wind_data` has
 #'   anomolous `wind_direction` readings
 #' @param wind_speed_na.rm logical. indicating if `wind_speed` of `NA` indicates
-#'   bad data (`TRUE`, the default) or calm wind (`FALSE`).
+#'   bad data (`TRUE`, the default) or calm wind (`FALSE`). If `FALSE`, the `NA`
+#'   value will increase the `n` and `proportion` values but not effect the `speed`
+#'   value in the returned object
 #'
-#' @return A data frame summarizing wind by direction, with columns:
+#' @return A tibble summarizing wind by direction and intensity, with columns:
 #'   \describe{
 #'     \item{direction}{Wind direction (degrees, with 360 converted to 0)}
 #'     \item{n}{Count of observations in each direction}
@@ -49,20 +61,23 @@
 #'
 #' @export
 summarize_wind_data <- function(wind_data, wind_percentile, directions = NULL, wind_speed_na.rm = TRUE) {
+  # remove all entries where wind_speed is NA, if user wants
   if(wind_speed_na.rm){
     wind_data <- dplyr::filter(wind_data, !is.na(.data$wind_speed))
   }
   # ensure that there are no issues with data type on wind_direction
   wind_data$wind_direction <- as.numeric(as.character(wind_data$wind_direction))
 
-  # Ensure wind from the north is labelled as 0 not 360
-  wind_data <- wind_data %>%
-    dplyr::mutate(wind_direction = ifelse(.data$wind_direction == 360, 0, .data$wind_direction))
+  # Set wind_direction to NA where wind_speed is 0 (common convention for calm winds)
+  wind_data$wind_direction[wind_data$wind_speed == 0] <- NA
+
+  # Ensure wind_direction is within [0, 360)
+  wind_data$wind_direction <- wind_data$wind_direction %% 360
 
   # snap wind_direction to directions if supplied
   if (!is.null(directions)) {
     # ensure supplied vector has upper and lower bounds
-    directions <- unique(as.numeric(as.character(sort(c(0, directions, 360)))))
+    directions <- unique(as.numeric(as.character(sort(directions))))
     # find midpoints between directions to create bins
     bins <- sapply(2:length(directions), function(i){
       mean(directions[c(i, i-1)], na.rm = T)
@@ -101,6 +116,21 @@ summarize_wind_data <- function(wind_data, wind_percentile, directions = NULL, w
         speed = stats::quantile(.data$wind_speed, wind_percentile, na.rm = TRUE),
         .groups = "drop"
       )
+  }
+
+  #  make sure all inlcuded directions are in the returned data set
+  if(any(!(directions %in% wind_data_summary$direction))){
+    wind_data_summary <- rbind(
+      wind_data_summary,
+      data.frame(
+        direction = directions[which(!(directions %in% wind_data_summary$direction))],
+        n = 0,
+        proportion = 0,
+        speed = NA
+      )
+    )
+
+    wind_data_summary <- dplyr::arrange(wind_data_summary, .data$direction)
   }
 
   return(wind_data_summary)
