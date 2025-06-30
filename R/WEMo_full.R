@@ -33,8 +33,7 @@
 #'   (`speed`), and proporation wind blows from the direction (`proportion`)
 #' @param directions Numeric vector of directions (in degrees) to cast fetch
 #'   lines.
-#' @param max_fetch Maximum fetch length (in map units, typically meters).
-#'   Default is 1000.
+#' @param max_fetch Maximum fetch length (in map units). Default is 10,000.
 #' @param sample_dist Distance (in map units) between sample points along each
 #'   fetch line. Default is 5.
 #' @param water_level Numeric. The water level relative to bathymetry (in
@@ -74,7 +73,7 @@ wemo_full <- function(site_points,
          bathy,
          wind_data,
          directions,
-         max_fetch = 1000,
+         max_fetch = 10000,
          sample_dist = 5,
          water_level,
          depths_or_elev = 'elev',

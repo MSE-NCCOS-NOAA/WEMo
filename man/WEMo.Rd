@@ -24,7 +24,7 @@ A list of two elements:
 \item \code{celerity_final} – Final wave phase speed (m/s)
 \item \code{nnumber_final} – Final group velocity coefficient
 }}
-\item{\code{wemo_output}}{sf object with all the variables from \code{site_point} in addition to the following:\itemize{
+\item{\code{wemo_final}}{sf object with all the variables from \code{site_point} in addition to the following:\itemize{
 \item \code{RWE} – Total relative wave exposure at the site
 \item \code{avg_wave_height} – Mean wave height across all fetch rays (m)
 \item \code{max_wave_height} – Maximum wave height across all fetch rays (m)
@@ -49,7 +49,7 @@ This function builds and propagates waves arriving at the site from
 each fetch ray segment-by-segment, adjusting for shoaling, wave breaking,
 and changing depth. Deep and shallow water regimes are handled using
 different formulas. The function uses a Newton-Raphson method to compute
-wave number. The values in the \code{wemo_output} return are calculated from
+wave number. The values in the \code{wemo_final} return are calculated from
 summarizing (mean and max wave height) of all fetch rays. Relative Wave
 Energy (\code{RWE}) is calculated by multiplying the \code{REI} from each wave by the
 proportion of time that wind blows from the direction of the ray each ray

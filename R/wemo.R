@@ -27,7 +27,7 @@
 #'       \item `celerity_final` – Final wave phase speed (m/s)
 #'       \item `nnumber_final` – Final group velocity coefficient
 #'     }}
-#'   \item{`wemo_output`}{sf object with all the variables from `site_point` in addition to the following:\itemize{
+#'   \item{`wemo_final`}{sf object with all the variables from `site_point` in addition to the following:\itemize{
 #'       \item `RWE` – Total relative wave exposure at the site
 #'       \item `avg_wave_height` – Mean wave height across all fetch rays (m)
 #'       \item `max_wave_height` – Maximum wave height across all fetch rays (m)
@@ -39,7 +39,7 @@
 #'   each fetch ray segment-by-segment, adjusting for shoaling, wave breaking,
 #'   and changing depth. Deep and shallow water regimes are handled using
 #'   different formulas. The function uses a Newton-Raphson method to compute
-#'   wave number. The values in the `wemo_output` return are calculated from
+#'   wave number. The values in the `wemo_final` return are calculated from
 #'   summarizing (mean and max wave height) of all fetch rays. Relative Wave
 #'   Energy (`RWE`) is calculated by multiplying the `REI` from each wave by the
 #'   proportion of time that wind blows from the direction of the ray each ray
@@ -82,7 +82,7 @@ WEMo <- function(fetch){
   start_points <- sf::st_as_sf(as.data.frame(start_points), coords = c("X", "Y"), crs = sf::st_crs(fetch))
 
 
-  wemo_output <- wemo_details %>%
+  wemo_final <- wemo_details %>%
     dplyr::mutate(RWE = .data$WEI * .data$proportion/100,
                   site_name = as.character(.data$site)) %>%
     dplyr::group_by(.data$site) %>%
@@ -101,7 +101,7 @@ WEMo <- function(fetch){
 
   return(list(
     wemo_details = wemo_details,
-    wemo_output = wemo_output
+    wemo_final = wemo_final
   ))
 
 }
