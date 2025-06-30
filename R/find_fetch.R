@@ -14,8 +14,8 @@
 #'   of these polygons.
 #' @param directions A numeric vector of angular directions (in compass degrees)
 #'   for which to calculate fetch distances. Default is 8 equally-spaced directions
-#'   from 0° to 315° (every 45°). Directions follow compass convention where
-#'   0° = North, 90° = East, 180° = South, 270° = West.
+#'   from 0 to 315 (every 45). Directions follow compass convention where
+#'   0 = North, 90 = East, 180 = South, 270 = West.
 #' @param max_fetch A numeric value specifying the maximum fetch distance to consider
 #'   (in map units). If no shoreline intersection is found within this distance,
 #'   the fetch is recorded as the maximum value. Default is 10,000 units.

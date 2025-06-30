@@ -96,7 +96,7 @@ WEMo <- function(fetch){
       avg_efetch = mean(.data$efetch, na.rm = T),
       max_efetch = max(.data$efetch, na.rm = T)
     ) %>%
-    dplyr::right_join(start_points, by = dplyr::join_by(.data$site)) %>%
+    dplyr::right_join(start_points, by = dplyr::join_by('site')) %>%
     sf::st_as_sf()
 
   return(list(

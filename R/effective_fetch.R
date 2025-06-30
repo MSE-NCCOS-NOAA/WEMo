@@ -32,7 +32,7 @@
 #' Effective fetch rays look trimmed down in the figure compared to fetch rays.
 #' This method is based on assumption that wind moving over water surface transfers
 #' energy to the water in the direction of the wind and in all directions within
-#' 4/π radians (45°) on either side of the wind direction. (USCOE 1977)
+#' 4/π radians (45) on either side of the wind direction. (USCOE 1977)
 #'
 #' The function processes each site independently and calculates effective fetch
 #' using a cosine-weighted average of all fetch rays within the specified angular
@@ -49,7 +49,7 @@
 #' }
 #'
 #' The function handles directional wrap-around by expanding the direction space
-#' by ±360° to ensure proper calculation near 0°/360° boundary.
+#' by ±360 to ensure proper calculation near 0/360 boundary.
 #'
 #' @section Site Identification:
 #' The function automatically detects site identifier columns by looking for:
@@ -104,7 +104,7 @@ effective_fetch <- function(fetch, wind_energy_transfer_degrees = 45) {
     # Create a dataframe without geometry for calculations
     fetch_df <- sf::st_drop_geometry(fetch_filtered)
 
-    # Expand directions by ±360° to handle edge cases
+    # Expand directions by ±360 to handle edge cases
     fetch_df <- dplyr::bind_rows(fetch_df,
                                  fetch_df %>% dplyr::mutate(direction = .data$direction - 360),
                                  fetch_df %>% dplyr::mutate(direction = .data$direction + 360)) %>%

@@ -34,6 +34,8 @@
 #' }
 #' @export
 interrogate_bathy <- function(fetch, bathy_raster, sample_dist = 10, depths_or_elev = "elev", water_level = 0, extra_at_start = T){
+  depths_or_elev <- tolower(depths_or_elev)
+
   fetch_with_bathy <-
     lapply(seq_along(fetch$geometry), function(i){
       fetch_ray <- fetch[i, ]

@@ -50,6 +50,9 @@ prepare_WEMo_inputs <- function(site_points,
                                 water_level,
                                 depths_or_elev = 'elev',
                                 extra_at_start = T) {
+
+  depths_or_elev <- tolower(depths_or_elev)
+
   # calculate fetch
   fetch <- find_fetch(
     site_points = site_points,
@@ -66,11 +69,12 @@ prepare_WEMo_inputs <- function(site_points,
     fetch = e_fetch,
     bathy_raster = bathy,
     sample_dist = sample_dist,
+    water_level = water_level,
     depths_or_elev = depths_or_elev,
     extra_at_start = extra_at_start
   )
 
-  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by(.data$direction))
+  e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by('direction'))
 
   e_fetch_with_bathy_wind <- sf::st_as_sf(e_fetch_with_bathy_wind)
 
