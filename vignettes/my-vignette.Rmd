@@ -16,13 +16,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-# About WEMo
+## About WEMo
 
 **WEMo** (Wave Exposure Model) is an easy-to-use numerical model that uses linear wave theory to calculate actual wave height and derived wave energy while taking into consideration wind generation and local water depth characteristics such as shoaling and dissipation from breaking waves.
 
-The model was originally written in [insert the language it was written in] and depended on calls to a local installation of ESRI's ArcGIS. The version here was rewritten in R in an effort to break the model out of dependence on an expensive ArcGIS licence and to bring the model to broader audience.
+The model was originally written in [insert the language it was written in] and depended on calls to a local installation of ESRI’s ArcGIS. The version here was rewritten in R in an effort to break the model out of dependence on an expensive ArcGIS license and to bring the model to broader audience.
 
-The model takes as inputs a bathymetry raster, a shoreline polygon, and wind history data. In addition to the model, this package also contains functions prepare input data for the model and visualization. There are functions to download, summarize, and plot wind history data, create shoreline polygons from bathymetry rasters, generate grids of points for the model, and calculate fetch.
+
+The model takes as inputs
+
+-   A Bathymetry Raster
+-   A Shoreline Polygon
+-   A Wind History Data file
+-   A Point File for where you want to run the model
+
+In addition to the model, this package also contains functions prepare input data for the model and visualization. There are functions to download, summarize, and plot wind history data, create shoreline polygons from bathymetry rasters, generate grids of points for the model, and calculate fetch.
 
 <https://coastalscience.noaa.gov/science-areas/climate-change/wemo/>
 
@@ -30,7 +38,7 @@ The model takes as inputs a bathymetry raster, a shoreline polygon, and wind his
 
 WEMo requires 4 main inputs:
 
--   A Bathymetery Raster
+-   A Bathymetry Raster
 -   A Shoreline Polygon
 -   A Wind History Data file
 -   A Point File for where you want to run the model
@@ -134,7 +142,7 @@ library(scales)
 load("~/R/My Packages/outdated functions/data temp storage/data/points.rda")
 load("~/R/My Packages/outdated functions/data temp storage/data/shoreline.rda")
 
-wind_data <- readr::read_csv("~/R/My Packages/WEMo/inst/extdata/PI_winddata.csv")
+wind_data <- read.csv("~/R/My Packages/WEMo/inst/extdata/PI_winddata.csv")
 
 ```
 
@@ -273,16 +281,16 @@ head(wemo_output)
 
 Success! WEMo computed wind-wave exposure at your sites. 
 
-# Examine, Plot and Save The Results
+## Plot and Save The Results
 
 Looking at the print out of the results, we see that `wemo_output` contains two entries:
 
-* `wemo_details` contains information about the wave that arrives at the site from each fetch ray. Spatial geometries are line segments representing fetch rays.
-* `wemo_final` contains a summary of wave energy environment at each site. Spatial geometry are points representing the sites.
+* **`wemo_details`** contains information about the wave that arrives at the site from each fetch ray. Spatial geometries are line segments representing fetch rays.
+* **`wemo_final`** contains a summary of wave energy environment at each site. Spatial geometry are points representing the sites.
 
-Both `wemo_details` and `wemo_final` are spatial objects that can be plotted. 
+Both `wemo_details` and `wemo_final` are spatial objects that can be plotted and saved. 
 
-## Plotting Results
+### Plotting Results
 
 Lets do that now starting with `wemo_final`. We'll use the argument `aes(color = RWE)` to tell ggplot to color the points by the RWE:
 
@@ -312,7 +320,7 @@ ggplot()+
 
 Notice how the fetch rays do not reach all the way to the shoreline in some directions? These are effective or cosine weighted fetch rays. They are constrained by the fetch rays that surround them. [Do i need effective fetch explanation or can I refer to more source?]. Additionally, the parameter `max_fetch` constrains the maximum distance that fetch rays are drawn. If you'd like to plot or save the full fetch rays the function `find_fetch()` creates the fetch rays and returns a object that can be saved or plotted.
 
-## Save Results
+### Save Results
 
 You can save these spatial objects as shapefiles to send to other GIS applications or to be used later.
 
@@ -334,4 +342,103 @@ write.csv(results_df, file = "/path/to/save/results.csv")
 
 # Re-running With More Data
 
-`wemo_full()` is great because it doesn't require working with any intermediate products of WEMo or ensuring that formatting is correct, but it also doesn't allow you access to these intermediary products that can be useful (like fetch rays) and can be very compute heavy for users that want to re-run
+`wemo_full()` is great because it doesn't require working with any intermediate products of WEMo. But what if you'd like to see how the model output changes with a different wind regime or if there's 30cm of sea level rise? Re-running `wemo_full()` with new input is a fine way to do this, but it does ask your computer to duplicate compute intensive tasks that you've already done. These tasks like drawing fetch lines and interrogating the bathymetry layer can be done once and the results saved to make the process of running WEMo again much faster. 
+
+## Prepare Input Data
+
+The function `prepare_WEMo_inputs()` chains together the core components needed to prepare a dataset for WEMo modelling. It calculates fetch lines, effective fetch, interrogates bathymetry, and merges wind data. The return is a spatial object ready for wave modeling.
+
+You'll notice the arguments here are identical to what we fed into `wemo_full()` earlier.
+
+```{r create inputs}
+inputs <- prepare_WEMo_inputs(
+  site_points = points,
+  shoreline = shoreline,
+  bathy = bathy,
+  wind_data = wind_data_summary,
+  directions = wanted_directions,
+  max_fetch = 1000,
+  sample_dist = 10,
+  water_level = 0.552,
+  depths_or_elev = "elev",
+  extra_at_start = TRUE
+)
+
+inputs
+```
+
+## Run the model
+
+At this point you have a prepared dataset called `input` that's ready to be modeled. You can send this dataset to the function `wemo()` to the run the model on this input data.
+
+```{r run wemo on inputs}
+results <- WEMo(fetch = inputs)
+
+head(results)
+```
+
+You'll notice this results in the same output as `wemo_full()`.
+
+## Update input data
+
+*[maybe I should make these functions so that they're easy to use and users don't have to do coding etc?]*
+
+But what if we wanted to see how the model changes if sea level rises 30 cm? To do this we included a convenience `update_depths()` that will increase the depths stored in our `inputs` object by `depth_diff`. If you use a negative value for `depth_diff` the depths will decrease. Lets increase the water level by 30 cm (0.3 m) and send those values to `wemo()`.
+
+```{r add SLR to input data}
+# add 0.3 m to each depth value
+inputs_SLR <- update_depths(inputs, depth_diff = 0.3)
+
+# and then re-run WEMo with 0.30 m of sea level rise.
+results_SLR <- WEMo(inputs_SLR)
+
+results_SLR
+```
+
+Lets compare to our previous results
+
+```{r}
+data.frame(
+  site = results$wemo_final$site,
+  max_wave_height = round(results_SLR$wemo_final$max_wave_height - results$wemo_final$max_wave_height, digits = 3),
+  avg_wave_height = round(results$wemo_final$avg_wave_height - results_SLR$wemo_final$avg_wave_height, digits = 3),
+  RWE = round(results$wemo_final$RWE - results_SLR$wemo_final$RWE, digits = 3)
+)
+```
+
+I think there's no shoaling/breaking happening at the water level that we ran it at, so nothing happens with the updated SLR. We also didn't update the shoreline, so fetch isn't longer.
+
+Lets update the wind. Lets see how WEMo changes if the 95th percentile wind we calculated earlier increased by 10%.
+
+```{r run wemo on more windy data}
+# Create a copy of the inputs
+inputs_windy <- inputs
+# Increase wind speed by 10%
+inputs_windy$speed <- inputs_windy$speed * 1.1
+# rerun wemo with new data
+results_windy <- WEMo(inputs_windy)
+
+results_windy
+```
+
+
+
+```{r}
+
+data.frame(
+  site = results$wemo_final$site,
+  max_wave_height = round(results_windy$wemo_final$max_wave_height - results$wemo_final$max_wave_height, digits = 3),
+  avg_wave_height = round(results$wemo_final$avg_wave_height - results_windy$wemo_final$avg_wave_height, digits = 3),
+  RWE = round(results$wemo_final$RWE - results_windy$wemo_final$RWE, digits = 3)
+)
+```
+
+What if we also increased wind speed by 25% in every direction
+
+```{r}
+inputs$speed <- inputs$speed *1.25
+
+results_increasewind <- WEMo(fetch = inputs)
+```
+
+

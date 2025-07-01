@@ -9,8 +9,8 @@ wemo_full(
   shoreline,
   bathy,
   wind_data,
-  directions,
-  max_fetch = 1000,
+  directions = unique(wind_data$direction),
+  max_fetch = 10000,
   sample_dist = 5,
   water_level,
   depths_or_elev = "elev",
@@ -33,8 +33,7 @@ or positive depending on \code{depths_or_elev}).}
 \item{directions}{Numeric vector of directions (in degrees) to cast fetch
 lines.}
 
-\item{max_fetch}{Maximum fetch length (in map units, typically meters).
-Default is 1000.}
+\item{max_fetch}{Maximum fetch length (in map units). Default is 10,000.}
 
 \item{sample_dist}{Distance (in map units) between sample points along each
 fetch line. Default is 5.}
