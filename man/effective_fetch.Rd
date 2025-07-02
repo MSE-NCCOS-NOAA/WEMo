@@ -42,7 +42,7 @@ of fetch rays and dividing by the sum of the cosine of all angles.
 Effective fetch rays look trimmed down in the figure compared to fetch rays.
 This method is based on assumption that wind moving over water surface transfers
 energy to the water in the direction of the wind and in all directions within
-4/π radians (45) on either side of the wind direction. (USCOE 1977)
+4/pi radians (45) on either side of the wind direction. (USCOE 1977)
 
 The function processes each site independently and calculates effective fetch
 using a cosine-weighted average of all fetch rays within the specified angular

@@ -10,8 +10,8 @@ wind_rose(wind_data)
 \item{wind_data}{A data frame containing summarized wind data. It must
 include:
 \describe{
-\item{\code{direction}}{Wind direction in degrees (0–359), with \code{NA} indicating calm winds.}
-\item{\code{proportion}}{Proportion of time the wind blew from that direction (as a percentage, 0–100).}
+\item{\code{direction}}{Wind direction in degrees (0-359), with \code{NA} indicating calm winds.}
+\item{\code{proportion}}{Proportion of time the wind blew from that direction (as a percentage, 0-100).}
 \item{\code{speed}}{Wind speed value to use for color fill.}
 }}
 }

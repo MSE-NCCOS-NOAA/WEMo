@@ -54,18 +54,18 @@ A list of two elements:
 \describe{
 \item{\code{wemo_details}}{the original \code{fetch} object with the following stats about each wave arriving at the site from the direction of the fetch ray added:
 \itemize{
-\item \code{wave_height_final} – Final wave height at the end of the fetch (m)
-\item \code{WEI} – Wave Energy Index
-\item \code{wave_period} – Estimated wave period (s)
-\item \code{wave_number} – Average wave number (rad/m)
-\item \code{celerity_final} – Final wave phase speed (m/s)
-\item \code{nnumber_final} – Final group velocity coefficient
+\item \code{wave_height_final} - Final wave height at the end of the fetch (m)
+\item \code{WEI} - Wave Energy Index
+\item \code{wave_period} - Estimated wave period (s)
+\item \code{wave_number} - Average wave number (rad/m)
+\item \code{celerity_final} - Final wave phase speed (m/s)
+\item \code{nnumber_final} - Final group velocity coefficient
 }}
 \item{\code{wemo_output}}{sf object with all the variables from \code{site_point} in addition to the following:\itemize{
-\item \code{RWE} – Total relative wave exposure at the site
-\item \code{avg_wave_height} – Mean wave height across all fetch rays (m)
-\item \code{max_wave_height} – Maximum wave height across all fetch rays (m)
-\item \code{direction_of_max_wave} – Direction(s) of maximum wave height (Degrees from North)
+\item \code{RWE} - Total relative wave exposure at the site
+\item \code{avg_wave_height} - Mean wave height across all fetch rays (m)
+\item \code{max_wave_height} - Maximum wave height across all fetch rays (m)
+\item \code{direction_of_max_wave} - Direction(s) of maximum wave height (Degrees from North)
 }}
 }
 }

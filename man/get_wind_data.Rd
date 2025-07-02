@@ -16,7 +16,7 @@ data.}
 \item{which_station}{Either:
 \itemize{
 \item \code{"ask"}: interactively choose from 5 closest stations;
-\item an integer (1–5): pick the nth closest station;
+\item an integer (1-5): pick the nth closest station;
 \item a string station code in the form "USAF-WBAN".
 }}
 }

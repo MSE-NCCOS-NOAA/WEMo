@@ -13,7 +13,7 @@
 #'   data.
 #' @param which_station Either:
 #'   - `"ask"`: interactively choose from 5 closest stations;
-#'   - an integer (1–5): pick the nth closest station;
+#'   - an integer (1-5): pick the nth closest station;
 #'   - a string station code in the form "USAF-WBAN".
 #'
 #' @return A data frame with cleaned wind direction and wind speed, along with
@@ -59,7 +59,7 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
   if(missing(site_point)&(which_station %in% c("ask", 1:5))){
     stop('"site_point" must be supplied when station code isn\'t provided')
   }
-  # If user asks to choose or uses index 1–5, begin by locating closest stations
+  # If user asks to choose or uses index 1-5, begin by locating closest stations
   if (which_station %in% c("ask", 1:5)) {
     # Ensure site_point is an sf object
     if (!inherits(site_point, "sf")) {
@@ -96,7 +96,7 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
       # Handle cancel
       if (!(selection %in% c(1:5))) stop("invalid station selected.")
     }else{
-      # Use specified index (1–5) without prompt
+      # Use specified index (1-5) without prompt
       cat("Using Met station", which_station, paste(station$usaf[selection], station$wban[selection], sep = '-'), paste0(
         station$station[which_station], " (", round(station$dist[which_station], 1), " km), ",
         station$begin[which_station], " to ", station$end[which_station]

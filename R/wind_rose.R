@@ -7,8 +7,8 @@
 #' @param wind_data A data frame containing summarized wind data. It must
 #'   include:
 #'   \describe{
-#'     \item{`direction`}{Wind direction in degrees (0–359), with `NA` indicating calm winds.}
-#'     \item{`proportion`}{Proportion of time the wind blew from that direction (as a percentage, 0–100).}
+#'     \item{`direction`}{Wind direction in degrees (0-359), with `NA` indicating calm winds.}
+#'     \item{`proportion`}{Proportion of time the wind blew from that direction (as a percentage, 0-100).}
 #'     \item{`speed`}{Wind speed value to use for color fill.}
 #'   }
 #'
