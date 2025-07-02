@@ -31,3 +31,4 @@ BugReports: https://github.com/QAWalker/WEMo/issues
 Depends: 
     R (>= 3.5)
 VignetteBuilder: knitr
+LazyData: true
