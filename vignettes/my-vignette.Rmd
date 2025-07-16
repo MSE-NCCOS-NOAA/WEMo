@@ -18,6 +18,13 @@ knitr::opts_chunk$set(
 library(WEMo)
 ```
 
+```{r, inlcude = FALSE}
+if (!requireNamespace("tidyterra", quietly = TRUE)) {
+  knitr::opts_chunk$set(eval = FALSE)
+  message("tidyterra not installed — vignette chunks won't run.")
+}
+```
+
 ## About WEMo
 
 **WEMo (Wave Exposure Model)** uses linear wave theory to estimate wave height and wave energy while accounting for local water depth effects like shoaling and wave breaking.
