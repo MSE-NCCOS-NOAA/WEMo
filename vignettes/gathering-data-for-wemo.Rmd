@@ -345,23 +345,32 @@ results <- wemo_full(
 )
 ```
 
+Plot the final results:
 
 ```{r plot results}
 # plot the max wave at each site
 ggplot() +
-  geom_sf(data = results$wemo_final, aes(color = max_wave_height)) +
+  geom_sf(data = results$wemo_final, aes(color = max_wave_height), size = 3) +
   theme_bw()+
   scale_color_viridis_c()
+```
 
-# plot using our special plot_ inputs from earlier 
+Plot all the effective fetch rays
+
+```{r plot fetch rays}
+# plot fetch rays
 ggplot() +
-  # geom_spatraster(data = plot_bathy) +
-  # geom_sf(data = shoreline, fill = "honeydew3", color = NA) +
   geom_sf(data = results$wemo_details, aes(color = wave_height_final)) +
-  coord_sf(expand = FALSE) +
-  theme_bw()+
-  scale_color_viridis_c()+
-  scale_fill_viridis_c(option = 'mako', na.value = NA)+
-  labs(fill = "Bathymetry (m NAVD88)")
+  scale_color_viridis_c()
+```
+
+a mess and hard to interpret. you might be better able to examine the rays from a single ray better.
+
+```{r}
+
+# plot fetch rays
+ggplot() +
+  geom_sf(data = results$wemo_details, aes(color = wave_height_final)) +
+  scale_color_viridis_c()
 ```
 

@@ -6,3 +6,4 @@
 .quarto
 inst/doc
 bathymetry
+vignettes/NOAA_CUDEM/*
