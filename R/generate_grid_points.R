@@ -1,21 +1,22 @@
 #' Generate a Grid of Points Over a Spatial Extent
 #'
 #' Creates a regular grid of points covering the (optionally expanded) extent of
-#' a `SpatVector` object at a specified resolution. Returns the grid as a
-#' `SpatVector` of point geometry.
+#' a spatial object at a specified resolution. Accepts either an `sf` object or
+#' a `SpatVector` as input. The output will match the input class.
 #'
-#' @param site_point A `SpatVector`. The spatial object whose extent will define
-#'   the bounds of the grid.
+#' @param site_point A spatial point or set of points, either an `sf` object or
+#'   a `SpatVector`. The extent of this object defines the initial bounds of the
+#'   grid.
 #' @param expansion_dist Numeric vector of length 1 or 2. Distance (in map
 #'   units) to expand the bounding box in the x and y directions. If a single
-#'   value is provided, it is used for both directions. To prevent expansion and
-#'   use the exact bounding box of `site_point`, set this to `0`.
+#'   value is provided, it is used for both directions. To use the exact extent
+#'   of `site_point`, set this to `0`.
 #' @param resolution Numeric vector of length 1 or 2. The spacing between grid
 #'   points in the x and y directions (in map units). If a single value is
 #'   provided, it is used for both directions.
 #'
-#' @return A `SpatVector` of points spaced regularly over the (expanded) extent
-#'   of `site_point`.
+#' @return A grid of points with regular spacing, returned as the same class as
+#'   `site_point` (either `sf` or `SpatVector`).
 #'
 #' @examples
 #' # single point ----------------------------
@@ -56,6 +57,16 @@
 #'
 #' @export
 generate_grid_points <- function(site_point, expansion_dist, resolution){
+  # Record input class to determine output type
+  input_is_sf <- inherits(site_point, "sf")
+
+  # Convert sf to SpatVector if needed
+  if (input_is_sf) {
+    site_point <- terra::vect(site_point)
+  } else if (!inherits(site_point, "SpatVector")) {
+    stop("site_point must be of class 'sf' or 'SpatVector'.")
+  }
+
   # divide the input by 2 since the total expansion will require half the input
   # added to either side
   expansion_dist <- expansion_dist/2
@@ -72,15 +83,14 @@ generate_grid_points <- function(site_point, expansion_dist, resolution){
     resolution[2] <- resolution[1]
   }
 
-
-  # check if the site object is SpatVector or can be coerced to a SpatVector
-  if (!inherits(try(terra::vect(site_point), silent = TRUE), "try-error")) {
-    site_point <- terra::vect(site_point)
-  }else {
-    if(!inherits(site_point, "SpatVector")){
-      stop("site_point cannot be coerced to a SpatVector.")
-    }
-  }
+  # # check if the site object is SpatVector or can be coerced to a SpatVector
+  # if (!inherits(try(terra::vect(site_point), silent = TRUE), "try-error")) {
+  #   site_point <- terra::vect(site_point)
+  # }else {
+  #   if(!inherits(site_point, "SpatVector")){
+  #     stop("site_point cannot be coerced to a SpatVector.")
+  #   }
+  # }
 
   # Get the bounding box of the site point
   bbox <- terra::ext(site_point)
@@ -106,6 +116,13 @@ generate_grid_points <- function(site_point, expansion_dist, resolution){
 
   # Convert the grid to a SpatVector (points)
   spatial_grid <- terra::vect(grid, geom = c('x', 'y'),  crs = terra::crs(site_point))
+
+  # Convert back to sf if original input was sf
+  if (input_is_sf) {
+    return(sf::st_as_sf(spatial_grid))
+  } else {
+    return(spatial_grid)
+  }
 
   return(spatial_grid)
 }
