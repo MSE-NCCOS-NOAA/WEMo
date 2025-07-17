@@ -22,7 +22,8 @@ provided, it is used for both directions.}
 }
 \value{
 A grid of points with regular spacing, returned as the same class as
-\code{site_point} (either \code{sf} or \code{SpatVector}).
+\code{site_point} (either \code{sf} or \code{SpatVector}). Each point includes a \code{site}
+variable identifying its row index (1 to n).
 }
 \description{
 Creates a regular grid of points covering the (optionally expanded) extent of

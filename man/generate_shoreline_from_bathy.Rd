@@ -25,7 +25,7 @@ shapefile. Default is \code{FALSE}.}
 \code{save_output = TRUE}. Default is \code{"shoreline.shp"}.}
 }
 \value{
-A \code{SpatVector} polygon object representing the extracted land areas
+A \code{sf} polygon object representing the extracted land areas
 (shoreline).
 }
 \description{

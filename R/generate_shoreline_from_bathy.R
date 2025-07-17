@@ -13,7 +13,7 @@
 #' @param filename A string giving the name of the shapefile to save if
 #'   `save_output = TRUE`. Default is `"shoreline.shp"`.
 #'
-#' @return A `SpatVector` polygon object representing the extracted land areas
+#' @return A `sf` polygon object representing the extracted land areas
 #'   (shoreline).
 #'
 #' @examples
@@ -43,5 +43,6 @@ generate_shoreline_from_bathy <- function(bathy, contour, save_output = FALSE, f
     terra::writeVector(land_poly, filename = filename, overwrite = TRUE)
   }
 
+  land_poly <- sf::st_as_sf(land_poly)
   return(land_poly)
 }

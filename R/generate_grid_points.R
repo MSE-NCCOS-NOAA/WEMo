@@ -16,7 +16,8 @@
 #'   provided, it is used for both directions.
 #'
 #' @return A grid of points with regular spacing, returned as the same class as
-#'   `site_point` (either `sf` or `SpatVector`).
+#'   `site_point` (either `sf` or `SpatVector`). Each point includes a `site`
+#'   variable identifying its row index (1 to n).
 #'
 #' @examples
 #' # single point ----------------------------
@@ -116,6 +117,9 @@ generate_grid_points <- function(site_point, expansion_dist, resolution){
 
   # Convert the grid to a SpatVector (points)
   spatial_grid <- terra::vect(grid, geom = c('x', 'y'),  crs = terra::crs(site_point))
+
+  # Add a site variable numbering each point
+  spatial_grid$site <- seq_len(nrow(spatial_grid))
 
   # Convert back to sf if original input was sf
   if (input_is_sf) {
