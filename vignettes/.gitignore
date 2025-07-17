@@ -1,3 +1,8 @@
 *.html
 *.R
 NOAA_CUDEM
+Shoreline_MSL.cpg
+Shoreline_MSL.dbf
+Shoreline_MSL.prj
+Shoreline_MSL.shp
+Shoreline_MSL.shx

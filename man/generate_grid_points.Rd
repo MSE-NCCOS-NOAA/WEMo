@@ -7,26 +7,27 @@
 generate_grid_points(site_point, expansion_dist, resolution)
 }
 \arguments{
-\item{site_point}{A \code{SpatVector}. The spatial object whose extent will define
-the bounds of the grid.}
+\item{site_point}{A spatial point or set of points, either an \code{sf} object or
+a \code{SpatVector}. The extent of this object defines the initial bounds of the
+grid.}
 
 \item{expansion_dist}{Numeric vector of length 1 or 2. Distance (in map
 units) to expand the bounding box in the x and y directions. If a single
-value is provided, it is used for both directions. To prevent expansion and
-use the exact bounding box of \code{site_point}, set this to \code{0}.}
+value is provided, it is used for both directions. To use the exact extent
+of \code{site_point}, set this to \code{0}.}
 
 \item{resolution}{Numeric vector of length 1 or 2. The spacing between grid
 points in the x and y directions (in map units). If a single value is
 provided, it is used for both directions.}
 }
 \value{
-A \code{SpatVector} of points spaced regularly over the (expanded) extent
-of \code{site_point}.
+A grid of points with regular spacing, returned as the same class as
+\code{site_point} (either \code{sf} or \code{SpatVector}).
 }
 \description{
 Creates a regular grid of points covering the (optionally expanded) extent of
-a \code{SpatVector} object at a specified resolution. Returns the grid as a
-\code{SpatVector} of point geometry.
+a spatial object at a specified resolution. Accepts either an \code{sf} object or
+a \code{SpatVector} as input. The output will match the input class.
 }
 \examples{
 # single point ----------------------------

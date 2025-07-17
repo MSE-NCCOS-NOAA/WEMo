@@ -162,7 +162,7 @@ bathy <- get_noaa_cudem(
   dest_dir = "NOAA_CUDEM",
   mosaic_and_crop = TRUE,
   output_file = "Sinepuxent_Bathy_Cropped.tif", 
-  overwrite = TRUE
+  overwrite = F
 )
 
 # plot the cropped raster in relation to our site point
@@ -193,11 +193,39 @@ With `overwrite = TRUE` all intersecting rasters will be re-downloaded even if t
 
 ## Shoreline 
 
-Once you have bathymetry data, use `generate_shoreline_from_bathy()` to generate a shoreline based on a user defined elevation.
+Once you have bathymetry data, use `generate_shoreline_from_bathy()` to generate a shoreline based on a user defined elevation. We'll use Mean Sea Level at a nearby NOAA Water Level Station: [Ocean City Inlet, MD (Station ID: 8570283)](https://tidesandcurrents.noaa.gov/datums.html?id=8570283) to draw the shoreline for the analysis.
 
 ```{r}
-shoreline <- generate_grid_points(site_point)
+# MSL at Ocean City Inlet - for the shoreline definition and for use later in the workflow
+water_level <- -0.141 # meters NAVD88 (match the bathy data)
+
+# Generate Shoreline and save output to file
+shoreline <- generate_shoreline_from_bathy(
+  bathy = bathy,
+  contour = water_level,
+  save_output = TRUE,
+  filename = "Shoreline_MSL.shp"
+)
+
+# plot the shoreline
+ggplot() +
+  geom_sf(data = shoreline) +
+  geom_sf(data = site_point, color = 'red', size = 5)
 ```
 
+This shoreline will define the maximum extent of the fetch rays that WEMo calculates. Selecting the proper contour to draw the polygon is critical to your analysis workflow and depends on your question. You can find a listing of stations and their published datums from NOAA CO-OPS' National Water Level Observation Network online: https://tidesandcurrents.noaa.gov/stations.html?type=Datums. Be sure to match the units and vertical datum to your bathy data. Bathy data from `get_noaa_cudem()` is in meters relative to NAVD88.
 
+## Grid of Points
+
+Use `generate_grid_points()` to generate a rectangular grid of points. These are the points where WEMo will simulate wave exposure.
+
+```{r generate grid points}
+
+# create a grid of points 250 x 250 with points every 50 meters
+generate_grid_points(
+  site_point = site_point,
+  expansion_dist = 250,
+  resolution = 50
+)
+```
 
