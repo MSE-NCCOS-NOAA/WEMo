@@ -31,7 +31,7 @@
 #' }
 #'
 #' @export
-shoreline_from_bathy <- function(bathy, contour, save_output = FALSE, filename = "shoreline.shp") {
+generate_shoreline_from_bathy <- function(bathy, contour, save_output = FALSE, filename = "shoreline.shp") {
   # Convert raster to binary: 1 for land (bathy >= contour), NA for water
   land_bathy <- terra::ifel(bathy >= contour, 1, NA)
 
