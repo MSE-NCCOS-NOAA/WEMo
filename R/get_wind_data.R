@@ -80,8 +80,6 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
     LAT <- sf::st_coordinates(site_point)[[1,2]]
     LON <- sf::st_coordinates(site_point)[[1,1]]
 
-
-
     if(which_station == "ask"){
       # Get metadata for the 5 closest NOAA stations
       station <- worldmet::getMeta(lat = LAT, lon = LON, n = 5, plot = T)
