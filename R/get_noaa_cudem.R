@@ -88,7 +88,7 @@ get_noaa_cudem <- function(lon, lat, radius_m,
   tile_index <- sf::st_read(tile_path, quiet = TRUE)
 
   # Create sf point in WGS84
-  pt <- st_sfc(st_point(c(lon, lat)), crs = 4326) %>%
+  pt <- sf::st_sfc(sf::st_point(c(lon, lat)), crs = 4326)
 
   # Transform to match tile CRS
   pt <- sf::st_transform(pt, sf::st_crs(tile_index))
@@ -134,19 +134,23 @@ get_noaa_cudem <- function(lon, lat, radius_m,
 
   # Load and mosaic the downloaded rasters
   rasters <- lapply(file_paths[file.exists(file_paths)], terra::rast)
-  # if (length(rasters) == 0) stop("No valid raster files were loaded.")
+  if (length(rasters) == 0) stop("No valid raster files were loaded. Erorr Downloading and Storing.")
 
-  mosaic <- do.call(terra::mosaic, rasters)
+  if(length(rasters) > 1){
+    mosaic_bathy <- do.call(terra::mosaic, rasters)
+  } else{
+    mosaic_bathy <- rasters[[1]]
+  }
 
   buffer_vect <- terra::vect(buffer)
 
   # Crop to buffer
   if (!is.null(output_file)) {
     # Write output if requested
-    cropped <- terra::crop(mosaic, buffer_vect, filename = file.path(dest_dir, output_file), overwrite = TRUE)
+    cropped <- terra::crop(mosaic_bathy, buffer_vect, filename = file.path(dest_dir, output_file), overwrite = TRUE)
     message("Cropped mosaic saved to: ", file.path(dest_dir, output_file))
   } else{
-    cropped <- terra::crop(mosaic, buffer_vect)
+    cropped <- terra::crop(mosaic_bathy, buffer_vect)
   }
 
   return(cropped)
