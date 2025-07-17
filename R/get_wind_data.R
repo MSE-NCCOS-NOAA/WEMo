@@ -44,7 +44,7 @@
 #'  )
 #' }
 #'
-#' # 3. Manually specify a station code using
+#' # 3. Manually specify a station code
 #' \dontrun{
 #' # this way you don't need a site_point
 #' wind_data_manual <- get_wind_data(
