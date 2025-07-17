@@ -44,7 +44,7 @@
 #'  )
 #' }
 #'
-#' # 3. Manually specify a station code using getMeta
+#' # 3. Manually specify a station code using
 #' \dontrun{
 #' # this way you don't need a site_point
 #' wind_data_manual <- get_wind_data(
@@ -80,9 +80,11 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
     LAT <- sf::st_coordinates(site_point)[[1,2]]
     LON <- sf::st_coordinates(site_point)[[1,1]]
 
-    # Get metadata for the 5 closest NOAA stations
-    station <- worldmet::getMeta(lat = LAT, lon = LON, n = 5)
+
+
     if(which_station == "ask"){
+      # Get metadata for the 5 closest NOAA stations
+      station <- worldmet::getMeta(lat = LAT, lon = LON, n = 5, plot = T)
       # Display options for user to choose from
       options <- paste0(
         station$usaf, '-', station$wban, " ",station$station, " (", round(station$dist, 1), " km), ",
@@ -96,11 +98,24 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
       # Handle cancel
       if (!(selection %in% c(1:5))) stop("invalid station selected.")
     }else{
+      # Get metadata for the 5 closest NOAA stations
+      station <- worldmet::getMeta(lat = LAT, lon = LON, n = 5, plot = F)
       # Use specified index (1-5) without prompt
-      cat("Using Met station", which_station, paste(station$usaf[selection], station$wban[selection], sep = '-'), paste0(
-        station$station[which_station], " (", round(station$dist[which_station], 1), " km), ",
-        station$begin[which_station], " to ", station$end[which_station]
-      ), "\n")
+      cat(
+        "Using Met station",
+        which_station,
+        paste(station$usaf[which_station], station$wban[which_station], sep = '-'),
+        paste0(
+          station$station[which_station],
+          " (",
+          round(station$dist[which_station], 1),
+          " km), ",
+          station$begin[which_station],
+          " to ",
+          station$end[which_station]
+        ),
+        "\n"
+      )
       selection <- which_station
     }
     # Construct the NOAA station code (e.g., "723037-93765")
