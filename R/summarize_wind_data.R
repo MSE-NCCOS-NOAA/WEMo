@@ -76,8 +76,10 @@ summarize_wind_data <- function(wind_data, wind_percentile, directions = NULL, w
 
   # snap wind_direction to directions if supplied
   if (!is.null(directions)) {
-    # ensure supplied vector has upper and lower bounds
+    # ensure supplied vector has no duplicates
     directions <- unique(as.numeric(as.character(sort(directions))))
+    # ensure directions are < 360 or >= 0
+    directions <- directions[directions<360&directions>=0]
     # find midpoints between directions to create bins
     bins <- sapply(2:length(directions), function(i){
       mean(directions[c(i, i-1)], na.rm = T)
