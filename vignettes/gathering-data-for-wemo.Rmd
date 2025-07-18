@@ -48,13 +48,15 @@ library(tidyterra)
 
 ## Define Site Point
 
-To demonstrate the process of gathering and prepareing data for WEMo, we'll collect data for an example analysis in Sinepuxent Bay near Assateague Island National Seashore, Maryland. 
+To demonstrate the process of gathering and preparing data for WEMo, we'll collect data for an example analysis in Sinepuxent Bay near Assateague Island National Seashore, Maryland. 
 
 ```{r create a site_point}
 # create a point at an area of interest in Sinepuxent Bay Maryland
-site_point <- st_point(c(-75.168008, 38.223823))  %>% 
-  st_sfc(crs = 4326) %>% # set CRS to WGS84
-  st_sf()
+site_point <- st_as_sf(
+  data.frame(lon = -75.168008, lat = 38.223823),
+  coords = c("lon", "lat"),
+  crs = 4326 # WGS 84
+)
 
 ```
 
