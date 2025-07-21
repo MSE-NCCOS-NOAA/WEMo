@@ -118,7 +118,7 @@ wanted_directions <- seq(from = 0, to = 350, by = 10)
 
 # calculate the 95th percentile wind speed every 10 degrees
 wind_data_summary <- summarize_wind_data(
-  wind_data = PI_wind_data,
+  wind_data = wind_data,
   wind_percentile = 0.95,
   directions = wanted_directions
 )
