@@ -39,17 +39,17 @@ WEMo requires four key inputs:
 
 * A summarized wind history
 
-* A set of site points where wave exposure will be calculated
+* A set of site points for which wave exposure will be calculated
 
-The package also includes functions for preparing inputs, summarizing wind data, calculating fetch, and visualizing results.
+The WEMo package also includes functions for preparing inputs, summarizing wind data, calculating fetch, and visualizing results.
 
-Original Version of WEMo: <https://coastalscience.noaa.gov/science-areas/climate-change/wemo/>
+Original ArcMap Version of WEMo: <https://coastalscience.noaa.gov/science-areas/climate-change/wemo/>
 
 ## Input Data Overview
 
 ### Bathymetry
 
-Bathymetry describes underwater terrain, influencing wave growth and breaking. WEMo expects bathymetry as a raster (GeoTIF `.tif`), typically in meters relative to a vertical datum like NAVD88. 
+Bathymetry describes underwater terrain, which influences wave growth and breaking. WEMo requires bathymetry as a raster (GeoTIF `.tif`), typically in meters relative to a vertical datum like NAVD88. 
 
 ### Shoreline
 
