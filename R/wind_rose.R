@@ -88,5 +88,10 @@ wind_rose <- function(wind_data){
       )
   )
 
+  # putting this dummy code here to allow tidyterra to be required. I want it in the vignettes, but want user to not have to download it
+  if(FALSE){
+    tidyterra::geom_spatraster()
+  }
+
   return(rose_plot)
 }
