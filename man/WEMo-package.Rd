@@ -11,6 +11,7 @@ WEMo is a model that quantifies the energetic environment of a given point resul
 Useful links:
 \itemize{
   \item \url{https://github.com/QAWalker/WEMo}
+  \item \url{https://qawalker.github.io/WEMo/}
   \item Report bugs at \url{https://github.com/QAWalker/WEMo/issues}
 }
 
