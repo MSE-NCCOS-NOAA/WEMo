@@ -34,37 +34,44 @@
 map_noaa_cudem <- function(lon = NULL, lat = NULL, radius_m = 10000) {
   # Load tile index from package extdata
   tile_path <- system.file("extdata", "NOAA_CUDEM_tiles.shp", package = "WEMo")
-  if (tile_path == "") stop("Tile index file not found in package data.")
+  if (tile_path == "") {
+    stop("Tile index file not found in package data.")
+  }
 
   tile_index <- sf::st_read(tile_path, quiet = TRUE)
-  tile_index_wgs <- st_transform(tile_index, 4326)
+  tile_index_wgs <- sf::st_transform(tile_index, 4326)
 
-  m <- leaflet() %>%
-    addProviderTiles("OpenStreetMap") %>%
-    addPolygons(
-      data = tile_index_wgs,
-      fillColor = "transparent",
-      color = "black",
-      weight = 1,
-      popup = ~ paste0(
-        "<strong>Location:</strong> ",
-        location,
-        "<br>",
-        "<strong>Mission ID:</strong> ",
-        missionid,
-        "<br>",
-        "<a href='",
-        url,
-        "' target='_blank'>Download Tile</a>"
-      )
+  # Initialize the leaflet map
+  m <- leaflet::leaflet()
+
+  # Add the base map tiles
+  m <- leaflet::addProviderTiles(m, "OpenStreetMap")
+
+  # Add polygons for NOAA CUDEM tiles
+  m <- leaflet::addPolygons(
+    map = m,
+    data = tile_index_wgs,
+    fillColor = "transparent",
+    color = "black",
+    weight = 1,
+    popup = ~ paste0(
+      "<strong>Location:</strong> ", location, "<br>",
+      "<strong>Mission ID:</strong> ", missionid, "<br>",
+      "<a href='", url, "' target='_blank'>Download Tile</a>"
     )
+  )
 
-  if(is.null(lon)|is.null(lat)){
+  if(is.null(lon) | is.null(lat)) {
     print(m)
     return(invisible(T))
+
   } else {
+
     # Check input types
-    stopifnot("lon, lat, and radius_m must be numeric" = is.numeric(lon), is.numeric(lat), is.numeric(radius_m))
+    stopifnot(
+      "lon, lat, and radius_m must be numeric" =
+        is.numeric(lon), is.numeric(lat), is.numeric(radius_m)
+    )
 
     # Create sf point in WGS84
     pt <- sf::st_sfc(sf::st_point(c(lon, lat)), crs = 4326)
@@ -77,45 +84,45 @@ map_noaa_cudem <- function(lon = NULL, lat = NULL, radius_m = 10000) {
     intersecting_tiles <- tile_index[sf::st_intersects(tile_index, buffer, sparse = FALSE), ]
 
     # Transform everything to WGS84 for leaflet
-    pt_wgs <- st_transform(pt, 4326)
-    buffer_wgs <- st_transform(buffer, 4326)
-    intersecting_tiles_wgs <- st_transform(intersecting_tiles, 4326)
+    pt_wgs <- sf::st_transform(pt, 4326)
+    buffer_wgs <- sf::st_transform(buffer, 4326)
+    intersecting_tiles_wgs <- sf::st_transform(intersecting_tiles, 4326)
 
     # Get bounding box of buffer
-    bbox <- st_bbox(buffer_wgs)
+    bbox <- sf::st_bbox(buffer_wgs)
 
-    # Create leaflet map
-    m <- m %>%
-      addCircleMarkers(
-        data = pt_wgs,
-        radius = 5,
-        color = "red",
-        fill = TRUE,
-        fillOpacity = 1
-      ) %>%
-      addPolygons(
-        data = intersecting_tiles_wgs,
-        fillColor = "transparent",
-        color = "cyan",
-        weight = 5,
-        popup = ~ paste0(
-          "<strong>Location:</strong> ",
-          location,
-          "<br>",
-          "<strong>Mission ID:</strong> ",
-          missionid,
-          "<br>",
-          "<a href='",
-          url,
-          "' target='_blank'>Download Tile</a>"
-        )
-      )  %>%
-      fitBounds(
-        lng1 = bbox[["xmin"]],
-        lat1 = bbox[["ymin"]],
-        lng2 = bbox[["xmax"]],
-        lat2 = bbox[["ymax"]]
+    # Add a circle marker for the user-provided point
+    m <- leaflet::addCircleMarkers(
+      map = m, # Explicitly pass the map object
+      data = pt_wgs,
+      radius = 5,
+      color = "red",
+      fill = TRUE,
+      fillOpacity = 1
+    )
+
+    # Highlight the intersecting tiles on the map
+    m <- leaflet::addPolygons(
+      map = m, # Explicitly pass the map object
+      data = intersecting_tiles_wgs,
+      fillColor = "transparent",
+      color = "cyan",
+      weight = 5,
+      popup = ~ paste0(
+        "<strong>Location:</strong> ", location, "<br>",
+        "<strong>Mission ID:</strong> ", missionid, "<br>",
+        "<a href='", url, "' target='_blank'>Download Tile</a>"
       )
+    )
+
+    # Set the map view to fit the bounding box of the buffered area
+    m <- leaflet::fitBounds(
+      map = m, # Explicitly pass the map object
+      lng1 = bbox[["xmin"]],
+      lat1 = bbox[["ymin"]],
+      lng2 = bbox[["xmax"]],
+      lat2 = bbox[["ymax"]]
+    )
 
     print(m)
     return(invisible(T))
