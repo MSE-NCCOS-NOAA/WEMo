@@ -11,7 +11,8 @@ get_noaa_cudem(
   dest_dir = "NOAA_CUDEM",
   mosaic_and_crop = TRUE,
   output_file = "Cropped_Mosaic_Raster.tif",
-  overwrite = FALSE
+  overwrite = FALSE,
+  plot = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,11 @@ file is written.}
 
 \item{overwrite}{Logical. If \code{TRUE}, re-download existing tiles and overwrite
 existing output file.}
+
+\item{plot}{Logical. If \code{TRUE}, generates an interactive map to display the
+relation between the available CUDEM data, the central point defined by
+\code{lon} and \code{lat} and the buffer created by \code{radius_m}. This calls
+\code{\link[=map_noaa_cudem]{map_noaa_cudem()}}}
 }
 \value{
 A \code{terra::SpatRaster} if \code{mosaic_and_crop = TRUE}; otherwise

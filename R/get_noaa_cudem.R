@@ -32,6 +32,10 @@
 #'   file is written.
 #' @param overwrite Logical. If `TRUE`, re-download existing tiles and overwrite
 #'   existing output file.
+#' @param plot Logical. If `TRUE`, generates an interactive map to display the
+#'   relation between the available CUDEM data, the central point defined by
+#'   `lon` and `lat` and the buffer created by `radius_m`. This calls
+#'   [`map_noaa_cudem()`]
 #'
 #' @section Geographic Coverage: The CUDEM dataset accessed by this function
 #'   covers select areas of the United States, including:
@@ -76,10 +80,16 @@ get_noaa_cudem <- function(lon, lat, radius_m,
                            dest_dir = "NOAA_CUDEM",
                            mosaic_and_crop = TRUE,
                            output_file = "Cropped_Mosaic_Raster.tif",
-                           overwrite = FALSE
+                           overwrite = FALSE,
+                           plot = TRUE
                            ) {
   # Check input types
   stopifnot("lon, lat, and radius_m must be numeric" = is.numeric(lon), is.numeric(lat), is.numeric(radius_m))
+
+  # map the avaiable tiles if the user wants it
+  if(plot == TRUE){
+    map_noaa_cudem(lon = lon, lat = lat, radius_m = radius_m)
+  }
 
   # Load tile index from package extdata
   tile_path <- system.file("extdata", "NOAA_CUDEM_tiles.shp", package = "WEMo")
