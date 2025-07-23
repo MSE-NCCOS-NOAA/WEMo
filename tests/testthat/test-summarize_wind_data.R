@@ -74,7 +74,7 @@ test_that("Direction binning snaps directions correctly even with directions tha
 
   wind_data$wind_speed  <-  sample(c(1:5), replace = TRUE, size = nrow(wind_data))
 
-  wanted_directions <- seq(0, 360, by = 45)
+  wanted_directions <- seq(0, 360-45, by = 45)
 
   output <- summarize_wind_data(wind_data, 'mean', directions = wanted_directions)
 
