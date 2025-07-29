@@ -75,10 +75,13 @@
 find_fetch <- function(site_points, polygon_layer,
                           directions = c(0, 45, 90, 135, 180, 225, 270, 315),
                           max_fetch = 10000) {
+  # Union all features in polygon_layer into a single geometry
+  polygon_layer_union <- sf::st_union(polygon_layer)
+
   # Ensure CRS match
-  if (sf::st_crs(site_points) != sf::st_crs(polygon_layer)) {
-    warning("CRS mismatch: transforming site_points to match polygon_layer")
-    site_points <- sf::st_transform(site_points, sf::st_crs(polygon_layer))
+  if (sf::st_crs(site_points) != sf::st_crs(polygon_layer_union)) {
+    warning("CRS mismatch: transforming site_points to match polygon_layer_union")
+    site_points <- sf::st_transform(site_points, sf::st_crs(polygon_layer_union))
   }
 
   if(!("site" %in% names(site_points))){
@@ -105,46 +108,40 @@ find_fetch <- function(site_points, polygon_layer,
   # }
 
   # Remove points on land
-  sites_on_land <- sf::st_intersects(site_points, polygon_layer, sparse = FALSE)
+  sites_on_land <- sf::st_intersects(site_points, polygon_layer_union, sparse = FALSE)
   if(sum(sites_on_land)>=1){
     cat("Removing", sum(sites_on_land), "sites on that are on land. \n")
+    site_points_not_on_land <- site_points[!sites_on_land, ]
   }
-
-  if(any(sites_on_land)){
-    site_points <- site_points[!sites_on_land, ]
-  }
-
-
+  nrow(site_points_not_on_land)
+  nrow(site_points)
   # Store coordinates for speed
-  coords <- sf::st_coordinates(site_points)
+  coords <- sf::st_coordinates(site_points_not_on_land)
 
   # Setup progress bar
   # pb <- progress_bar$new(
   #   format = "  Processing [:bar] :percent eta: :eta",
-  #   total = nrow(site_points), clear = FALSE, width = 60
+  #   total = nrow(site_points_not_on_land), clear = FALSE, width = 60
   # )
 
   # Generate rays from each site in all directions
-  fetch_rays <- lapply(1:nrow(site_points), function(i) {
+  fetch_rays <- lapply(1:nrow(site_points_not_on_land), function(i) {
     # pb$tick()
-    site_geom <- sf::st_geometry(site_points[i,])
+    site_geom <- sf::st_geometry(site_points_not_on_land[i,])
     site_coord <- coords[i, ]
 
-    # heading = directions[1]
     site_fetch_rays <- lapply(directions, function(heading) {
       # for (heading in directions) {
-
-
       heading_rad <- compassDegrees_to_radianDegrees(heading) * (pi / 180)
       dest_x <- site_coord[1] + max_fetch * cos(heading_rad)
       dest_y <- site_coord[2] + max_fetch * sin(heading_rad)
 
       ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y))) %>%
-        sf::st_sfc(crs = sf::st_crs(site_points)) %>%
+        sf::st_sfc(crs = sf::st_crs(site_points_not_on_land)) %>%
         sf::st_sf()
 
       # Find intersection with shoreline
-      inter <- suppressWarnings(sf::st_intersection(ray, polygon_layer))
+      inter <- suppressWarnings(sf::st_intersection(ray, polygon_layer_union))
 
       if (!inherits(inter, "sf") || nrow(inter) == 0 || all(sf::st_is_empty(inter))) {
         final_ray <- sf::st_linestring(rbind(site_coord, c(dest_x, dest_y)))
@@ -174,7 +171,7 @@ find_fetch <- function(site_points, polygon_layer,
       }
 
       tibble::tibble(
-        geometry = sf::st_sfc(final_ray, crs = sf::st_crs(site_points)),
+        geometry = sf::st_sfc(final_ray, crs = sf::st_crs(site_points_not_on_land)),
         direction = heading,
         fetch = dist_val,
         site = i
