@@ -108,9 +108,39 @@ generate_grid_points <- function(site_point, expansion_dist, resolution){
   # expanded bounding box
   x <- terra::ext(xmin, xmax, ymin, ymax)
 
+  # Calc center point
+  center <- data.frame(x = (x$xmin + x$xmax)/2, y = (x$ymin + x$ymax)/2)
+
   # Create sequences of x and y values based on the resolution and extent
-  x_seq <- seq(from = x$xmin, to = x$xmax, by = resolution[1])
-  y_seq <- seq(from = x$ymin, to = x$ymax, by = resolution[2])
+  x_seq <- c(
+    seq(
+      from = center$x,
+      to = x$xmax,
+      by = resolution[1]
+    ),
+    seq(
+      from = center$x,
+      to = x$xmin,
+      by = -resolution[1]
+    )
+  )
+
+  x_seq <- sort(unique(x_seq))
+
+  y_seq <- c(
+    seq(
+      from = center$y,
+      to = x$ymax,
+      by = resolution[2]
+    ),
+    seq(
+      from = center$y,
+      to = x$ymin,
+      by = -resolution[2]
+    )
+  )
+
+  y_seq <- sort(unique(y_seq))
 
   # Create a grid of points
   grid <- expand.grid(x = x_seq, y = y_seq)
