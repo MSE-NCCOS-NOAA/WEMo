@@ -2,7 +2,9 @@
 #'
 #' This function identifies land areas from a bathymetric raster by applying a
 #' contour threshold, converts the result into polygon geometry, and optionally
-#' saves it to a shapefile.
+#' saves it to a shapefile. If `contour` is greater than the max value in
+#' `bathy` a warning is displayed and `contour` is set to the max value from
+#' `bathy`
 #'
 #' @param bathy A `SpatRaster` object representing bathymetric or elevation
 #'   data.
@@ -32,6 +34,12 @@
 #'
 #' @export
 generate_shoreline_from_bathy <- function(bathy, contour, save_output = FALSE, filename = "shoreline.shp") {
+  # check max value of the bathy vs contour and replace contour with max value if true
+  max_bathy_value <- max(terra::values(bathy), na.rm = T)
+  if(max_bathy_value < contour){
+    warning("Contour greater than max value of bathy. Setting contour = ", round(max_bathy_value, 5))
+    contour <- max_bathy_value
+  }
   # Convert raster to binary: 1 for land (bathy >= contour), NA for water
   land_bathy <- terra::ifel(bathy >= contour, 1, NA)
 
