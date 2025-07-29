@@ -31,7 +31,9 @@ A \code{sf} polygon object representing the extracted land areas
 \description{
 This function identifies land areas from a bathymetric raster by applying a
 contour threshold, converts the result into polygon geometry, and optionally
-saves it to a shapefile.
+saves it to a shapefile. If \code{contour} is greater than the max value in
+\code{bathy} a warning is displayed and \code{contour} is set to the max value from
+\code{bathy}
 }
 \examples{
 \dontrun{
