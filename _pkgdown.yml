@@ -1,0 +1,13 @@
+url: https://qawalker.github.io/WEMo/
+template:
+  bootstrap: 5
+  bslib:
+    bootswatch: lux
+    pkgdown-nav-height: 100px
+navbar:
+  structure:
+    left:  [search]
+    right: [reference, articles]
+home:
+  sidebar:
+    html: path-to-sidebar.html
