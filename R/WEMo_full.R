@@ -65,7 +65,7 @@
 #'     }}
 #' }
 #'
-#' @seealso [find_fetch()], [prepare_WEMo_inputs()], [WEMo()]
+#' @seealso [find_fetch()], [prepare_wemo_inputs()], [WEMo()]
 #' @export
 #'
 wemo_full <- function(site_points,
@@ -79,7 +79,7 @@ wemo_full <- function(site_points,
          depths_or_elev = 'elev',
          extra_at_start = T) {
 
-  wemo_inputs <- prepare_WEMo_inputs(
+  wemo_inputs <- prepare_wemo_inputs(
     site_points = site_points,
     bathy = bathy,
     shoreline = shoreline,

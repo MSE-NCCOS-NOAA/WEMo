@@ -13,7 +13,7 @@
 #'
 #' @param fetch A data frame or `sf` object containing fetch geometry and
 #'   required variables: `efetch`, `depths`, `distances`, `speed`, `proportion`.
-#'   Expects the output from [`prepare_WEMo_inputs()`]. Each row
+#'   Expects the output from [`prepare_wemo_inputs()`]. Each row
 #'   corresponds to a fetch ray.
 #'
 #' @return A list of two elements:
@@ -46,7 +46,7 @@
 #'   and summing for all fetch rays
 #'
 #'
-#' @seealso [`prepare_WEMo_inputs()`]
+#' @seealso [`prepare_wemo_inputs()`]
 #' @export
 #'
 #' @examples

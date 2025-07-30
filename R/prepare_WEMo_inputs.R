@@ -40,7 +40,7 @@
 #'
 #' @export
 #'
-prepare_WEMo_inputs <- function(site_points,
+prepare_wemo_inputs <- function(site_points,
                                 shoreline,
                                 bathy,
                                 wind_data,

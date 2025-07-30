@@ -9,7 +9,7 @@ WEMo(fetch)
 \arguments{
 \item{fetch}{A data frame or \code{sf} object containing fetch geometry and
 required variables: \code{efetch}, \code{depths}, \code{distances}, \code{speed}, \code{proportion}.
-Expects the output from \code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}}. Each row
+Expects the output from \code{\link[=prepare_wemo_inputs]{prepare_wemo_inputs()}}. Each row
 corresponds to a fetch ray.}
 }
 \value{
@@ -64,5 +64,5 @@ summary <- result$wemo_output
 }
 }
 \seealso{
-\code{\link[=prepare_WEMo_inputs]{prepare_WEMo_inputs()}}
+\code{\link[=prepare_wemo_inputs]{prepare_wemo_inputs()}}
 }

@@ -316,7 +316,7 @@ write.csv(results_df, "/path/to/save/results.csv")
 For faster iteration, prepare inputs once: 
 
 ```{r create inputs}
-inputs <- prepare_WEMo_inputs(
+inputs <- prepare_wemo_inputs(
   site_points = PI_points,
   shoreline = PI_shoreline,
   bathy = PI_bathy,
