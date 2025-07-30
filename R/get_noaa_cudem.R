@@ -36,6 +36,9 @@
 #'   relation between the available CUDEM data, the central point defined by
 #'   `lon` and `lat` and the buffer created by `radius_m`. This calls
 #'   [`map_noaa_cudem()`]
+#' @param cleanup_source_files Logical. If `TRUE` and `mosaic_and_crop` is also
+#'   `TRUE`, the original downloaded source tiles will be deleted after the
+#'   mosaic raster is created. Defaults to `FALSE`.
 #'
 #' @section Geographic Coverage: The CUDEM dataset accessed by this function
 #'   covers select areas of the United States, including:
@@ -81,7 +84,8 @@ get_noaa_cudem <- function(lon, lat, radius_m,
                            mosaic_and_crop = TRUE,
                            output_file = "Cropped_Mosaic_Raster.tif",
                            overwrite = FALSE,
-                           plot = TRUE
+                           plot = TRUE,
+                           cleanup_source_files = FALSE
                            ) {
   # Check input types
   stopifnot("lon, lat, and radius_m must be numeric" = is.numeric(lon), is.numeric(lat), is.numeric(radius_m))
@@ -161,6 +165,19 @@ get_noaa_cudem <- function(lon, lat, radius_m,
     message("Cropped mosaic saved to: ", file.path(dest_dir, output_file))
   } else{
     cropped <- terra::crop(mosaic_bathy, buffer_vect)
+  }
+
+  # Cleanup downloaded source tiles if requested
+  if (cleanup_source_files) {
+    message("Cleaning up source files...")
+    # Get a list of files that actually exist before trying to remove
+    files_to_remove <- file_paths[file.exists(file_paths)]
+    if (length(files_to_remove) > 0) {
+      file.remove(files_to_remove)
+      message("Source files have been removed.")
+    } else {
+      message("No source files to remove.")
+    }
   }
 
   return(cropped)

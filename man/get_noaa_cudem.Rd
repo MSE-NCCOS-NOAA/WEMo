@@ -12,7 +12,8 @@ get_noaa_cudem(
   mosaic_and_crop = TRUE,
   output_file = "Cropped_Mosaic_Raster.tif",
   overwrite = FALSE,
-  plot = TRUE
+  plot = TRUE,
+  cleanup_source_files = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,10 @@ existing output file.}
 relation between the available CUDEM data, the central point defined by
 \code{lon} and \code{lat} and the buffer created by \code{radius_m}. This calls
 \code{\link[=map_noaa_cudem]{map_noaa_cudem()}}}
+
+\item{cleanup_source_files}{Logical. If \code{TRUE} and \code{mosaic_and_crop} is also
+\code{TRUE}, the original downloaded source tiles will be deleted after the
+mosaic raster is created. Defaults to \code{FALSE}.}
 }
 \value{
 A \code{terra::SpatRaster} if \code{mosaic_and_crop = TRUE}; otherwise
