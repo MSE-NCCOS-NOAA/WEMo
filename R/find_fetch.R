@@ -112,9 +112,10 @@ find_fetch <- function(site_points, polygon_layer,
   if(sum(sites_on_land)>=1){
     cat("Removing", sum(sites_on_land), "sites on that are on land. \n")
     site_points_not_on_land <- site_points[!sites_on_land, ]
+  } else{
+    site_points_not_on_land <- site_points
   }
-  nrow(site_points_not_on_land)
-  nrow(site_points)
+
   # Store coordinates for speed
   coords <- sf::st_coordinates(site_points_not_on_land)
 
