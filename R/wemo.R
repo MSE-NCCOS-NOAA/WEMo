@@ -1,6 +1,6 @@
 #' Run the WEMo Wave Energy Model
 #'
-#' @description `WEMo()` Combines fetch, bathymetry, and wind data to estimate
+#' @description `wemo()` Combines fetch, bathymetry, and wind data to estimate
 #'   wave height and energy metrics at each site using WEMo (Wave Energy Model)
 #'   from wind-waves.
 #'

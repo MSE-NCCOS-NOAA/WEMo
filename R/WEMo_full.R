@@ -65,7 +65,7 @@
 #'     }}
 #' }
 #'
-#' @seealso [find_fetch()], [prepare_wemo_inputs()], [WEMo()]
+#' @seealso [find_fetch()], [prepare_wemo_inputs()], [wemo()]
 #' @export
 #'
 wemo_full <- function(site_points,

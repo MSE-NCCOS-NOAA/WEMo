@@ -38,7 +38,7 @@ A tibble summarizing wind by direction and intensity, with columns:
 }
 \description{
 Generates a summary data.frame suitable for passing to \code{\link[=wind_rose]{wind_rose()}} for
-plotting or \code{\link[=WEMo]{WEMo()}} for modeling. Input data should be a log of wind readings
+plotting or \code{\link[=wemo]{wemo()}} for modeling. Input data should be a log of wind readings
 and must have columns \code{wind_direction} and \code{wind_speed}. Data generated from
 \code{\link[=get_wind_data]{get_wind_data()}} is ready to be used as input. Input \code{wind_direction}
 values are coerced into values 0-359.9. The function can further coerce or snap input

@@ -1,7 +1,7 @@
 #' Summarize wind data by direction and intensity
 #'
 #' Generates a summary data.frame suitable for passing to [wind_rose()] for
-#' plotting or [WEMo()] for modeling. Input data should be a log of wind readings
+#' plotting or [wemo()] for modeling. Input data should be a log of wind readings
 #' and must have columns `wind_direction` and `wind_speed`. Data generated from
 #' [`get_wind_data()`] is ready to be used as input. Input `wind_direction`
 #' values are coerced into values 0-359.9. The function can further coerce or snap input

@@ -93,5 +93,5 @@ Then, the function summarizes the waves from every direction for each site
 and computes the summary statistic \code{RWE}.
 }
 \seealso{
-\code{\link[=find_fetch]{find_fetch()}}, \code{\link[=prepare_wemo_inputs]{prepare_wemo_inputs()}}, \code{\link[=WEMo]{WEMo()}}
+\code{\link[=find_fetch]{find_fetch()}}, \code{\link[=prepare_wemo_inputs]{prepare_wemo_inputs()}}, \code{\link[=wemo]{wemo()}}
 }
