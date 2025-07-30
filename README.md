@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# WEMo: An R Implementation of the Wave Exposure Model
+# WEMo
+
+## An R Implementation of the Wave Exposure Model
 
 <!-- badges: start -->
 
@@ -72,9 +74,17 @@ Beaufort, North Carolina.
 # 1. Load required libraries
 library(WEMo)
 library(sf)
+#> Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.0; sf_use_s2() is TRUE
 library(terra)
+#> terra 1.8.54
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.5.1
 library(tidyterra)
+#> 
+#> Attaching package: 'tidyterra'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
 
 # 2. Load the package's example data
 # These are pre-loaded with the package
@@ -85,6 +95,20 @@ library(tidyterra)
 # PI_bathy: terra SpatRaster of bathymetry
 PI_bathy <- terra::unwrap(PI_bathy)
 
+# Plot input spatial data
+ggplot() +
+  geom_spatraster(data = PI_bathy) +
+  geom_sf(data = PI_shoreline, fill = "honeydew3") +
+  geom_sf(data = PI_points, color = 'red', size = 3) +
+  labs(title = "WEMo Inputs", 
+       fill = "Bathymetry\n(m NAVD88)") +
+  theme_minimal()
+```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+
 # 3. Summarize wind data for the model
 # WEMo needs a summary of wind speed and proportion by direction
 wind_summary <- summarize_wind_data(
@@ -93,7 +117,14 @@ wind_summary <- summarize_wind_data(
   directions = seq(0, 350, by = 10) # Bin directions into 10-degree increments
 )
 
-plot_wind_rose
+# create and print wind rose
+plot_wind_rose(wind_data = wind_summary)
+```
+
+<img src="man/figures/README-example-2.png" width="100%" />
+
+``` r
+
 # 4. Run the full WEMo model
 wemo_results <- wemo_full(
   site_points = PI_points,
@@ -106,36 +137,75 @@ wemo_results <- wemo_full(
 
 # 5. Explore and plot the final results
 print(wemo_results$wemo_final)
+#> Simple feature collection with 3 features and 9 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346986.4 ymax: 3843270
+#> Projected CRS: NAD83 / UTM zone 18N
+#> # A tibble: 3 × 10
+#>    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch
+#>   <int> <dbl>           <dbl>           <dbl> <chr>                     <dbl>
+#> 1     1  31.8          0.102            0.141 220                        444.
+#> 2     2  23.3          0.0895           0.123 50                         345.
+#> 3     3  10.0          0.0755           0.112 170                        256.
+#> # ℹ 4 more variables: max_fetch <dbl>, avg_efetch <dbl>, max_efetch <dbl>,
+#> #   geometry <POINT [m]>
 
 # Plot the average wave height at each point
 ggplot() +
   geom_sf(data = PI_shoreline, fill = "honeydew3") +
   geom_sf(data = wemo_results$wemo_final, aes(color = avg_wave_height), size = 5) +
-  scale_color_viridis_c(name = "Avg. Wave\nHeight (m)") +
-  theme_minimal() +
-  labs(title = "WEMo Results: Average Wave Height")
+  scale_color_viridis_c() +
+  labs(title = "WEMo Results: Average Wave Height", 
+       color = "Avg. Wave\nHeight (m)") +
+  theme_minimal()
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+<img src="man/figures/README-example-3.png" width="100%" />
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+
+# Plot the wave height of the wave arriving at the site from each fetch ray
+ggplot() +
+  geom_sf(data = PI_shoreline, fill = "honeydew3") +
+  geom_sf(data = wemo_results$wemo_details, aes(color = wave_height_final), linewidth = 1) +
+  scale_color_viridis_c(option = "H") +
+  labs(title = "WEMo Results: Final Wave Height", 
+       color = "Final Wave\nHeight (m)") +
+  theme_minimal()
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+<img src="man/figures/README-example-4.png" width="100%" />
 
-You can also embed plots, for example:
+## Gathering Your Own Data
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+WEMo provides several functions to help you acquire and prepare the
+necessary input for your area of interest
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+- **Wind Data**: Download historical wind data from NOAA’s Integrated
+  Surface Database using `get_wind_data()`.
+
+- **Bathymetry Data**: Fetch bathymetric rasters from NOAA’s CUDEM
+  dataset using `get_noaa_cudem()`.
+
+- **Shoreline Polygon**: Generate a shoreline from a bathymetry raster
+  using `generate_shoreline_from_bathy()`.
+
+- **Site Points**: Create a regular grid of points for analysis using
+  `generate_grid_points()`.
+
+For a detailed, step-by-step tutorial on using these functions, please
+see the *“Gathering WEMo Data”* vignette by running
+`vignette("Gathering_WEMo_Data", package = "WEMo")`.
+
+## Citing WEMo
+
+If you use WEMo in your research, please cite both the R package and the
+original publications that describe the model’s methodology.
+
+> Walker, Q.A. (2025). WEMo: An R Implementation of the Wave Exposure
+> Model. R package version X.X.X. <https://github.com/QAWalker/WEMo>
+
+> Malhotra, A., and M. S. Fonseca. 2007. WEMo (Wave Exposure Model):
+> Formulation, Procedures and Validation. *NOAA Technical Memorandum NOS
+> NCCOS \#65*. 28p.

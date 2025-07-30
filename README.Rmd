@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# WEMo: An R Implementation of the Wave Exposure Model
+# WEMo
+## An R Implementation of the Wave Exposure Model
 <!-- badges: start -->
 <img src="man/figures/logo.png" align="right" height="200" />
 <!-- badges: end -->
@@ -54,7 +55,7 @@ remotes::install_github("QAWalker/WEMo")
 
 This is a basic workflow demonstrating how to run the model using the package's built-in example data. The example data are located in the immediate area around the NOAA Beaufort Lab on Pivers Island in Beaufort, North Carolina.
 
-```{r example, eval = F}
+```{r example}
 # 1. Load required libraries
 library(WEMo)
 library(sf)
@@ -71,6 +72,15 @@ library(tidyterra)
 # PI_bathy: terra SpatRaster of bathymetry
 PI_bathy <- terra::unwrap(PI_bathy)
 
+# Plot input spatial data
+ggplot() +
+  geom_spatraster(data = PI_bathy) +
+  geom_sf(data = PI_shoreline, fill = "honeydew3") +
+  geom_sf(data = PI_points, color = 'red', size = 3) +
+  labs(title = "WEMo Inputs", 
+       fill = "Bathymetry\n(m NAVD88)") +
+  theme_minimal()
+
 # 3. Summarize wind data for the model
 # WEMo needs a summary of wind speed and proportion by direction
 wind_summary <- summarize_wind_data(
@@ -79,7 +89,9 @@ wind_summary <- summarize_wind_data(
   directions = seq(0, 350, by = 10) # Bin directions into 10-degree increments
 )
 
-plot_wind_rose
+# create and print wind rose
+plot_wind_rose(wind_data = wind_summary)
+
 # 4. Run the full WEMo model
 wemo_results <- wemo_full(
   site_points = PI_points,
@@ -97,23 +109,41 @@ print(wemo_results$wemo_final)
 ggplot() +
   geom_sf(data = PI_shoreline, fill = "honeydew3") +
   geom_sf(data = wemo_results$wemo_final, aes(color = avg_wave_height), size = 5) +
-  scale_color_viridis_c(name = "Avg. Wave\nHeight (m)") +
-  theme_minimal() +
-  labs(title = "WEMo Results: Average Wave Height")
+  scale_color_viridis_c() +
+  labs(title = "WEMo Results: Average Wave Height", 
+       color = "Avg. Wave\nHeight (m)") +
+  theme_minimal()
+
+# Plot the wave height of the wave arriving at the site from each fetch ray
+ggplot() +
+  geom_sf(data = PI_shoreline, fill = "honeydew3") +
+  geom_sf(data = wemo_results$wemo_details, aes(color = wave_height_final), linewidth = 1) +
+  scale_color_viridis_c(option = "H") +
+  labs(title = "WEMo Results: Final Wave Height", 
+       color = "Final Wave\nHeight (m)") +
+  theme_minimal()
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Gathering Your Own Data
 
-```{r cars}
-summary(cars)
-```
+WEMo provides several functions to help you acquire and prepare the necessary input for your area of interest
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+* **Wind Data**: Download historical wind data from NOAA's Integrated Surface Database using `get_wind_data()`.
 
-You can also embed plots, for example:
+* **Bathymetry Data**: Fetch bathymetric rasters from NOAA's CUDEM dataset using `get_noaa_cudem()`.
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
+* **Shoreline Polygon**: Generate a shoreline from a bathymetry raster using `generate_shoreline_from_bathy()`.
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+* **Site Points**: Create a regular grid of points for analysis using `generate_grid_points()`.
+
+For a detailed, step-by-step tutorial on using these functions, please see the *"Gathering WEMo Data"* vignette by running `vignette("Gathering_WEMo_Data", package = "WEMo")`.
+
+## Citing WEMo
+
+If you use WEMo in your research, please cite both the R package and the original publications that describe the model's methodology.
+
+> Walker, Q.A. (2025). WEMo: An R Implementation of the Wave Exposure Model. R package version X.X.X. https://github.com/QAWalker/WEMo
+
+> Malhotra, A., and M. S. Fonseca. 2007. WEMo (Wave Exposure Model): Formulation, Procedures and Validation. *NOAA Technical Memorandum NOS NCCOS #65*. 28p.
+
