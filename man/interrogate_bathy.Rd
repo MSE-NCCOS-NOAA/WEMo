@@ -9,8 +9,7 @@ interrogate_bathy(
   bathy_raster,
   sample_dist = 10,
   depths_or_elev = "elev",
-  water_level = 0,
-  extra_at_start = T
+  water_level = 0
 )
 }
 \arguments{
@@ -18,40 +17,43 @@ interrogate_bathy(
 
 \item{bathy_raster}{A SpatRaster object containing bathymetry data}
 
-\item{sample_dist}{Numeric. The distance between sampling points along each ray (default: 10)}
+\item{sample_dist}{Numeric. The distance between sampling points along each
+ray (default: 10)}
 
-\item{depths_or_elev}{Character string denoting if \code{bathy_raster} stores depths or elevation values. Defaults to \code{'elev'}.
-Must be either \code{'depths'} or \code{'elev'}.
+\item{depths_or_elev}{Character string denoting if \code{bathy_raster} stores
+depths or elevation values. Defaults to \code{'elev'}. Must be either \code{'depths'}
+or \code{'elev'}.
 \itemize{
 \item \code{'depths'}: bathymetry values are depths (more positive values are deeper). \code{bathy_raster} values are added with \code{water_level} directly.
 \item \code{'elev'}: (Default) bathymetry values are elevations (more positive values are shallower/above water). \code{bathy_rater} values are multiplied by -1 before adding \code{water_level}.
 }}
 
 \item{water_level}{the water level that you want to calculate depths for}
-
-\item{extra_at_start}{Logical. If TRUE (default), when ray length doesn't
-divide evenly by sample_dist places extra point at the start. If FALSE,
-places extra point at the end.}
 }
 \value{
-A spatial dataframe with added list columns:
-\item{bathy}{List column containing bathymetry values for each fetch ray}
-\item{distances}{List column containing distance values for each fetch ray}
+A spatial dataframe with added list columns: \item{bathy}{List column
+containing bathymetry values for each fetch ray} \item{distances}{List
+column containing distance values for each fetch ray}
 }
 \description{
-This function processes multiple fetch rays, extracting bathymetry values along each
-ray and storing the results as list columns in the input spatial dataframe.
+This function processes multiple fetch rays, extracting
+bathymetry values along each ray and storing the results as list columns in
+the input spatial dataframe.
 }
 \details{
-Extract bathymetry data along multiple fetch rays and return updated input dataset.
+Extract bathymetry data along multiple fetch rays and return updated input
+dataset.
 
-This function processes each row of the input fetch dataframe, extracting bathymetry
-values along the corresponding geometry. Results are stored as list columns, allowing
-each row to contain vectors of different lengths.
+This function processes each row of the input fetch dataframe,
+extracting bathymetry values along the corresponding geometry. Results are
+stored as list columns, allowing each row to contain vectors of different
+lengths.
 }
 \examples{
 \dontrun{
 # Process all fetch rays with 10m sampling
 fetch_with_bathy <- interrogate_bathy(fetch_rays, bathy_raster, sample_dist = 10)
 }
+
 }
+\keyword{internal}
