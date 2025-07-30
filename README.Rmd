@@ -1,0 +1,119 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# WEMo: An R Implementation of the Wave Exposure Model
+<!-- badges: start -->
+<img src="man/figures/logo.png" align="right" height="200" />
+<!-- badges: end -->
+
+---
+
+**WEMo (Wave Exposure Model)** is an R package that implements a simplified hydrodynamic model to quantify wind-wave exposure in coastal and inland waters. It uses linear wave theory to estimate wave height and energy, accounting for local water depth effects like shoaling and wave breaking. It combines wind data, shoreline geometry, and bathymetry to estimate wave conditions through a reproducible and scriptable workflow in R.
+
+This package provides a modern, open-source, and accessible implementation of the original WEMo, which was developed by NOAA's Center for Coastal Fisheries and Habitat Research and previously required a proprietary plug-in for ESRI's ArcMap software. As the original tool is no longer compatible with modern GIS software, this R package provides a sustainable and license-free path forward for researchers and resource managers.
+
+## Key Features
+
+* **Quantitative Wave Exposure**: Calculates wave height and Representative Wave Energy (RWE) based on wind, fetch, and bathymetry.
+
+* **Data Preparation Tools**: Includes convenience functions to download and prepare input data, such as historical wind observations from NOAA's Integrated Surface Database (`get_wind_data()`) and bathymetry from NOAA's Continuously Updated Digital Elevation Model dataset (`get_noaa_cudem()`).
+
+* **Flexible Inputs**: Works with standard R spatial objects (`sf` and `terra`), allowing users to easily integrate their own data.
+
+* **Scenario Modeling**: Designed for efficient re-analysis, making it easy to model the effects of changing conditions like sea-level rise or different wind regimes.
+
+* **Visualization**: Integrates with `ggplot2` to help visualize inputs and results.
+
+
+---
+
+## Installation
+
+You can install the development version of `WEMo` from [GitHub](https://github.com/) with:
+
+``` r
+# If you don't have the 'remotes' package, install it first
+# install.packages("remotes")
+
+remotes::install_github("QAWalker/WEMo")
+```
+
+## Quick Start: A Complete Example Workflow
+
+This is a basic workflow demonstrating how to run the model using the package's built-in example data. The example data are located in the immediate area around the NOAA Beaufort Lab on Pivers Island in Beaufort, North Carolina.
+
+```{r example, eval = F}
+# 1. Load required libraries
+library(WEMo)
+library(sf)
+library(terra)
+library(ggplot2)
+library(tidyterra)
+
+# 2. Load the package's example data
+# These are pre-loaded with the package
+# PI_points: sf object with 3 site points
+# PI_shoreline: sf polygon of the Mean Higher High Water shoreline (0.522 m NAVD88)
+# PI_wind_data: data.frame of raw  hourly wind history
+
+# PI_bathy: terra SpatRaster of bathymetry
+PI_bathy <- terra::unwrap(PI_bathy)
+
+# 3. Summarize wind data for the model
+# WEMo needs a summary of wind speed and proportion by direction
+wind_summary <- summarize_wind_data(
+  wind_data = PI_wind_data,
+  wind_percentile = 0.95,          # Use 95th percentile wind speed
+  directions = seq(0, 350, by = 10) # Bin directions into 10-degree increments
+)
+
+plot_wind_rose
+# 4. Run the full WEMo model
+wemo_results <- wemo_full(
+  site_points = PI_points,
+  shoreline = PI_shoreline,
+  bathy = PI_bathy,
+  wind_data = wind_summary,
+  max_fetch = 1000, # Max distance (m) to calculate fetch
+  water_level = 0.552 # Water level (m) relative to bathy vertical datum
+)
+
+# 5. Explore and plot the final results
+print(wemo_results$wemo_final)
+
+# Plot the average wave height at each point
+ggplot() +
+  geom_sf(data = PI_shoreline, fill = "honeydew3") +
+  geom_sf(data = wemo_results$wemo_final, aes(color = avg_wave_height), size = 5) +
+  scale_color_viridis_c(name = "Avg. Wave\nHeight (m)") +
+  theme_minimal() +
+  labs(title = "WEMo Results: Average Wave Height")
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
+```{r cars}
+summary(cars)
+```
+
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
