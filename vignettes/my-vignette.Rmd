@@ -184,7 +184,7 @@ head(wind_data_summary)
 Plot the summarized wind as a wind rose:
 
 ```{r plot summarized wind data in a wind rose, eval=TRUE}
-wind_rose_plot <- wind_rose(wind_data = wind_data_summary)
+wind_rose_plot <- plot_wind_rose(wind_data = wind_data_summary)
 
 # update the title, subtitle and fill description and change the color scale for the filled bars
 wind_rose_plot <- wind_rose_plot +
@@ -197,7 +197,7 @@ wind_rose_plot <- wind_rose_plot +
 
 wind_rose_plot
 ```
-*NOTE: `wind_rose()` creates a `ggplot` object that can be saved or further manipulated to match your needs. Read more about controlling and customizing plots in `ggplot2` here: <https://ggplot2.tidyverse.org/>*
+*NOTE: `plot_wind_rose()` creates a `ggplot` object that can be saved or further manipulated to match your needs. Read more about controlling and customizing plots in `ggplot2` here: <https://ggplot2.tidyverse.org/>*
 
 ## Using Your Own Data
 

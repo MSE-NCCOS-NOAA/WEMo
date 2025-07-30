@@ -126,7 +126,7 @@ wind_data_summary <- summarize_wind_data(
 head(wind_data_summary)
 
 # make a wind rose
-wind_rose(wind_data_summary)
+plot_wind_rose(wind_data_summary)
 ```
 
 Input `wind_direction` values are coerced into values 0-359.9. The function can further snap input `wind_directions` to a user supplied vector of suitable directions (`directions`). Input `wind_directions` are rounded to the nearest value in `directions`. This is often necessary with input data from public data sets that have occasional anomalous readings. If `directions` is not supplied the output is based on all unique values in `wind_data$wind_direction`.
