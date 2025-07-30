@@ -92,7 +92,7 @@ wemo_full <- function(site_points,
     extra_at_start =  extra_at_start
   )
 
-  wemo_results <- WEMo(fetch = wemo_inputs)
+  wemo_results <- wemo(fetch = wemo_inputs)
 
   return(wemo_results)
 }

@@ -52,11 +52,11 @@
 #' @examples
 #' \dontrun{
 #' # Example assumes fetch object includes efetch, depths, distances, speed, and direction
-#' result <- WEMo(fetch = fetch, site_points = site_pts)
+#' result <- wemo(fetch = fetch, site_points = site_pts)
 #' details <- result$wemo_details
 #' summary <- result$wemo_output
 #' }
-WEMo <- function(fetch){
+wemo <- function(fetch){
 
   wemo_details <- lapply(seq_along(fetch$geometry), function(i){
     dplyr::bind_cols(
