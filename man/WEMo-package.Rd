@@ -2,10 +2,13 @@
 % Please edit documentation in R/WEMo-package.R
 \docType{package}
 \name{WEMo-package}
+\alias{WEMo}
 \alias{WEMo-package}
 \title{WEMo: Wave Energy Model}
 \description{
-WEMo is a model that quantifies the energetic environment of a given point resulting from wind-generated waves. The model takes as inputs a bathymetry, a shoreline polygon, and wind history data. This packages contains functions to calculate the fetch, determine the effective fetch, grab the bathymetery along a vector ray and then build a wind-wave. This package also includes helper functions to find and prepare data to input into the model such as wind and shoreline polygons.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+WEMo is a model for quantifying the wave energy environment at a given location based on wind-generated waves. It uses wind history, bathymetry, and shoreline geometry to estimate wave conditions. This package provides tools to calculate fetch, determine effective fetch, extract bathymetry along vector rays, and model wind-wave properties. It also includes helper functions to locate, download, and prepare inputs such as wind data and shoreline polygons.
 }
 \seealso{
 Useful links:
