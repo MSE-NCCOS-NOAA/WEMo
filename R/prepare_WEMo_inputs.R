@@ -25,9 +25,6 @@
 #'   whether bathymetry is interpreted as water depth (positive down) or
 #'   elevation (negative down). If `'elev'`, values are flipped to represent
 #'   depth.
-#' @param extra_at_start Logical. Whether to add an extra bathymetry sample at
-#'   the fetch origin. Default is `TRUE`.
-#'
 #'
 #' @return An `sf` object containing the fetch lines with columns:
 #' \describe{
@@ -48,8 +45,7 @@ prepare_wemo_inputs <- function(site_points,
                                 max_fetch = 10000,
                                 sample_dist = 5,
                                 water_level,
-                                depths_or_elev = 'elev',
-                                extra_at_start = T) {
+                                depths_or_elev = 'elev') {
 
   depths_or_elev <- tolower(depths_or_elev)
 
@@ -70,8 +66,7 @@ prepare_wemo_inputs <- function(site_points,
     bathy_raster = bathy,
     sample_dist = sample_dist,
     water_level = water_level,
-    depths_or_elev = depths_or_elev,
-    extra_at_start = extra_at_start
+    depths_or_elev = depths_or_elev
   )
 
   e_fetch_with_bathy_wind <- dplyr::left_join(e_fetch_with_bathy, wind_data, by = dplyr::join_by('direction'))

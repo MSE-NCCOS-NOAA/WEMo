@@ -42,9 +42,6 @@
 #'   whether bathymetry is interpreted as water depth (positive down) or
 #'   elevation (negative down). If `'elev'`, values are flipped to represent
 #'   depth.
-#' @param extra_at_start Logical. Whether to add an extra bathymetry sample at
-#'   the fetch origin. Default is `TRUE`.
-#'
 #'
 #' @return A list of two elements:
 #' \describe{
@@ -76,8 +73,7 @@ wemo_full <- function(site_points,
          max_fetch = 10000,
          sample_dist = 5,
          water_level,
-         depths_or_elev = 'elev',
-         extra_at_start = T) {
+         depths_or_elev = 'elev') {
 
   wemo_inputs <- prepare_wemo_inputs(
     site_points = site_points,
@@ -88,8 +84,7 @@ wemo_full <- function(site_points,
     max_fetch = max_fetch,
     sample_dist = sample_dist,
     water_level = water_level,
-    depths_or_elev = depths_or_elev,
-    extra_at_start =  extra_at_start
+    depths_or_elev = depths_or_elev
   )
 
   wemo_results <- wemo(fetch = wemo_inputs)

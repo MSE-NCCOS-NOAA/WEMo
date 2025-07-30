@@ -13,8 +13,7 @@ prepare_wemo_inputs(
   max_fetch = 10000,
   sample_dist = 5,
   water_level,
-  depths_or_elev = "elev",
-  extra_at_start = T
+  depths_or_elev = "elev"
 )
 }
 \arguments{
@@ -46,9 +45,6 @@ meters).}
 whether bathymetry is interpreted as water depth (positive down) or
 elevation (negative down). If \code{'elev'}, values are flipped to represent
 depth.}
-
-\item{extra_at_start}{Logical. Whether to add an extra bathymetry sample at
-the fetch origin. Default is \code{TRUE}.}
 }
 \value{
 An \code{sf} object containing the fetch lines with columns:
