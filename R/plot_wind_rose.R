@@ -34,7 +34,7 @@
 #'  ) %>%
 #'  dplyr::mutate(proportion = proportion/sum(proportion)*100)
 #'
-#'  wind_rose_plot <- plot_wind_rose(wind_data)
+#'  wind_rose_plot <- wind_rose(wind_data)
 #'
 #'  # view the plot
 #'  wind_rose_plot
@@ -54,7 +54,7 @@
 #' @importFrom ggplot2 geom_col scale_x_discrete scale_y_continuous coord_polar labs aes ggplot expansion ggplot_build
 #' @importFrom scales percent
 #'
-plot_wind_rose <- function(wind_data){
+wind_rose <- function(wind_data){
   # Extract calm wind percentage
   calm_data <-  dplyr::filter(wind_data, is.na(.data$direction))
   calm_pct <- if (nrow(calm_data) > 0) round(calm_data$proportion, 1) else 0
