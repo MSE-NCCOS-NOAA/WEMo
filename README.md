@@ -105,7 +105,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-example-1.png" width="85%" />
 
 ``` r
 
@@ -121,7 +121,7 @@ wind_summary <- summarize_wind_data(
 plot_wind_rose(wind_data = wind_summary)
 ```
 
-<img src="man/figures/README-example-2.png" width="100%" />
+<img src="man/figures/README-example-2.png" width="85%" />
 
 ``` r
 
@@ -161,7 +161,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-example-3.png" width="100%" />
+<img src="man/figures/README-example-3.png" width="85%" />
 
 ``` r
 
@@ -175,7 +175,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-example-4.png" width="100%" />
+<img src="man/figures/README-example-4.png" width="85%" />
 
 ## Gathering Your Own Data
 
@@ -203,9 +203,9 @@ see the *“Gathering WEMo Data”* vignette by running
 If you use WEMo in your research, please cite both the R package and the
 original publications that describe the model’s methodology.
 
-> Walker, Q.A. (2025). WEMo: An R Implementation of the Wave Exposure
-> Model. R package version X.X.X. <https://github.com/QAWalker/WEMo>
+> Walker, Q.A. (2024). *WEMo: An R Implementation of the Wave Exposure
+> Model*. R package version X.X.X. <https://github.com/QAWalker/WEMo>
 
-> Malhotra, A., and M. S. Fonseca. 2007. WEMo (Wave Exposure Model):
-> Formulation, Procedures and Validation. *NOAA Technical Memorandum NOS
-> NCCOS \#65*. 28p.
+> Malhotra, A., & Fonseca, M. S. (2007). *WEMo (Wave Exposure Model):
+> Formulation, Procedures and Validation*. NOAA Technical Memorandum NOS
+> NCCOS 65. 28 pp.
