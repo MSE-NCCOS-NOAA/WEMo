@@ -63,7 +63,7 @@ You can install the development version of `WEMo` from
 remotes::install_github("QAWalker/WEMo")
 ```
 
-## Quick Start: A Complete Example Workflow
+## Example Workflow
 
 This is a basic workflow demonstrating how to run the model using the
 package’s built-in example data. The example data are located in the
