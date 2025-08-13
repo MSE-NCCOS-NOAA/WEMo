@@ -44,9 +44,12 @@ interrogate_bathy <- function(fetch,
   fetch_with_bathy <-
     lapply(seq_along(fetch$geometry), function(i){
       fetch_ray <- fetch[i, ]
-      extracted_bathy <- extract_bathy_along_fetch(bathy_raster,
-                                                   fetch_ray,
-                                                   sample_dist = sample_dist)
+
+      extracted_bathy <- extract_bathy_along_fetch(
+        bathy_raster,
+        fetch_ray,
+        sample_dist = sample_dist
+      )
 
       if(depths_or_elev == 'depths') {
         depths <- extracted_bathy[["bathy"]] + water_level
@@ -54,6 +57,20 @@ interrogate_bathy <- function(fetch,
         depths <- -1 * extracted_bathy[["bathy"]] + water_level
       }
 
+      #Check and warn if any NAs are extracted from the bathy indicating non overlap of rays and raster
+      if (any(is.na(depths))) {
+        # Build the specific warning message using columns from fetch_ray
+        msg <- paste0(
+          "NA values extracted from bathymetry at site '",
+          fetch_ray$site,
+          "' at direction '",
+          fetch_ray$direction,
+          "'. ",
+          "This usually means the fetch ray extends beyond the bathy raster's coverage. ",
+          "Ensure bathymetry raster has full coverage for `max_fetch`."
+        )
+        warning(msg, call. = FALSE)
+      }
       tibble::tibble(
         geometry = fetch_ray$geometry,
         bathy = list(extracted_bathy[["bathy"]]),
