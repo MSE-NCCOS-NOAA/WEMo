@@ -44,7 +44,7 @@ wind_data <- data.frame(
  ) \%>\%
  dplyr::mutate(proportion = proportion/sum(proportion)*100)
 
- wind_rose_plot <- wind_rose(wind_data)
+ wind_rose_plot <- plot_wind_rose(wind_data)
 
  # view the plot
  wind_rose_plot
