@@ -137,7 +137,7 @@ WEMo provides several functions to help you acquire and prepare the necessary in
 
 * **Site Points**: Create a regular grid of points for analysis using `generate_grid_points()`.
 
-For a detailed, step-by-step tutorial on using these functions, please see the *"Gathering WEMo Data"* vignette by running `vignette("Gathering_WEMo_Data", package = "WEMo")`.
+For a detailed, step-by-step tutorial on using these functions, please see the *"Gathering WEMo Data"* vignette by running `vignette("Gathering Input Data", package = "WEMo")`.
 
 ## Citing WEMo
 

@@ -76,7 +76,8 @@ library(WEMo)
 library(sf)
 #> Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.0; sf_use_s2() is TRUE
 library(terra)
-#> terra 1.8.54
+#> Warning: package 'terra' was built under R version 4.5.1
+#> terra 1.8.60
 library(ggplot2)
 #> Warning: package 'ggplot2' was built under R version 4.5.1
 library(tidyterra)
@@ -196,7 +197,7 @@ necessary input for your area of interest
 
 For a detailed, step-by-step tutorial on using these functions, please
 see the *“Gathering WEMo Data”* vignette by running
-`vignette("Gathering_WEMo_Data", package = "WEMo")`.
+`vignette("Gathering Input Data", package = "WEMo")`.
 
 ## Citing WEMo
 
