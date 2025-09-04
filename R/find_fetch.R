@@ -80,7 +80,7 @@ find_fetch <- function(site_points, polygon_layer,
 
   # Ensure CRS match
   if (sf::st_crs(site_points) != sf::st_crs(polygon_layer_union)) {
-    warning("CRS mismatch: transforming site_points to match polygon_layer_union")
+    warning("CRS mismatch: transforming site_points to match polygon_layer")
     site_points <- sf::st_transform(site_points, sf::st_crs(polygon_layer_union))
   }
 
