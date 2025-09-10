@@ -57,6 +57,13 @@ interrogate_bathy <- function(fetch,
         depths <- -1 * extracted_bathy[["bathy"]] + water_level
       }
 
+      # if (any(depths < 0, na.rm = TRUE)) {
+      #   warning("Some depths are negative at site '", fetch_ray$site,
+      #           "'. Consider a more appropriate water_level or shoreline contour.\n Clipping all depths to 0.0001")
+      #   depths <- pmax(depths, 0.0001)
+      #
+      # }
+
       #Check and warn if any NAs are extracted from the bathy indicating non overlap of rays and raster
       if (any(is.na(depths))) {
         # Build the specific warning message using columns from fetch_ray
