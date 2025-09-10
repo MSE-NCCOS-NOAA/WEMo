@@ -123,7 +123,7 @@ This raster should cover the full extent of the area that you might expect to be
 ```{r read bathy data}
 # load bathymetry
 # PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
-PI_bathy <- terra::rast(x = "C:/Users/Quentin.Walker/Documents/R/My Packages/WEMo/inst/extdata/PI_bathy.tif")
+# PI_bathy <- terra::rast(x = "C:/Users/Quentin.Walker/Documents/R/My Packages/WEMo/inst/extdata/PI_bathy.tif")
 
 # plot the bathy raster
 ggplot() +

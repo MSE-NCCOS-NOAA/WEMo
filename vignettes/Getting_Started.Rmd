@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(WEMo)
 ```
 
-```{r, inlcude = FALSE}
+```{r, include = FALSE}
 if (!requireNamespace("tidyterra", quietly = TRUE)) {
   knitr::opts_chunk$set(eval = FALSE)
   message("tidyterra not installed — vignette chunks won't run.")
@@ -27,9 +27,16 @@ if (!requireNamespace("tidyterra", quietly = TRUE)) {
 
 ## About WEMo
 
-**WEMo (Wave Exposure Model)** uses linear wave theory to estimate wave height and wave energy while accounting for local water depth effects like shoaling and wave breaking.
+**WEMo (Wave Exposure Model)** is an R package that implements a simplified hydrodynamic model to quantify wind-wave exposure in coastal and inland waters. It uses linear wave theory to estimate wave height and energy, accounting for local water depth effects like shoaling and wave breaking. It combines wind data, shoreline geometry, and bathymetry to estimate wave conditions through a reproducible and scriptable workflow in R.
 
-Originally written in [insert original language], WEMo previously depended on ESRI’s ArcGIS. This R implementation removes that dependency, making the model more accessible and license-free.
+This package provides a modern, open-source, and accessible implementation of the original WEMo, which was developed by NOAA’s Center for Coastal Fisheries and Habitat Research and previously required a proprietary plug-in for ESRI’s ArcMap software. As the original tool is no longer compatible with modern GIS software, this R package provides a sustainable and license-free path forward for researchers and resource managers.
+
+In addition to the core modeling functionality, this package provides dynamic tools for gathering and preparing input data and visualizing results.
+
+More info on the original WEMo here: 
+<https://coastalscience.noaa.gov/science-areas/climate-change/wemo/>
+
+## Input Data Overview
 
 WEMo requires four key inputs:
 
@@ -41,47 +48,37 @@ WEMo requires four key inputs:
 
 * A set of site points for which wave exposure will be calculated
 
-The WEMo package also includes functions for preparing inputs, summarizing wind data, calculating fetch, and visualizing results.
-
-Original ArcMap Version of WEMo: <https://coastalscience.noaa.gov/science-areas/climate-change/wemo/>
-
-## Input Data Overview
-
 ### Bathymetry
 
 Bathymetry describes underwater terrain, which influences wave growth and breaking. WEMo requires bathymetry as a raster (GeoTIF `.tif`), typically in meters relative to a vertical datum like NAVD88. 
 
+The function `get_noaa_cudem()` provides access to NOAA's Continuously Updated Digital Elevation Model [CUDEM](https://www.ncei.noaa.gov/products/coastal-elevation-models) (<https://www.ncei.noaa.gov/products/coastal-elevation-models>) allowing users to quickly download and incorporate CUDEM topobathy data in their workflow.
+
 ### Shoreline
 
-The shoreline defines the land-water boundary for fetch calculations. It should be an `sf` polygon. You can either supply your own shoreline shapefile or generate one from your bathymetry raster using the `shoreline_from_bathy()` function.
+The shoreline defines the land-water boundary which is critical for fetch calculations. 
+
+The function `generate_shoreline_from_bathy()` generates a shoreline polygon at a user defined contour on your input bathymetric raster. 
 
 ### Wind
 
-WEMo is a wind-wave only model, other sources of waves like tides and storms are not considered. 
+WEMo is a local wind-wave only model, other sources of waves like tides and seiche are not considered. 
 
-WEMo expects a summary of wind history not raw observations. 
+The function `get_wind_data()` gives users access to [NOAA’s integrated surface dataset](https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database) (via the [worldmet](https://openair-project.github.io/worldmet/) package) to retrieve wind data for use in WEMo. Users can select a station, either interactively or by providing an index or station code.
 
-This summarized history must include:
-
--   **`direction`**: The direction *from* which the wind blows (degrees off North, like a compass)
-
--   **`proportion`**: Fraction of time wind comes from each direction
-
--   **`speed`**: Wind speed used for wave generation (e.g., mean or percentile)
-
-Use `get_wind_data()` to download wind history and `summarize_wind_data()` to summarize them for WEMo.
+The function `summarize_wind_data()` prepares wind data to be used by WEMo by cleaning and summarizing data from `get_wind_data()`.
 
 ### Site Points
 
-Site points define where WEMo will compute wave exposure. Supply as an `sf` point object.
+Site points define where WEMo will compute wave exposure. 
 
-For broader spatial coverage, create a grid using `generate_grid_points()`.
+Users can read in their own points as shapefiles or create a grid of points around coordinates using `generate_grid_points()`.
 
 # Running WEMo
 
 ## Installation
 
-```{}
+```{r, eval=FALSE}
 # Ensure you have the remotes package installed, if not download and install it
 if(!require(remotes)) install.packages("remotes")
 
@@ -92,7 +89,7 @@ remotes::install_github("QAWalker/WEMo")
 
 ## Load Libraries
 
-```{r load libraries}
+```{r load libraries, results='hide', warning=FALSE, message=FALSE}
 # Load WEMo into your environment
 library(WEMo)
 
@@ -122,8 +119,7 @@ This raster should cover the full extent of the area that you might expect to be
 
 ```{r read bathy data}
 # load bathymetry
-# PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
-PI_bathy <- terra::rast(x = "C:/Users/Quentin.Walker/Documents/R/My Packages/WEMo/inst/extdata/PI_bathy.tif")
+PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
 
 # plot the bathy raster
 ggplot() +
@@ -134,6 +130,7 @@ ggplot() +
 ### Site Points
 
 ```{r import and plot points}
+# Plot site points
 # PI_Points is a sf object containing 3 points
 ggplot()+
   geom_sf(data = PI_points, color = "red", size = 3)
@@ -142,6 +139,7 @@ ggplot()+
 ### Shoreline
 
 ```{r import and plot shoreline}
+# Plot shoreline
 # PI_shoreline is a polygon representing the MHHW shoreline (0.552 m NAVD88)
 ggplot()+
   geom_sf(data = PI_shoreline, fill = "honeydew3")
@@ -150,6 +148,7 @@ ggplot()+
 ### Plot All Input Spatial Data
 
 ```{r plot shoreline and points}
+# plot all input spatial data
 ggplot()+
   geom_spatraster(data = PI_bathy)+
   geom_sf(data = PI_shoreline, fill = "honeydew3")+
@@ -160,7 +159,8 @@ ggplot()+
 
 ### Wind
 
-```{r inspect example wind data}
+```{r inspect example wind data, results='markup'}
+# View first several rows of wind data
 # PI_wind_data contains local wind observations from 2023 - 2024
 head(PI_wind_data)
 ```
@@ -168,22 +168,26 @@ head(PI_wind_data)
 WEMo wants a summary of the wind history data i.e. one proportion and speed value for each direction.
 
 ```{r summarize wind, eval = T}
+# Summarizing wind data
 # create a vector from 0 to 350 by 10 to snap the input wind_directions to
 wanted_directions <- seq(from = 0, to = 350, by = 10)
 
 # calculate the 95th percentile wind speed every 10 degrees
+# Using 95 percentile as an example, but the wind speed of interest will change depending on your use case
 wind_data_summary <- summarize_wind_data(
   wind_data = PI_wind_data,
   wind_percentile = 0.95,
   directions = wanted_directions
 )
 
+# View first several rows of summarized wind data
 head(wind_data_summary)
 ```
 
-Plot the summarized wind as a wind rose:
+Plot the summarized wind data as a wind rose:
 
 ```{r plot summarized wind data in a wind rose, eval=TRUE}
+# Plot wind data summary as a wind rose
 wind_rose_plot <- plot_wind_rose(wind_data = wind_data_summary)
 
 # update the title, subtitle and fill description and change the color scale for the filled bars
@@ -199,55 +203,22 @@ wind_rose_plot
 ```
 *NOTE: `plot_wind_rose()` creates a `ggplot` object that can be saved or further manipulated to match your needs. Read more about controlling and customizing plots in `ggplot2` here: <https://ggplot2.tidyverse.org/>*
 
-## Using Your Own Data
-
-Use `terra` to load rasters
-
-```{r, eval = FALSE}
-my_bathy <- terra::rast("/path/to/data/bathy.tif")
-```
-
-use `sf` to load other spatial files
-
-```{r, eval = FALSE}
-my_points <- sf::st_read("/path/to/data/points.shp")
-
-my_shoreline <- sf::st_read("/path/to/data/shoreline.shp")
-```
-
-Read in wind data saved in `.csv` format
-
-```{r, eval = FALSE}
-my_wind <- read.csv("/path/to/data/wind_data.csv")
-```
-
-or find and download wind data with the `get_wind_data()`
-
-```{r download wind dummy, eval = FALSE}
-PI_wind_data <- get_wind_data(PI_points, 2023:2024, which_station = "ask")
-
-```
-
-*NOTE: `get_wind_data()` uses the package `worldmet` <https://openair-project.github.io/worldmet/> to access NOAA Integrated Surface Database (ISD) meteorological observations data.*
-
-With the argument `which_station` set to `"ask"` you'll be prompted to select a weather station (and an interactive map to see where they are in relation to each other):
-
-```         
-Choose a met station
-Available stations: 
-
-1: 994975-99999 BEAUFORT  NC (0.5 km), 2008-01-01 to 2025-06-25
-2: 723037-93765 MICHAEL J SMITH FLD ARPT (2.7 km), 2006-01-01 to 2025-06-26
-3: 994160-99999 CAPE LOOKOUT  NC (17.2 km), 1985-01-20 to 2025-06-25
-4: 723090-13754 CHERRY POINT MCAS (28 km), 1973-01-01 to 2025-06-26
-5: 723097-93743 BOGUE FIELD MARINE CORPS AUXILIARY FIELD (32.8 km), 1987-05-04 to 2025-06-26
-
-Selection:
-```
-
-Enter the number of the station what you would like to download and then data will download and be ready to be saved to disk or moved through the workflow.
-
 # Run WEMo with `wemo_full()`
+
+Now that all of our input data is gathered and inspected we're ready to run the model. In this example, WEMo will:
+
+* Model wind waves at each point in `PI_points.`
+* Use `PI_shoreline` as the shoreline for drawing fetch rays.
+* Use the raster `PI_bathy` as the bathymetry that waves interact with as they approach the points.
+* Apply the summarized wind information in `wind_data_summary`, which provides the intensity and frequency of wind from each of the `wanted_directions.`
+
+We also set a few modeling parameters:
+
+* `max_fetch = 10000`: the maximum length (in meters) of fetch rays.
+* `sample_dist = 1`: the spacing (in meters) at which bathymetry is sampled and the wave is built along each ray.
+* `water_level = 0.552`: the water level (in the same units as the bathymetry raster). This is mean higher high water for this site
+* `depths_or_elev = "elev"`: indicates that the bathymetry file stores elevations (not water depths).
+
 
 ```{r run wemo, eval = TRUE}
 wemo_output <- wemo_full(
@@ -256,8 +227,8 @@ wemo_output <- wemo_full(
   bathy = PI_bathy,
   wind_data = wind_data_summary,
   directions = wanted_directions,
-  max_fetch = 1000,
-  sample_dist = 10,
+  max_fetch = 10000,
+  sample_dist = 1,
   water_level = 0.552,
   depths_or_elev = "elev"
 )
@@ -333,7 +304,7 @@ inputs <- prepare_wemo_inputs(
 Then run the model:
 
 ```{r}
-results <- WEMo(fetch = inputs)
+results <- wemo(fetch = inputs)
 ```
 
 ## Example: Adding Sea Level Rise
@@ -341,7 +312,7 @@ results <- WEMo(fetch = inputs)
 ```{r add SLR to input data}
 # add 0.3 m to each depth value
 inputs_SLR <- update_depths(inputs, depth_diff = 0.3)
-results_SLR <- WEMo(inputs_SLR)
+results_SLR <- wemo(inputs_SLR)
 
 # compare to previous results
 data.frame(
@@ -362,7 +333,7 @@ inputs_windy <- inputs
 # Increase wind speed by 25%
 inputs_windy$speed <- inputs_windy$speed * 1.25
 
-results_windy <- WEMo(inputs_windy)
+results_windy <- wemo(inputs_windy)
 
 # compare to previous results
 data.frame(

@@ -6,3 +6,8 @@
 ^pkgdown$
 ^\.github$
 ^README\.Rmd$
+^NOAA_CUDEM$
+^bathy_by_site.pdf$
+^bathy_by_site_reversed.pdf$
+^depth_distance_by_site.pdf$
+^vignettes/.*\.Rmd$
