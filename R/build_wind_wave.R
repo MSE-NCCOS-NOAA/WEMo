@@ -123,7 +123,7 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
 
   # ---- Loop through segments to grow and transform wave ---
   for(j in 2:length(depths)){
-    if(depths[j] <= 0){
+    if(!is.finite(depths[j]) || depths[j] <= 0){
       # Handle invalid depths by setting a small default value
       gf <- (0.0125 * (G * distances[j-1] / wind_speed^2)^0.42)
       wave_height[j] <- 0.283 * tanh(gf) * wind_speed^2 / G
