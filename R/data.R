@@ -50,22 +50,3 @@
 #' )
 "PI_wind_data"
 
-#' Example Wind Data for WEMo examples
-#'
-#' Wind history data from
-#'
-#' @format ## `wemo_points`
-#' A tibble with 184,947 rows and 73 columns
-#' \describe{
-#'   \item{code}{the ISD station code}
-#'   \item{time}{datetime when the observation was made}
-#'   \item{year}{year when the observation was made}
-#'   \item{month}{month when the observation was made}
-#'   \item{day}{day when the observation was made}
-#'   \item{wind_direction}{direction from which the wind blows. degrees off north}
-#'   \item{speed}{speed of the wind. meters per second}
-#'   ...
-#' }
-#'
-#' @source continuously updated topobathy from NOAA - need more info here
-"PI_bathy"
