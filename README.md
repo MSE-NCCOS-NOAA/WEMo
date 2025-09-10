@@ -70,31 +70,32 @@ package’s built-in example data. The example data are located in the
 immediate area around the NOAA Beaufort Lab on Pivers Island in
 Beaufort, North Carolina.
 
+### 1. Load required libraries
+
 ``` r
-# 1. Load required libraries
 library(WEMo)
 library(sf)
-#> Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.0; sf_use_s2() is TRUE
 library(terra)
-#> Warning: package 'terra' was built under R version 4.5.1
-#> terra 1.8.60
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.5.1
 library(tidyterra)
-#> 
-#> Attaching package: 'tidyterra'
-#> The following object is masked from 'package:stats':
-#> 
-#>     filter
+```
 
-# 2. Load the package's example data
-# These are pre-loaded with the package
-# PI_points: sf object with 3 site points
-# PI_shoreline: sf polygon of the Mean Higher High Water shoreline (0.522 m NAVD88)
-# PI_wind_data: data.frame of raw  hourly wind history
+### 2. Load the package’s example data
 
-# PI_bathy: terra SpatRaster of bathymetry
-PI_bathy <- terra::unwrap(PI_bathy)
+A suite of example data is included with WEMo. The data are from the
+area around Pivers Island, Beaufort, North Carolina. They include:
+
+- `PI_points`: 3 site points. A `sf` POINT object.
+- `PI_shoreline`: a polygon of the Mean Higher High Water shoreline
+  (0.522 m NAVD88). A `sf` MULTIPOLYGON object.
+- `PI_wind_data`: hourly wind history from a nearby weather station. A
+  `tibble`.
+- `PI_bathy`: a topobathy raster storing elevations in m NAVD88. A
+  `SpatRaster`,
+
+``` r
+# read in the topobathy
+PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
 
 # Plot input spatial data
 ggplot() +
@@ -104,13 +105,12 @@ ggplot() +
   labs(title = "WEMo Inputs", 
        fill = "Bathymetry\n(m NAVD88)") +
   theme_minimal()
+#> <SpatRaster> resampled to 500556 cells.
 ```
 
-<img src="man/figures/README-example-1.png" width="85%" />
+<img src="man/figures/README-examine input data-1.png" width="85%" />
 
 ``` r
-
-# 3. Summarize wind data for the model
 # WEMo needs a summary of wind speed and proportion by direction
 wind_summary <- summarize_wind_data(
   wind_data = PI_wind_data,
@@ -122,21 +122,24 @@ wind_summary <- summarize_wind_data(
 plot_wind_rose(wind_data = wind_summary)
 ```
 
-<img src="man/figures/README-example-2.png" width="85%" />
+<img src="man/figures/README-summarize and plot wind data-1.png" width="85%" />
+
+### 4. Run the full WEMo model
 
 ``` r
-
-# 4. Run the full WEMo model
 wemo_results <- wemo_full(
   site_points = PI_points,
   shoreline = PI_shoreline,
   bathy = PI_bathy,
   wind_data = wind_summary,
-  max_fetch = 1000, # Max distance (m) to calculate fetch
+  max_fetch = 10000, # Max distance (m) to calculate fetch
   water_level = 0.552 # Water level (m) relative to bathy vertical datum
 )
+```
 
-# 5. Explore and plot the final results
+### 5. Examine and plot final results
+
+``` r
 print(wemo_results$wemo_final)
 #> Simple feature collection with 3 features and 9 fields
 #> Geometry type: POINT
@@ -146,9 +149,9 @@ print(wemo_results$wemo_final)
 #> # A tibble: 3 × 10
 #>    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch
 #>   <int> <dbl>           <dbl>           <dbl> <chr>                     <dbl>
-#> 1     1  31.8          0.102            0.141 220                        444.
-#> 2     2  23.3          0.0895           0.123 50                         345.
-#> 3     3  10.0          0.0755           0.112 170                        256.
+#> 1     1  31.6          0.102            0.141 220                        443.
+#> 2     2  22.8          0.0894           0.124 50                         355.
+#> 3     3  10.1          0.0755           0.112 170                        257.
 #> # ℹ 4 more variables: max_fetch <dbl>, avg_efetch <dbl>, max_efetch <dbl>,
 #> #   geometry <POINT [m]>
 
@@ -162,7 +165,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-example-3.png" width="85%" />
+<img src="man/figures/README-plot final results-1.png" width="85%" />
 
 ``` r
 
@@ -176,7 +179,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-example-4.png" width="85%" />
+<img src="man/figures/README-plot final results-2.png" width="85%" />
 
 ## Gathering Your Own Data
 

@@ -55,22 +55,27 @@ remotes::install_github("QAWalker/WEMo")
 
 This is a basic workflow demonstrating how to run the model using the package's built-in example data. The example data are located in the immediate area around the NOAA Beaufort Lab on Pivers Island in Beaufort, North Carolina.
 
-```{r example}
-# 1. Load required libraries
+### 1. Load required libraries
+```{r load libraries, , results='hide', warning=FALSE, message=FALSE}
 library(WEMo)
 library(sf)
 library(terra)
 library(ggplot2)
 library(tidyterra)
+```
 
-# 2. Load the package's example data
-# These are pre-loaded with the package
-# PI_points: sf object with 3 site points
-# PI_shoreline: sf polygon of the Mean Higher High Water shoreline (0.522 m NAVD88)
-# PI_wind_data: data.frame of raw  hourly wind history
+### 2. Load the package's example data
 
-# PI_bathy: terra SpatRaster of bathymetry
-PI_bathy <- terra::unwrap(PI_bathy)
+A suite of example data is included with WEMo. The data are from the area around Pivers Island, Beaufort, North Carolina. They include:
+
+* `PI_points`: 3 site points. A `sf` POINT object.
+* `PI_shoreline`: a polygon of the Mean Higher High Water shoreline (0.522 m NAVD88). A `sf` MULTIPOLYGON object.
+* `PI_wind_data`: hourly wind history from a nearby weather station. A `tibble`.
+* `PI_bathy`: a topobathy raster storing elevations in m NAVD88. A `SpatRaster`,
+
+```{r examine input data}
+# read in the topobathy
+PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
 
 # Plot input spatial data
 ggplot() +
@@ -80,8 +85,9 @@ ggplot() +
   labs(title = "WEMo Inputs", 
        fill = "Bathymetry\n(m NAVD88)") +
   theme_minimal()
+```
 
-# 3. Summarize wind data for the model
+```{r summarize and plot wind data}
 # WEMo needs a summary of wind speed and proportion by direction
 wind_summary <- summarize_wind_data(
   wind_data = PI_wind_data,
@@ -91,18 +97,23 @@ wind_summary <- summarize_wind_data(
 
 # create and print wind rose
 plot_wind_rose(wind_data = wind_summary)
+```
 
-# 4. Run the full WEMo model
+### 4. Run the full WEMo model
+```{r run model}
 wemo_results <- wemo_full(
   site_points = PI_points,
   shoreline = PI_shoreline,
   bathy = PI_bathy,
   wind_data = wind_summary,
-  max_fetch = 1000, # Max distance (m) to calculate fetch
+  max_fetch = 10000, # Max distance (m) to calculate fetch
   water_level = 0.552 # Water level (m) relative to bathy vertical datum
 )
+```
 
-# 5. Explore and plot the final results
+### 5. Examine and plot final results
+
+```{r plot final results}
 print(wemo_results$wemo_final)
 
 # Plot the average wave height at each point
