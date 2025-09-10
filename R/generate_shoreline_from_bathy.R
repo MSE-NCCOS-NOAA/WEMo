@@ -35,7 +35,8 @@
 #' @export
 generate_shoreline_from_bathy <- function(bathy, contour, save_output = FALSE, filename = "shoreline.shp") {
   # check max value of the bathy vs contour and replace contour with max value if true
-  max_bathy_value <- max(terra::values(bathy), na.rm = T)
+  max_bathy_value <- terra::global(bathy, "max", na.rm = TRUE)[1,1]
+
   if(max_bathy_value < contour){
     warning("Contour greater than max value of bathy. Setting contour = ", round(max_bathy_value, 5))
     contour <- max_bathy_value
