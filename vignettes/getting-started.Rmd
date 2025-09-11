@@ -1,8 +1,8 @@
 ---
-title: "Getting Started with WEMo"
+title: "Getting Started With WEMo"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting Started with WEMo}
+  %\VignetteIndexEntry{Getting Started With WEMo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
   fig.align = 'center'
 )
 
-library(WEMo)
 ```
 
 ```{r, include = FALSE}
@@ -111,7 +110,7 @@ theme_set(theme_minimal())
 
 ## Load our input data
 
-WEMo has a suite of example data which is utilized in this example.
+A suite of example data is included with WEMo. The data are from the area around Pivers Island, Beaufort, North Carolina.
 
 ### Bathymetry
 
@@ -363,5 +362,12 @@ ggplot()+
   scale_color_viridis_c(option = "H")+
   facet_grid(site~senario, labeller = "label_both")+
   theme_bw()
+```
+
+```{r cleanup, include=FALSE}
+# Clean up NOAA_cudem folder if it exists
+if (dir.exists("NOAA_cudem")) {
+  unlink(file.path(getwd(), "NOAA_cudem"), recursive = TRUE, force = TRUE)
+}
 ```
 
