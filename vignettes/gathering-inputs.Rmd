@@ -32,9 +32,20 @@ I'll focus here on data created within this WEMo environment but, spatial data l
 
 # Gather input data
 
-First, initialize libraries
+First, ensure the latest version of WEMo is downloaded
 
-```{r load libraries, results='hide'}
+```{r, eval=FALSE}
+# Ensure you have the remotes package installed, if not download and install it
+if(!require(remotes)) install.packages("remotes")
+
+# Download the latest version of WEMo from github
+remotes::install_github("QAWalker/WEMo")
+
+```
+
+Then load the neccesary libraries
+
+```{r load libraries, results='hide', warning=FALSE, message=FALSE}
 library(WEMo)
 
 library(sf)
@@ -64,7 +75,7 @@ site_point <- st_as_sf(
 
 Use `get_wind_data()` to retrieve and download wind observations from the NOAA Integrated Surface Database (ISD). The returned data frame includes timestamps, wind speed (m/s), and direction (degrees). 
 
-```{r download wind data, eval = T}
+```{r download wind data, eval = T, warning=FALSE}
 # download wind data from 2020 - 2023 from the closest station to our point
 wind_data <- get_wind_data(site_point, 2020:2023, which_station = 1)
 
@@ -133,7 +144,6 @@ Input `wind_direction` values are coerced into values 0 - 359.9. The function ca
 
 The function will accept `wind_percentile` values from 0 to 1 or `"mean"`. The returned `speed` value indicates the corresponding stat of all observations from that direction.
 
-
 `NA` values in the **`wind_direction`** column indicate calm data *if* the `wind_speed` column is 0. However, `NA` values in the **`wind_speed`** column are considered bad data and are removed when `wind_speed_na.rm = TRUE` (the default).
 
 #### Saving Wind Data
@@ -141,11 +151,16 @@ The function will accept `wind_percentile` values from 0 to 1 or `"mean"`. The r
 You can save wind data to as a csv file to be used with other analyses.
 
 ```{r save wind, eval=FALSE}
+# Check if "data" folder exists, create if not
+if (!dir.exists("data")) {
+  dir.create("data")
+}
+
 # save the wind data as a .csv file
-write.csv(wind_data, file = "wind_data.csv")
+write.csv(wind_data, file = "data/wind_data.csv")
 
 # save the summarized wind data
-write.csv(wind_data_summary, file = "wind_data_summary_.csv")
+write.csv(wind_data_summary, file = "data/wind_data_summary_.csv")
 
 ```
 
@@ -153,7 +168,7 @@ write.csv(wind_data_summary, file = "wind_data_summary_.csv")
 
 There are plenty of sources of bathymetric data and it would be impossible to discuss them all here, however NOAA's Bathymetric Data Viewer (https://www.ncei.noaa.gov/maps/bathymetry/) offers an easy to access and interactive viewer to find some of the best publicly available datasets.
 
-We have provided a convenience function `get_noaa_cudem()` to fetch bathymetric data from NOAA’s Continuously Updated Digital Elevation Model (CUDEM). This function accesses data from NOAA's Continuously Updated Digital Elevation Model (CUDEM), specifically the 1/9 Arc-Second Resolution (approx. 3 meter) Topobathymetric dataset https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/. This function takes a input point and radius and downloads topo-bathy .tif raster tiles that intersect that radius.
+`WEMo` contains a convenience function `get_noaa_cudem()` to fetch bathymetric data from NOAA’s Continuously Updated Digital Elevation Model (CUDEM). This function accesses data from NOAA's Continuously Updated Digital Elevation Model (CUDEM), specifically the 1/9 Arc-Second Resolution (approx. 3 meter) Topobathymetric dataset https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/. This function takes a input point and radius and downloads topo-bathy .tif raster tiles that intersect that radius.
 
 ```{r download bathy data}
 # extract lon and lat from our site_point
@@ -165,7 +180,7 @@ bathy <- get_noaa_cudem(
   lon = lon, 
   lat = lat, 
   radius_m = 15000,
-  dest_dir = "NOAA_CUDEM",
+  dest_dir = "data/NOAA_CUDEM",
   mosaic_and_crop = TRUE,
   output_file = "Sinepuxent_Bathy_Cropped.tif", 
   overwrite = F
@@ -197,9 +212,25 @@ With `overwrite = TRUE` all intersecting rasters will be re-downloaded even if t
 
 *NOTE: that `dest_dir` will create a folder in your working directory if one with that name doesn't exist. You can use `getwd()` to determine where your working directory is. You can also include the full path to your desired folder if that isn't in your working directory. The cropped mosaic raster is also saved to `dest_dir`.*
 
+
+### Project Bathymetry 
+
+The raster generated from `get_noaa_cudem()` is un-projected (WGS84). WEMo requires a projected coordinate reference system with units in meters. We'll convert the bathy to a local UTM grid (18N for our site in Sinepuxent Bay, Maryland)
+
+```{r convert bathy to utm, results='hide', warning=FALSE, message=FALSE}
+# Convert to UTM Zone 18N EPSG:26918
+bathy <- terra::project(
+  bathy,
+  "epsg:26918",
+  filename = "data/Sinepuxent_Bathy_Cropped_UTM.tif",
+  overwrite = T
+)
+
+```
+
 ## Shoreline 
 
-Once you have bathymetry data, use `generate_shoreline_from_bathy()` to generate a shoreline based on a user defined elevation. We'll use Mean Sea Level at a nearby NOAA Water Level Station: [Ocean City Inlet, MD (Station ID: 8570283)](https://tidesandcurrents.noaa.gov/datums.html?id=8570283) to draw the shoreline for the analysis.
+Once you have bathymetry data, use `generate_shoreline_from_bathy()` to generate a shoreline based on a user defined elevation contour. We'll use Mean Sea Level at a nearby NOAA Water Level Station: [Ocean City Inlet, MD (Station ID: 8570283)](https://tidesandcurrents.noaa.gov/datums.html?id=8570283) to draw the shoreline for the analysis.
 
 ```{r generate shorelines}
 # MSL at Ocean City Inlet - for the shoreline definition and for use later in the workflow
@@ -210,38 +241,27 @@ shoreline <- generate_shoreline_from_bathy(
   bathy = bathy,
   contour = water_level,
   save_output = TRUE,
-  filename = "Shoreline_MSL.shp"
+  filename = "data/Shoreline_MSL.shp"
 )
 
 # plot the shoreline
 ggplot() +
   geom_sf(data = shoreline) +
   geom_sf(data = site_point, color = 'red', size = 5)
+
 ```
 
 This shoreline will define the maximum extent of the fetch rays that WEMo calculates. Selecting the proper contour to draw the polygon is critical to your analysis workflow and depends on your question. You can find a listing of stations and their published datums from NOAA CO-OPS' National Water Level Observation Network online: https://tidesandcurrents.noaa.gov/stations.html?type=Datums. Additionally NOAA's vdatum tool will produce datums for your area as well: https://vdatum.noaa.gov/.
 
-Be sure to match the units and vertical datum to your bathy data. Bathy data from `get_noaa_cudem()` is in meters relative to NAVD88.
-
-## Convert all Inputs to UTM
-
-We want work in meters and also keep all of the inputs in the same coordinate reference system. We'll convert all the inputs to the local UTM grid (18N for our site in Sinepuxent Bay, Maryland)
-
-```{r convert to utm}
-# Convert to UTM Zone 18N EPSG:32618
-site_point <- sf::st_transform(site_point, crs = 32618) 
-shoreline <- sf::st_transform(shoreline, crs = sf::st_crs(site_point))
-bathy <- terra::project(bathy, terra::crs(site_point))
-
-```
+*Be sure to match the units and vertical datum to your bathymetry data. Bathymetry data from `get_noaa_cudem()` is in meters relative to NAVD88.*
 
 ## Grid of Points
 
 Use `generate_grid_points()` to generate a rectangular grid of points. These are the points where WEMo will simulate wave exposure.
 
-```{r generate grid points}
+```{r generate grid points, results='hide', warning=FALSE, message=FALSE}
 # convert the site_point to a utm grid to work with meters
-site_point <- sf::st_transform(site_point, crs = 32618) # WGS 84 / UTM Zone 18N
+site_point <- sf::st_transform(site_point, crs = 26918) # NAD83 / UTM zone 18N
 
 # create a grid of points 500 x 500 meters with points every 100 meters
 grid_points <- generate_grid_points(
@@ -249,16 +269,21 @@ grid_points <- generate_grid_points(
   expansion_dist = 500,
   resolution = 100
 )
+```
 
+```{r plot grid points}
 # plot the grid with the original site point
 ggplot() + 
   geom_sf(data = grid_points)+
   geom_sf(data = site_point, color = 'red', size = 5)
+
 ```
 
 If `expansion_dist` or `resolution` is a vector of length 2 the x and y expansion distances or grid resolution are set independently.
 
-## Plot All Inputs Together
+## Plotting
+
+Create a plot with all the inputs together
 
 ```{r plot all inputs}
 ggplot() +
@@ -267,11 +292,9 @@ ggplot() +
   geom_sf(data = grid_points, color = 'red') 
 ```
 
-### nice
+All the inputs align, but it is difficult to see our points and the bathymetry color scale is stretched out by the high elevation cells on land and the low elevation cells offshore. 
 
-... but we can't really see our points and the bathy color scale is stretched out by the high elevation cells on land and the low elevation cells offshore. 
-
-Lets constrain our input data to fix these problems and make a nice plot:
+We can constrain the input data to fix these problems and make a nice plot:
 
 ```{r fancy plot, fig.dim=c(9, 6)}
 # Get extent of the grid points
@@ -308,13 +331,13 @@ ggplot() +
 
 ```
 
-*Very* nice.
+That's a pretty plot
 
 # Run WEMo model
 
 The input data is now ready for WEMo:
 
-```{r run wemo on the points}
+```{r run wemo on the points, eval=FALSE}
 # run WEMo at each of the 36 grid points that we made
 results <- wemo_full(
   site_points = grid_points,
@@ -329,32 +352,10 @@ results <- wemo_full(
 )
 ```
 
-Plot the final results:
-
-```{r plot results}
-# plot the max wave at each site
-ggplot() +
-  geom_sf(data = results$wemo_final, aes(color = max_wave_height), size = 3) +
-  theme_bw()+
-  scale_color_viridis_c()
-```
-
-Plot all the effective fetch rays
-
-```{r plot fetch rays}
-# plot fetch rays
-ggplot() +
-  geom_sf(data = results$wemo_details, aes(color = wave_height_final)) +
-  scale_color_viridis_c()
-```
-
-a mess and hard to interpret. you might be better able to examine the rays from a single ray better.
-
-```{r}
-
-# plot fetch rays
-ggplot() +
-  geom_sf(data = results$wemo_details, aes(color = wave_height_final)) +
-  scale_color_viridis_c()
+```{r cleanup, include=FALSE}
+# Clean up NOAA_cudem folder if it exists
+if (dir.exists("data")) {
+  unlink(file.path(getwd(), "data"), recursive = TRUE, force = TRUE)
+}
 ```
 
