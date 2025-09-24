@@ -60,7 +60,7 @@ You can install the development version of `WEMo` from
 # If you don't have the 'remotes' package, install it first
 # install.packages("remotes")
 
-remotes::install_github("QAWalker/WEMo")
+remotes::install_github("MSE-NCCOS-NOAA/WEMo")
 ```
 
 ## Example Workflow
@@ -208,7 +208,8 @@ If you use WEMo in your research, please cite both the R package and the
 original publications that describe the model’s methodology.
 
 > Walker, Q.A. (2024). *WEMo: An R Implementation of the Wave Exposure
-> Model*. R package version X.X.X. <https://github.com/QAWalker/WEMo>
+> Model*. R package version X.X.X.
+> <https://github.com/MSE-NCCOS-NOAA/WEMo>
 
 > Malhotra, A., & Fonseca, M. S. (2007). *WEMo (Wave Exposure Model):
 > Formulation, Procedures and Validation*. NOAA Technical Memorandum NOS
