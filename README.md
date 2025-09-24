@@ -108,7 +108,7 @@ ggplot() +
 #> <SpatRaster> resampled to 500556 cells.
 ```
 
-<img src="man/figures/README-examine input data-1.png" width="85%" />
+<img src="man/figures/README-examine_input_data-1.png" width="85%" />
 
 ``` r
 # WEMo needs a summary of wind speed and proportion by direction
@@ -122,7 +122,7 @@ wind_summary <- summarize_wind_data(
 plot_wind_rose(wind_data = wind_summary)
 ```
 
-<img src="man/figures/README-summarize and plot wind data-1.png" width="85%" />
+<img src="man/figures/README-summarize_and_plot_wind_data-1.png" width="85%" />
 
 ### 4. Run the full WEMo model
 
@@ -165,7 +165,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-plot final results-1.png" width="85%" />
+<img src="man/figures/README-plot_final_results-1.png" width="85%" />
 
 ``` r
 
@@ -179,7 +179,7 @@ ggplot() +
   theme_minimal()
 ```
 
-<img src="man/figures/README-plot final results-2.png" width="85%" />
+<img src="man/figures/README-plot_final_results-2.png" width="85%" />
 
 ## Gathering Your Own Data
 

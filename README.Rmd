@@ -73,7 +73,7 @@ A suite of example data is included with WEMo. The data are from the area around
 * `PI_wind_data`: hourly wind history from a nearby weather station. A `tibble`.
 * `PI_bathy`: a topobathy raster storing elevations in m NAVD88. A `SpatRaster`,
 
-```{r examine input data}
+```{r examine_input_data}
 # read in the topobathy
 PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
 
@@ -87,7 +87,7 @@ ggplot() +
   theme_minimal()
 ```
 
-```{r summarize and plot wind data}
+```{r summarize_and_plot_wind_data}
 # WEMo needs a summary of wind speed and proportion by direction
 wind_summary <- summarize_wind_data(
   wind_data = PI_wind_data,
@@ -100,7 +100,7 @@ plot_wind_rose(wind_data = wind_summary)
 ```
 
 ### 4. Run the full WEMo model
-```{r run model}
+```{r run_model}
 wemo_results <- wemo_full(
   site_points = PI_points,
   shoreline = PI_shoreline,
@@ -113,7 +113,7 @@ wemo_results <- wemo_full(
 
 ### 5. Examine and plot final results
 
-```{r plot final results}
+```{r plot_final_results}
 print(wemo_results$wemo_final)
 
 # Plot the average wave height at each point
