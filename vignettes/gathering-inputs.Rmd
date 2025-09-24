@@ -43,7 +43,7 @@ remotes::install_github("QAWalker/WEMo")
 
 ```
 
-Then load the neccesary libraries
+Then load the necessary libraries
 
 ```{r load libraries, results='hide', warning=FALSE, message=FALSE}
 library(WEMo)
