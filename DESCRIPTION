@@ -29,8 +29,8 @@ Imports:
     tibble,
     tidyterra,
     worldmet
-URL: https://github.com/QAWalker/WEMo, https://qawalker.github.io/WEMo/
-BugReports: https://github.com/QAWalker/WEMo/issues
+URL: https://github.com/MSE-NCCOS-NOAA/WEMo
+BugReports: https://github.com/MSE-NCCOS-NOAA/WEMo/issues
 Depends: 
     R (>= 3.5)
 LazyData: true
