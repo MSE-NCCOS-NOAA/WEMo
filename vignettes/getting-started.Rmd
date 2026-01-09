@@ -82,7 +82,7 @@ Users can read in their own points as shapefiles or create a grid of points arou
 if(!require(remotes)) install.packages("remotes")
 
 # Download the latest version of WEMo from github
-remotes::install_github("QAWalker/WEMo", force = TRUE)
+remotes::install_github("MSE-NCCOS-NOAA/WEMo", force = TRUE)
 
 ```
 

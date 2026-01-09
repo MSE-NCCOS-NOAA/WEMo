@@ -39,7 +39,7 @@ First, ensure the latest version of WEMo is downloaded
 if(!require(remotes)) install.packages("remotes")
 
 # Download the latest version of WEMo from github
-remotes::install_github("QAWalker/WEMo")
+remotes::install_github("MSE-NCCOS-NOAA/WEMo")
 
 ```
 
