@@ -80,9 +80,21 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
     LAT <- sf::st_coordinates(site_point)[[1,2]]
     LON <- sf::st_coordinates(site_point)[[1,1]]
 
+    # make sure that the NOAA web service hosting the metadata is working and return suggestion on how to fix if not
+    station <- tryCatch({
+      worldmet::getMeta(lat = LAT, lon = LON, n = 5, plot = (which_station == "ask"))
+    }, error = function(e) {
+      stop(
+        "\nERROR: Could not connect to the NOAA metadata server.\n",
+        "This usually happens when NOAA servers are down or you have network/VPN issues.\n\n",
+        "WORKAROUND: Please look up the USAF-WBAN code manually and pass it to 'which_station'.\n",
+        "Example: get_wind_data(site_point = NULL, years = 2022, which_station = '723037-93765')",
+        call. = FALSE
+      )
+    })
+    # ---------------------------------------
+
     if(which_station == "ask"){
-      # Get metadata for the 5 closest NOAA stations
-      station <- worldmet::getMeta(lat = LAT, lon = LON, n = 5, plot = T)
       # Display options for user to choose from
       options <- paste0(
         station$usaf, '-', station$wban, " ",station$station, " (", round(station$dist, 1), " km), ",
