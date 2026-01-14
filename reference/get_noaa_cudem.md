@@ -1,0 +1,141 @@
+# Download NOAA CUDEM (Continuously Updated DEM) Topo-Bathy Rasters
+
+Download (and optionally make into a cropped mosaic raster)
+Bathymetric-Topographic rasters files from from NOAA's Continuously
+Updated Digital Elevation Model (CUDEM) near a specified location.
+Rasters are at Ninth Arc-Second Resolution.
+
+## Usage
+
+``` r
+get_noaa_cudem(
+  lon,
+  lat,
+  radius_m,
+  dest_dir = "NOAA_CUDEM",
+  mosaic_and_crop = TRUE,
+  output_file = "Cropped_Mosaic_Raster.tif",
+  overwrite = FALSE,
+  plot = TRUE,
+  cleanup_source_files = FALSE
+)
+```
+
+## Arguments
+
+- lon:
+
+  Longitude in decimal degrees (WGS84).
+
+- lat:
+
+  Latitude in decimal degrees (WGS84).
+
+- radius_m:
+
+  Radius (in meters) around the point within which to search for tiles.
+
+- dest_dir:
+
+  Directory to save downloaded files. Created if it does not exist.
+  Default is `"NOAA_CUDEM"`.
+
+- mosaic_and_crop:
+
+  Logical. If `TRUE` (default), mosaics and crops the downloaded rasters
+  to the buffer. If FALSE, only downloads intersecting tiles and returns
+  their file paths.
+
+- output_file:
+
+  Optional file path to save the cropped mosaic. If NULL, no file is
+  written.
+
+- overwrite:
+
+  Logical. If `TRUE`, re-download existing tiles and overwrite existing
+  output file.
+
+- plot:
+
+  Logical. If `TRUE`, generates an interactive map to display the
+  relation between the available CUDEM data, the central point defined
+  by `lon` and `lat` and the buffer created by `radius_m`. This calls
+  [`map_noaa_cudem()`](https://mse-nccos-noaa.github.io/WEMo/reference/map_noaa_cudem.md)
+
+- cleanup_source_files:
+
+  Logical. If `TRUE` and `mosaic_and_crop` is also `TRUE`, the original
+  downloaded source tiles will be deleted after the mosaic raster is
+  created. Defaults to `FALSE`.
+
+## Value
+
+A
+[`terra::SpatRaster`](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
+if `mosaic_and_crop = TRUE`; otherwise Invisibly returns `TRUE` if
+downloads completed, or `NULL` if no tiles were within the radius.
+
+## Details
+
+NOAA's CUDEM is a large raster layer that is broken into smaller rasters
+called tiles. NOAA provides a tile index file that defines the
+boundaries of these tiles and allows users to identify and download the
+relevant tiles for their uses. The function identifies relevant tiles by
+their proximity (intersecting with a buffer around the point of radius
+`radius_m`) to the provided location. Rasters are downloaded to the user
+defined directory `dest_dir`.
+
+If `mosaic_and_crop` is `TRUE`, downloaded rasters are stitched together
+in a mosaic raster and then cropped to a square centered on the provided
+point with with edges of length two times `radius_m`. This cropped
+mosaic raster is saved to `det_dir` with filename `output_file`. If
+`mosaic_and_crop` is `FALSE`, The individual tiles are downloaded only.
+
+## Geographic Coverage
+
+The CUDEM dataset accessed by this function covers select areas of the
+United States, including:
+
+- The East Coast
+
+- Gulf Coast
+
+- San Francisco Bay
+
+- Part of the Oregon Coast
+
+- Puget Sound and the Washington Coast
+
+- Portions of Cook Inlet, Alaska
+
+  Other CUDEM products available through NOAA cover additional U.S.
+  states and territories, including:
+
+- Hawaii
+
+- Guam
+
+- American Samoa
+
+- Puerto Rico and the U.S. Virgin Islands
+
+- Northern Mariana Islands
+
+  Additional CUDEM products, with varying spatial resolutions and
+  geographic extents, are available at:
+  <https://www.ncei.noaa.gov/products/coastal-elevation-models>
+
+## Data Source and Citation
+
+This function accesses data from NOAA's Continuously Updated Digital
+Elevation Model (CUDEM), specifically the Ninth Arc-Second
+Topobathymetric dataset:
+<https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/>
+
+Cite as: Cooperative Institute for Research in Environmental Sciences
+(CIRES) at the University of Colorado, Boulder. 2014: Continuously
+Updated Digital Elevation Model (CUDEM) - 1/9 Arc-Second Resolution
+Bathymetric-Topographic Tiles. `[Indicate subset used]`. NOAA National
+Centers for Environmental Information.
+<https://doi.org/10.25921/ds9v-ky35>. Accessed `[date]`.
