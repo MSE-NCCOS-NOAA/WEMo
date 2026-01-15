@@ -3,13 +3,13 @@
 #' This function is a wrapper around a workflow to find and download wind data
 #' using the \link[worldmet:import_ghcn_stations]{import_ghcn_stations()} and
 #' \link[worldmet:import_ghcn_hourly]{import_ghcn_hourly()} functions from the
-#' **worldmet** package. It finds up to 5 nearby NOAA GHCN weather stations based
+#' **worldmet** package. It finds up to 5 nearby NOAA GHCNh weather stations based
 #' on a geographic point and downloads hourly wind data.
 #'
 #' @details This function utilizes data from **Global Historical Climatology
-#'   Network (GHCN)** dataset. GHCN aggregates hourly meteorological
+#'   Network Hourly (GHCNh)** dataset. GHCNh aggregates hourly meteorological
 #'   observations from numerous fixed, land-based stations. maintained by NOAA,
-#'   the U.S. Air Force, and many other meteorological agencies (Met Services)
+#'   the U.S. Air Force, and many other meteorological agencies
 #'   around the world.
 #'
 #' @param site_point A spatial point object (either `sf` or coercible to `sf`)
@@ -19,7 +19,7 @@
 #' @param which_station Either:
 #'   - `"ask"`: interactively choose from 5 closest stations;
 #'   - an integer (1-5): pick the nth closest station;
-#'   - a string station code in the form "USAF-WBAN".
+#'   - a string station code
 #'
 #' @return A data frame with cleaned wind direction and wind speed, along with
 #'   station code, timestamp, and date components (year, month, day).
@@ -59,7 +59,7 @@
 #'  )
 #' }
 #'
-#' @references For more information on the GHCN and to view an interactive
+#' @references For more information on the GHCNh and to view an interactive
 #'   map of stations, see
 #'   https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly
 #'
@@ -105,10 +105,11 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
                              paste0(" [missing years: ", .data$gap_string, "]"))
         )
 
-      inventory <- dplyr::right_join(station, inventory, by = dplyr::join_by(.data$id)) %>%
+      inventory <- dplyr::right_join(station, inventory, by = dplyr::join_by("id")) %>%
         dplyr::arrange(.data$distance)
 
-      worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'map')
+      map <- worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'map')
+      print(map)
     }
 
     if(which_station == "ask"){
@@ -122,7 +123,7 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
       )
 
       # Prompt user
-      cat("Choose a GHCN station or enter blank to cancel\n")
+      cat("Choose a GHCN station or enter 0 to exit\n")
       selection <- utils::menu(options, title = "Available stations:")
 
       # Handle cancel
