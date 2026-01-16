@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-WEMo is a model for quantifying the wave energy environment at a given location based on wind-generated waves. It uses wind history, bathymetry, and shoreline geometry to estimate wave conditions. This package provides tools to calculate fetch, determine effective fetch, extract bathymetry along vector rays, and model wind-wave properties. It also includes helper functions to locate, download, and prepare inputs such as wind data and shoreline polygons.
+WEMo is a model for quantifying the wave energy environment at a given location based on wind-generated waves. It uses wind history, bathymetry, and shoreline geometry to estimate wave conditions. This package provides tools to calculate fetch, determine effective fetch, extract bathymetry along vector rays, and model wind-wave properties. It also includes helper functions to locate, download, and prepare inputs such as wind data, bathymetry, and shoreline polygons.
 }
 \seealso{
 Useful links:

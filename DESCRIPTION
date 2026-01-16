@@ -1,6 +1,6 @@
 Package: WEMo
 Title: Wave Energy Model
-Version: 0.0.0.9100
+Version: 0.0.0.9000
 Authors@R: 
     person("Quentin", "Walker", , "quetin.walker@noaa.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1375-822X"))

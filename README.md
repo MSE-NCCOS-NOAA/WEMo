@@ -35,10 +35,11 @@ researchers and resource managers.
 
 - **Data Preparation Tools**: Includes convenience functions to download
   and prepare input data, such as historical wind observations from
-  NOAA’s \[Global Historic Climate Network hourly\] dataset
-  (`get_wind_data()`) and bathymetry from NOAA’s \[Continuously Updated
-  Digital Elevation
-  Model\]{<https://www.ncei.noaa.gov/products/coastal-elevation-models>}
+  NOAA’s [Global Historic Climate Network
+  hourly](https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly)
+  dataset (`get_wind_data()`) and bathymetry from NOAA’s [Continuously
+  Updated Digital Elevation
+  Model](https://www.ncei.noaa.gov/products/coastal-elevation-models)
   dataset (`get_noaa_cudem()`).
 
 - **Flexible Inputs**: Works with standard R spatial objects (`sf` and
@@ -209,8 +210,8 @@ article](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gat
 If you use WEMo in your research, please cite both the R package and the
 original publications that describe the model’s methodology.
 
-> Walker, Q.A. (2024). *WEMo: An R Implementation of the Wave Exposure
-> Model*. R package version 0.1.0.9000
+> Walker, Q.A. (2026). *WEMo: An R Implementation of the Wave Exposure
+> Model*. R package version 0.0.0.9100
 > <https://github.com/MSE-NCCOS-NOAA/WEMo>
 
 > Malhotra, A., & Fonseca, M. S. (2007). *WEMo (Wave Exposure Model):
