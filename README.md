@@ -7,7 +7,7 @@
 
 <!-- badges: start -->
 
-<img src="man/figures/logo.png" align="right" style="height: 130px; margin-left: 15px; margin-bottom: 5px;" />
+<img src="man/figures/logo.png" align="right" style="height: 200px; margin-left: 15px; margin-bottom: 5px;" />
 <!-- badges: end -->
 
 ------------------------------------------------------------------------
