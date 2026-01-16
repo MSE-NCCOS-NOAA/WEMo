@@ -1,27 +1,28 @@
 url: https://mse-nccos-noaa.github.io/WEMo/
+
 template:
   bootstrap: 5
   bootswatch: cyborg
   params:
     logo:
-      height: 60px # This controls the tiny logo in the top-left navigation bar
+      height: 60px
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news]
-    right: [github]
+    left: [intro, gathering, reference, news]
+    right: [search, github]
   components:
-    articles:
-      text: Tutorials
-      menu:
-        - text: "Core Workflow"
-        - text: "1. Getting Started"
-          href: articles/getting-started.html
-        - text: "2. Gathering Input Data"
-          href: articles/gathering-inputs.html
+    intro:
+      text: Getting Started
+      href: articles/getting-started.html
+    gathering:
+      text: Gathering Input Data
+      href: articles/gathering-inputs.html
+    reference:
+      text: Functions
+      href: reference/index.html
 
 reference:
-  text: Tutorials
   - title: Core Modeling Functions
     contents:
       - wemo_full
@@ -30,16 +31,25 @@ reference:
       - find_fetch
       - effective_fetch
       - update_depths
+
   - title: Gathering and Preparing Input Data
+  - subtitle: Wind Data
     contents:
       - get_wind_data
       - summarize_wind_data
       - plot_wind_rose
+  - subtitle: Bathymetry
+    contents:
       - map_noaa_cudem
       - get_noaa_cudem
+  - subtitle: Shoreline and Site Points
+    contents:
       - generate_grid_points
       - generate_shoreline_from_bathy
+  - subtitle: Data Preparation
+    contents:
       - prepare_wemo_inputs
+
   - title: Example Datasets
     contents:
       - PI_points

@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -13,11 +11,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# WEMo
-## An R Implementation of the Wave Exposure Model
-<!-- badges: start -->
-<img src="man/figures/logo.png" align="right" style="height: 200px; margin-left: 15px; margin-bottom: 5px;" />
-<!-- badges: end -->
+# WEMo: Wave Exposure Model
+## An R Implementation
 
 ---
 
@@ -53,88 +48,7 @@ remotes::install_github("MSE-NCCOS-NOAA/WEMo")
 
 ## Example Workflow
 
-This is a basic workflow demonstrating how to run the model using the package's built-in example data. The example data are located in the immediate area around the NOAA Beaufort Lab on Pivers Island in Beaufort, North Carolina.
-
-### 1. Load required libraries
-```{r load libraries, , results='hide', warning=FALSE, message=FALSE}
-library(WEMo)
-library(sf)
-library(terra)
-library(ggplot2)
-library(tidyterra)
-```
-
-### 2. Load the package's example data
-
-A suite of example data is included with WEMo. The data are from the area around Pivers Island, Beaufort, North Carolina. They include:
-
-* `PI_points`: 3 site points. A `sf` POINT object.
-* `PI_shoreline`: a polygon of the Mean Higher High Water shoreline (0.522 m NAVD88). A `sf` MULTIPOLYGON object.
-* `PI_wind_data`: hourly wind history from a nearby weather station. A `tibble`.
-* `PI_bathy`: a topobathy raster storing elevations in m NAVD88. A `SpatRaster`,
-
-```{r examine_input_data, fig.alt="Map showing input spatial data"}
-# read in the topobathy
-PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
-
-# Plot input spatial data
-ggplot() +
-  geom_spatraster(data = PI_bathy) +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = PI_points, color = 'red', size = 3) +
-  labs(title = "WEMo Inputs", 
-       fill = "Bathymetry\n(m NAVD88)") +
-  theme_minimal()
-```
-
-```{r summarize_and_plot_wind_data, fig.alt="Wind rose plot"}
-# WEMo needs a summary of wind speed and proportion by direction
-wind_summary <- summarize_wind_data(
-  wind_data = PI_wind_data,
-  wind_percentile = 0.95,          # Use 95th percentile wind speed
-  directions = seq(0, 350, by = 10) # Bin directions into 10-degree increments
-)
-
-# create and print wind rose
-plot_wind_rose(wind_data = wind_summary)
-```
-
-### 4. Run the full WEMo model
-```{r run_model}
-wemo_results <- wemo_full(
-  site_points = PI_points,
-  shoreline = PI_shoreline,
-  bathy = PI_bathy,
-  wind_data = wind_summary,
-  max_fetch = 10000, # Max distance (m) to calculate fetch
-  water_level = 0.552 # Water level (m) relative to bathy vertical datum
-)
-```
-
-### 5. Examine and plot final results
-
-```{r plot_final_results, fig.alt="Map of WEMo results"}
-print(wemo_results$wemo_final)
-
-# Plot the average wave height at each point
-ggplot() +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = wemo_results$wemo_final, aes(color = avg_wave_height), size = 5) +
-  scale_color_viridis_c() +
-  labs(title = "WEMo Results: Average Wave Height", 
-       color = "Avg. Wave\nHeight (m)") +
-  theme_minimal()
-
-# Plot the wave height of the wave arriving at the site from each fetch ray
-ggplot() +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = wemo_results$wemo_details, aes(color = wave_height_final), linewidth = 1) +
-  scale_color_viridis_c(option = "H") +
-  labs(title = "WEMo Results: Final Wave Height", 
-       color = "Final Wave\nHeight (m)") +
-  theme_minimal()
-
-```
+For step-by-step example workflow using the sample data included with the package, see the [**Getting Started**](articles/getting-started.html) guide.
 
 ## Gathering Your Own Data
 

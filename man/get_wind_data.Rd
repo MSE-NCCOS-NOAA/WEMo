@@ -17,7 +17,7 @@ data.}
 \itemize{
 \item \code{"ask"}: interactively choose from 5 closest stations;
 \item an integer (1-5): pick the nth closest station;
-\item a string station code in the form "USAF-WBAN".
+\item a string station code
 }}
 }
 \value{
@@ -28,14 +28,14 @@ station code, timestamp, and date components (year, month, day).
 This function is a wrapper around a workflow to find and download wind data
 using the \link[worldmet:import_ghcn_stations]{import_ghcn_stations()} and
 \link[worldmet:import_ghcn_hourly]{import_ghcn_hourly()} functions from the
-\strong{worldmet} package. It finds up to 5 nearby NOAA GHCN weather stations based
+\strong{worldmet} package. It finds up to 5 nearby NOAA GHCNh weather stations based
 on a geographic point and downloads hourly wind data.
 }
 \details{
 This function utilizes data from \strong{Global Historical Climatology
-Network (GHCN)} dataset. GHCN aggregates hourly meteorological
+Network Hourly (GHCNh)} dataset. GHCNh aggregates hourly meteorological
 observations from numerous fixed, land-based stations. maintained by NOAA,
-the U.S. Air Force, and many other meteorological agencies (Met Services)
+the U.S. Air Force, and many other meteorological agencies
 around the world.
 }
 \examples{
@@ -75,7 +75,7 @@ wind_data_manual <- get_wind_data(
 
 }
 \references{
-For more information on the GHCN and to view an interactive
+For more information on the GHCNh and to view an interactive
 map of stations, see
 https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly
 }
