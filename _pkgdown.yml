@@ -21,6 +21,7 @@ navbar:
           href: articles/gathering-inputs.html
 
 reference:
+  text: Tutorials
   - title: Core Modeling Functions
     contents:
       - wemo_full
