@@ -70,7 +70,7 @@ Site points define where WEMo will compute wave exposure.
 
 Users can read in their own points as shapefiles or create a grid of points around coordinates using `generate_grid_points()`.
 
-# Running WEMo
+# Setup and Gather Input Data
 
 ## Installation
 
@@ -230,7 +230,7 @@ wind_rose_plot
 ```
 *NOTE: `plot_wind_rose()` creates a `ggplot` object that can be saved or further manipulated to match your needs. Read more about controlling and customizing plots in `ggplot2` here: <https://ggplot2.tidyverse.org/>*
 
-# Run WEMo with `wemo_full()`
+# Run WEMo
 
 Now that all of our input data is gathered and inspected we're ready to run the model. In this example, WEMo will:
 
@@ -350,7 +350,7 @@ data.frame(
 )
 ```
 
-We see a slight increase in wave heights and RWE from raising water level. Note we didn't redraw the shorelines and were already running the model at MHHW, meaning waves from our original run likely didn't experience breaking or shoaling -- both possible reasons why we don't see a dramatic effect on the results.
+We see a slight increase in wave heights and RWE from raising water level. Note that we didn't redraw the shorelines and were already running the model at MHHW, meaning waves from our original run likely didn't experience breaking or shoaling -- both possible reasons why we don't see a dramatic effect on the results.
 
 ## Example: Stronger Winds
 
@@ -371,7 +371,25 @@ data.frame(
 )
 ```
 
-We see increases in wave heights up to 5 cm for max wave heights and 3.5 cm for average wave heights. Also see a corresponding increase in RWE.
+```{r make-variables-to-output, include=FALSE}
+data.frame(
+  site = results$wemo_final$site,
+  max_wave_height = round(results_windy$wemo_final$max_wave_height - results$wemo_final$max_wave_height, digits = 3),
+  avg_wave_height = round(results_windy$wemo_final$avg_wave_height - results$wemo_final$avg_wave_height, digits = 3),
+  RWE = round(results_windy$wemo_final$RWE - results$wemo_final$RWE, digits = 3)
+)
+
+# Calculate the differences for the first site (or use max() across all sites)
+diff_max <- max(results_windy$wemo_final$max_wave_height - results$wemo_final$max_wave_height)
+diff_avg <- max(results_windy$wemo_final$avg_wave_height - results$wemo_final$avg_wave_height)
+
+# Convert to cm and round
+diff_max_cm <- round(diff_max * 100, 1) 
+diff_avg_cm <- round(diff_avg * 100, 1)
+
+```
+
+We see increases in wave heights up to `r diff_max_cm` cm for max wave heights and `r diff_avg_cm` cm for average wave heights. We also see a corresponding increase in RWE.
 
 ## Comparing Results Scenarios
 
@@ -382,7 +400,7 @@ We see increases in wave heights up to 5 cm for max wave heights and 3.5 cm for 
 results_all <- dplyr::bind_rows(
   dplyr::mutate(results$wemo_details, scenario = "1. Normal"), 
   dplyr::mutate(results_SLR$wemo_details, scenario = "2. SLR"),
-  dplyr::mutate(results_windy$wemo_details, scenario = "3. 25% Stronger Wind")
+  dplyr::mutate(results_windy$wemo_details, scenario = "3. Windy")
 )
 
 # Visualizing scenarios for each fetch ray
