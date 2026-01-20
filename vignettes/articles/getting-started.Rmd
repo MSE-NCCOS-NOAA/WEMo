@@ -372,13 +372,6 @@ data.frame(
 ```
 
 ```{r make-variables-to-output, include=FALSE}
-data.frame(
-  site = results$wemo_final$site,
-  max_wave_height = round(results_windy$wemo_final$max_wave_height - results$wemo_final$max_wave_height, digits = 3),
-  avg_wave_height = round(results_windy$wemo_final$avg_wave_height - results$wemo_final$avg_wave_height, digits = 3),
-  RWE = round(results_windy$wemo_final$RWE - results$wemo_final$RWE, digits = 3)
-)
-
 # Calculate the differences for the first site (or use max() across all sites)
 diff_max <- max(results_windy$wemo_final$max_wave_height - results$wemo_final$max_wave_height)
 diff_avg <- max(results_windy$wemo_final$avg_wave_height - results$wemo_final$avg_wave_height)

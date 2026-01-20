@@ -88,22 +88,22 @@ wind_data <- get_wind_data(site_point, 2020:2024, which_station = "ask")
 ```
 
 ```         
-Choose a met station
+Choose a GHCN station or enter 0 to exit
 Available stations: 
 
-1: 745946-93786 OCEAN CITY MUNICIPAL ARTP (10.3 km), 2006-01-01 to 2025-07-16
-2: 998211-99999 OCEAN CITY INLET (12.7 km), 2008-09-15 to 2025-07-14
-3: 723980-93720 SALBRY-OCN CTY WICO RGNL AP (32.8 km), 2005-01-01 to 2025-07-16
-4: 724020-93739 WALLOPS FLIGHT FACILITY AIRPORT (41.2 km), 1973-01-01 to 2025-07-16
-5: 724093-13764 SUSSEX COUNTY AIRPORT (54.5 km), 2006-01-01 to 2025-07-16
+1: USW00093786 OCEAN CITY MUNI AP (10.3 km), 1999 to 2024
+2: USL000OCIM2 OCEAN CITY INLET (12.7 km), 2008 to 2024
+3: USW00093720 SALISBURY-WICOMICO RGNL AP (32.8 km), 1949 to 2024 [missing years: 1962-1967]
+4: USW00093739 WALLOPS IS NASA TEST FACILITY (41.2 km), 1966 to 2024
+5: USW00013764 GEORGETOWN-DELAWARE COASTAL AP (54.5 km), 1987 to 2024 [missing years: 1993-1996]
 
 ```
 
 Type your selection and hit ENTER.
 
-*NOTE:`get_wind_data()` uses the package `worldmet` <https://openair-project.github.io/worldmet/> to access NOAA Integrated Surface Database (ISD) meteorological observations data.*
+*NOTE:`get_wind_data()` uses the package `worldmet` to access NOAA Global Historical Climate Network Hourly (GHCNh) meteorological observations data.*
 
-*For general information of the ISD see https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database*
+*For general information on the GHCNh see <https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly>*
 
 #### Summarizing Wind Data
 
