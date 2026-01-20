@@ -159,21 +159,20 @@ list and an interactive map of the 5 closest stations and allows you to
 choose which you’d like.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wind_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_wind_data.html">get_wind_data</a></span><span class="op">(</span><span class="va">site_point</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span>, which_station <span class="op">=</span> <span class="st">"ask"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Choose a met station
+<pre><code>Choose a GHCN station or enter 0 to exit
 Available stations: 
 
-1: 745946-93786 OCEAN CITY MUNICIPAL ARTP (10.3 km), 2006-01-01 to 2025-07-16
-2: 998211-99999 OCEAN CITY INLET (12.7 km), 2008-09-15 to 2025-07-14
-3: 723980-93720 SALBRY-OCN CTY WICO RGNL AP (32.8 km), 2005-01-01 to 2025-07-16
-4: 724020-93739 WALLOPS FLIGHT FACILITY AIRPORT (41.2 km), 1973-01-01 to 2025-07-16
-5: 724093-13764 SUSSEX COUNTY AIRPORT (54.5 km), 2006-01-01 to 2025-07-16
+1: USW00093786 OCEAN CITY MUNI AP (10.3 km), 1999 to 2024
+2: USL000OCIM2 OCEAN CITY INLET (12.7 km), 2008 to 2024
+3: USW00093720 SALISBURY-WICOMICO RGNL AP (32.8 km), 1949 to 2024 [missing years: 1962-1967]
+4: USW00093739 WALLOPS IS NASA TEST FACILITY (41.2 km), 1966 to 2024
+5: USW00013764 GEORGETOWN-DELAWARE COASTAL AP (54.5 km), 1987 to 2024 [missing years: 1993-1996]
 </code></pre>
 <p>Type your selection and hit ENTER.</p>
 <p><em>NOTE:<code><a href="../reference/get_wind_data.html">get_wind_data()</a></code> uses the package
-<code>worldmet</code> <a href="https://openair-project.github.io/worldmet/" class="external-link uri">https://openair-project.github.io/worldmet/</a> to access
-NOAA Integrated Surface Database (ISD) meteorological observations
-data.</em></p>
-<p><em>For general information of the ISD see <a href="https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database" class="external-link uri">https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database</a></em></p>
+<code>worldmet</code> to access NOAA Global Historical Climate Network
+Hourly (GHCNh) meteorological observations data.</em></p>
+<p><em>For general information on the GHCNh see <a href="https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly" class="external-link uri">https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly</a></em></p>
 <div class="section level5">
 <h5 id="summarizing-wind-data">Summarizing Wind Data<a class="anchor" aria-label="anchor" href="#summarizing-wind-data"></a>
 </h5>
