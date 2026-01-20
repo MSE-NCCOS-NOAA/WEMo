@@ -6,7 +6,7 @@ data using the
 and
 [import_ghcn_hourly()](https://openair-project.github.io/worldmet/reference/import_ghcn_hourly.html)
 functions from the **worldmet** package. It finds up to 5 nearby NOAA
-GHCN weather stations based on a geographic point and downloads hourly
+GHCNh weather stations based on a geographic point and downloads hourly
 wind data.
 
 ## Usage
@@ -34,7 +34,7 @@ get_wind_data(site_point, years, which_station = "ask")
 
   - an integer (1-5): pick the nth closest station;
 
-  - a string station code in the form "USAF-WBAN".
+  - a string station code
 
 ## Value
 
@@ -44,14 +44,14 @@ station code, timestamp, and date components (year, month, day).
 ## Details
 
 This function utilizes data from **Global Historical Climatology Network
-(GHCN)** dataset. GHCN aggregates hourly meteorological observations
-from numerous fixed, land-based stations. maintained by NOAA, the U.S.
-Air Force, and many other meteorological agencies (Met Services) around
+Hourly (GHCNh)** dataset. GHCNh aggregates hourly meteorological
+observations from numerous fixed, land-based stations. maintained by
+NOAA, the U.S. Air Force, and many other meteorological agencies around
 the world.
 
 ## References
 
-For more information on the GHCN and to view an interactive map of
+For more information on the GHCNh and to view an interactive map of
 stations, see
 https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly
 

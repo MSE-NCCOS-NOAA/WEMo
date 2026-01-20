@@ -71,9 +71,9 @@ site_point <- st_as_sf(
 
 Use
 [`get_wind_data()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_wind_data.md)
-to retrieve and download wind observations from the NOAA Integrated
-Surface Database (ISD). The returned data frame includes timestamps,
-wind speed (m/s), and direction (degrees).
+to retrieve and download wind observations from the NOAA Global
+Historical Climate Network hourly (GHCNh). The returned data frame
+includes timestamps, wind speed (m/s), and direction (degrees).
 
 ``` r
 # download wind data from 2020 - 2023 from the closest station to our point

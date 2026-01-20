@@ -1,8 +1,6 @@
-# WEMo
+# WEMo: Wave Exposure Model
 
-## An R Implementation of the Wave Exposure Model
-
-![](reference/figures/logo.png)
+## An R Implementation
 
 ------------------------------------------------------------------------
 
@@ -29,10 +27,12 @@ researchers and resource managers.
 
 - **Data Preparation Tools**: Includes convenience functions to download
   and prepare input data, such as historical wind observations from
-  NOAA’s \[Global Historic Climate Network hourly\] dataset
+  NOAA’s [Global Historic Climate Network
+  hourly](https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly)
+  dataset
   ([`get_wind_data()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_wind_data.md))
-  and bathymetry from NOAA’s \[Continuously Updated Digital Elevation
-  Model\]{<https://www.ncei.noaa.gov/products/coastal-elevation-models>}
+  and bathymetry from NOAA’s [Continuously Updated Digital Elevation
+  Model](https://www.ncei.noaa.gov/products/coastal-elevation-models)
   dataset
   ([`get_noaa_cudem()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_noaa_cudem.md)).
 
@@ -62,125 +62,10 @@ remotes::install_github("MSE-NCCOS-NOAA/WEMo")
 
 ## Example Workflow
 
-This is a basic workflow demonstrating how to run the model using the
-package’s built-in example data. The example data are located in the
-immediate area around the NOAA Beaufort Lab on Pivers Island in
-Beaufort, North Carolina.
-
-### 1. Load required libraries
-
-``` r
-library(WEMo)
-library(sf)
-library(terra)
-library(ggplot2)
-library(tidyterra)
-```
-
-### 2. Load the package’s example data
-
-A suite of example data is included with WEMo. The data are from the
-area around Pivers Island, Beaufort, North Carolina. They include:
-
-- `PI_points`: 3 site points. A `sf` POINT object.
-- `PI_shoreline`: a polygon of the Mean Higher High Water shoreline
-  (0.522 m NAVD88). A `sf` MULTIPOLYGON object.
-- `PI_wind_data`: hourly wind history from a nearby weather station. A
-  `tibble`.
-- `PI_bathy`: a topobathy raster storing elevations in m NAVD88. A
-  `SpatRaster`,
-
-``` r
-# read in the topobathy
-PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
-
-# Plot input spatial data
-ggplot() +
-  geom_spatraster(data = PI_bathy) +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = PI_points, color = 'red', size = 3) +
-  labs(title = "WEMo Inputs", 
-       fill = "Bathymetry\n(m NAVD88)") +
-  theme_minimal()
-#> <SpatRaster> resampled to 500556 cells.
-```
-
-![Map showing input spatial
-data](reference/figures/README-examine_input_data-1.png)
-
-``` r
-# WEMo needs a summary of wind speed and proportion by direction
-wind_summary <- summarize_wind_data(
-  wind_data = PI_wind_data,
-  wind_percentile = 0.95,          # Use 95th percentile wind speed
-  directions = seq(0, 350, by = 10) # Bin directions into 10-degree increments
-)
-
-# create and print wind rose
-plot_wind_rose(wind_data = wind_summary)
-```
-
-![Wind rose
-plot](reference/figures/README-summarize_and_plot_wind_data-1.png)
-
-### 4. Run the full WEMo model
-
-``` r
-wemo_results <- wemo_full(
-  site_points = PI_points,
-  shoreline = PI_shoreline,
-  bathy = PI_bathy,
-  wind_data = wind_summary,
-  max_fetch = 10000, # Max distance (m) to calculate fetch
-  water_level = 0.552 # Water level (m) relative to bathy vertical datum
-)
-```
-
-### 5. Examine and plot final results
-
-``` r
-print(wemo_results$wemo_final)
-#> Simple feature collection with 3 features and 9 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346986.4 ymax: 3843270
-#> Projected CRS: NAD83 / UTM zone 18N
-#> # A tibble: 3 × 10
-#>    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch
-#>   <int> <dbl>           <dbl>           <dbl> <chr>                     <dbl>
-#> 1     1  31.6          0.102            0.141 220                        443.
-#> 2     2  22.8          0.0894           0.124 50                         355.
-#> 3     3  10.1          0.0755           0.112 170                        257.
-#> # ℹ 4 more variables: max_fetch <dbl>, avg_efetch <dbl>, max_efetch <dbl>,
-#> #   geometry <POINT [m]>
-
-# Plot the average wave height at each point
-ggplot() +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = wemo_results$wemo_final, aes(color = avg_wave_height), size = 5) +
-  scale_color_viridis_c() +
-  labs(title = "WEMo Results: Average Wave Height", 
-       color = "Avg. Wave\nHeight (m)") +
-  theme_minimal()
-```
-
-![Map of WEMo
-results](reference/figures/README-plot_final_results-1.png)
-
-``` r
-
-# Plot the wave height of the wave arriving at the site from each fetch ray
-ggplot() +
-  geom_sf(data = PI_shoreline, fill = "honeydew3") +
-  geom_sf(data = wemo_results$wemo_details, aes(color = wave_height_final), linewidth = 1) +
-  scale_color_viridis_c(option = "H") +
-  labs(title = "WEMo Results: Final Wave Height", 
-       color = "Final Wave\nHeight (m)") +
-  theme_minimal()
-```
-
-![Map of WEMo
-results](reference/figures/README-plot_final_results-2.png)
+For step-by-step example workflow using the sample data included with
+the package, see the [**Getting
+Started**](https://mse-nccos-noaa.github.io/WEMo/articles/getting-started.md)
+guide.
 
 ## Gathering Your Own Data
 
@@ -206,13 +91,13 @@ For a detailed, step-by-step tutorial on using these functions, please
 see the [*“Gathering Input Data for WEMo”*
 article](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gathering-inputs.Rmd).
 
-## Citing WEMo
+# Citing WEMo
 
 If you use WEMo in your research, please cite both the R package and the
 original publications that describe the model’s methodology.
 
-> Walker, Q.A. (2024). *WEMo: An R Implementation of the Wave Exposure
-> Model*. R package version 0.1.0.9000
+> Walker, Q.A. (2026). *WEMo: An R Implementation of the Wave Exposure
+> Model*. R package version 0.0.0.9100
 > <https://github.com/MSE-NCCOS-NOAA/WEMo>
 
 > Malhotra, A., & Fonseca, M. S. (2007). *WEMo (Wave Exposure Model):
@@ -281,21 +166,32 @@ Section508.gov.
 
 ## Gathering and Preparing Input Data
 
+### Wind Data
+
 - [`get_wind_data()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_wind_data.md)
   : Retrieve and clean wind data for WEMo
 - [`summarize_wind_data()`](https://mse-nccos-noaa.github.io/WEMo/reference/summarize_wind_data.md)
   : Summarize wind data by direction and intensity
 - [`plot_wind_rose()`](https://mse-nccos-noaa.github.io/WEMo/reference/plot_wind_rose.md)
   : Plot a Wind Rose Diagram
+
+### Bathymetry
+
 - [`map_noaa_cudem()`](https://mse-nccos-noaa.github.io/WEMo/reference/map_noaa_cudem.md)
   : Interactively Map NOAA CUDEM Tiles
 - [`get_noaa_cudem()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_noaa_cudem.md)
   : Download NOAA CUDEM (Continuously Updated DEM) Topo-Bathy Rasters
+
+### Shoreline and Site Points
+
 - [`generate_grid_points()`](https://mse-nccos-noaa.github.io/WEMo/reference/generate_grid_points.md)
   : Generate a Grid of Points Over a Spatial Extent
 - [`generate_shoreline_from_bathy()`](https://mse-nccos-noaa.github.io/WEMo/reference/generate_shoreline_from_bathy.md)
   : Extract shoreline from a bathymetric raster using a contour
   threshold
+
+### Data Preparation
+
 - [`prepare_wemo_inputs()`](https://mse-nccos-noaa.github.io/WEMo/reference/prepare_wemo_inputs.md)
   : Prepare Input Data for WEMo Model
 

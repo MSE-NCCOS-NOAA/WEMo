@@ -14,9 +14,9 @@ PI_wind_data
 
 A tibble with 184,947 rows and 73 columns
 
-- code:
+- station_id:
 
-  the ISD station code
+  the GHCNh station ID
 
 - time:
 
@@ -45,4 +45,4 @@ A tibble with 184,947 rows and 73 columns
 ## Source
 
 created by: get_wind_data( site_point = NULL, years = 2023:2024,
-which_station = "723090-13754" )
+which_station = "USW00093765" )

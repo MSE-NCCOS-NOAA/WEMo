@@ -21,11 +21,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">WEMo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,17 +34,14 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
-<li><h6 class="dropdown-header" data-toc-skip>Core Workflow</h6></li>
-    <li><a class="dropdown-item" href="../articles/getting-started.html">1. Getting Started</a></li>
-    <li><a class="dropdown-item" href="../articles/gathering-inputs.html">2. Gathering Input Data</a></li>
-  </ul>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/getting-started.html">Getting Started</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/gathering-inputs.html">Gathering Input Data</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/MSE-NCCOS-NOAA/WEMo/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -269,14 +266,14 @@ expect to be reached by fetch rays from your site.</p>
 <span><span class="co"># PI_wind_data contains local wind observations from 2023 - 2024</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">PI_wind_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   code         time                 year month   day wind_direction wind_speed</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 723097-93743 2002-01-02 <span style="color: #949494;">14:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             30        4.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 723097-93743 2002-01-02 <span style="color: #949494;">15:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             30        2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 723097-93743 2002-01-02 <span style="color: #949494;">16:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             10        4.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 723097-93743 2002-01-02 <span style="color: #949494;">17:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             30        3.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 723097-93743 2002-01-02 <span style="color: #949494;">18:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             20        4.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 723097-93743 2002-01-02 <span style="color: #949494;">19:00:00</span>  <span style="text-decoration: underline;">2</span>002     1     2             <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt;   station_id  time                 year month   day wind_direction wind_speed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> USW00093765 2023-01-01 <span style="color: #949494;">00:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           209.       5   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> USW00093765 2023-01-01 <span style="color: #949494;">01:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           225.       6.45</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> USW00093765 2023-01-01 <span style="color: #949494;">02:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           237.       4.88</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> USW00093765 2023-01-01 <span style="color: #949494;">03:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           230        4.43</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> USW00093765 2023-01-01 <span style="color: #949494;">04:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           220        3.6 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> USW00093765 2023-01-01 <span style="color: #949494;">05:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           240        3.43</span></span></code></pre></div>
 <p>WEMo wants a summary of the wind history data i.e. one proportion and
 speed value for each direction.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -297,12 +294,12 @@ speed value for each direction.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   direction     n proportion speed</span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0  <span style="text-decoration: underline;">4</span>855       3.38  6.2 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10  <span style="text-decoration: underline;">6</span>045       4.21  6.7 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20  <span style="text-decoration: underline;">6</span>051       4.21  6.7 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30  <span style="text-decoration: underline;">5</span>375       3.74  7.05</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40  <span style="text-decoration: underline;">5</span>307       3.69  7.2 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50  <span style="text-decoration: underline;">3</span>784       2.63  7.2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0   439       2.54   7.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10   558       3.23   7.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20   988       5.71   8.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30   836       4.83   7.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40   822       4.75   7.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50   546       3.16   6.2</span></span></code></pre></div>
 <p>Plot the summarized wind data as a wind rose:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot wind data summary as a wind rose</span></span>
@@ -385,9 +382,9 @@ file stores elevations (not water depths).</li>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
 <span><span class="co">#&gt;    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 31.3           0.101            0.141 220                        443.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 22.6           0.088<span style="text-decoration: underline;">6</span>           0.123 50                         355.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3  9.85          0.074<span style="text-decoration: underline;">5</span>           0.111 170                        257.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1  56.4          0.119            0.183 340                        443.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2  37.7          0.103            0.166 270                        355.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3  17.2          0.087<span style="text-decoration: underline;">4</span>           0.136 160                        257.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: max_fetch &lt;dbl&gt;, avg_efetch &lt;dbl&gt;, max_efetch &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   geometry &lt;POINT [m]&gt;</span></span></span>
 <span></span>
@@ -409,12 +406,12 @@ fetch ray</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 15</span></span></span>
 <span><span class="co">#&gt;   direction fetch  site efetch                          geometry distances     n</span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;LINESTRING [m]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">4</span>855</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">6</span>045</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">6</span>051</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">5</span>375</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">5</span>307</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <span style="color: #949494;">&lt;dbl&gt;</span>      <span style="text-decoration: underline;">3</span>784</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       439</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       558</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       988</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       836</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <span style="color: #949494;">&lt;dbl&gt;</span>       822</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <span style="color: #949494;">&lt;dbl&gt;</span>       546</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: proportion &lt;dbl&gt;, speed &lt;dbl&gt;, wave_height_final &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   WEI &lt;dbl&gt;, wave_period &lt;dbl&gt;, wave_number &lt;dbl&gt;, celerity_final &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   nnumber_final &lt;dbl&gt;</span></span></span>
@@ -490,9 +487,9 @@ re-computes fetch and bathymetry each time.</p>
 <span>  RWE <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results_SLR</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span> <span class="op">-</span> <span class="va">results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height   RWE</span></span>
-<span><span class="co">#&gt; 1    1           0.002           0.000 0.631</span></span>
-<span><span class="co">#&gt; 2    2           0.001           0.001 0.795</span></span>
-<span><span class="co">#&gt; 3    3           0.000           0.000 0.013</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    1           0.001           0.001 1.561</span></span>
+<span><span class="co">#&gt; 2    2           0.000           0.001 0.940</span></span>
+<span><span class="co">#&gt; 3    3           0.000           0.000 0.112</span></span></code></pre></div>
 <p>We see a slight increase in wave heights and RWE from raising sea
 level. Note we didn’t change our shorelines and were already running the
 model at MHHW meaning waves from out original run likely didn’t
@@ -518,9 +515,9 @@ a dramatic effect on the results.</p>
 <span>  RWE <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span> <span class="op">-</span> <span class="va">results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height    RWE</span></span>
-<span><span class="co">#&gt; 1    1           0.041           0.030 34.013</span></span>
-<span><span class="co">#&gt; 2    2           0.036           0.026 23.861</span></span>
-<span><span class="co">#&gt; 3    3           0.033           0.022 10.794</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    1           0.052           0.035 61.227</span></span>
+<span><span class="co">#&gt; 2    2           0.049           0.030 40.111</span></span>
+<span><span class="co">#&gt; 3    3           0.041           0.026 19.001</span></span></code></pre></div>
 <p>We see increases in wave heights up to 5 cm for max wave heights and
 3.5 cm for average wave heights. Also see a corresponding increase in
 RWE.</p>

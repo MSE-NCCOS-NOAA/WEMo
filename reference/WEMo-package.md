@@ -6,7 +6,7 @@ bathymetry, and shoreline geometry to estimate wave conditions. This
 package provides tools to calculate fetch, determine effective fetch,
 extract bathymetry along vector rays, and model wind-wave properties. It
 also includes helper functions to locate, download, and prepare inputs
-such as wind data and shoreline polygons.
+such as wind data, bathymetry, and shoreline polygons.
 
 ## See also
 

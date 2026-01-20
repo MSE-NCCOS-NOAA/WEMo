@@ -24,11 +24,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">WEMo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,17 +37,14 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
-<li><h6 class="dropdown-header" data-toc-skip>Core Workflow</h6></li>
-    <li><a class="dropdown-item" href="articles/getting-started.html">1. Getting Started</a></li>
-    <li><a class="dropdown-item" href="articles/gathering-inputs.html">2. Gathering Input Data</a></li>
-  </ul>
-</li>
+<li class="nav-item"><a class="nav-link" href="articles/getting-started.html">Getting Started</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/gathering-inputs.html">Gathering Input Data</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Functions</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/MSE-NCCOS-NOAA/WEMo/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -58,14 +55,12 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="wemo">WEMo<a class="anchor" aria-label="anchor" href="#wemo"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="wemo-wave-exposure-model">WEMo: Wave Exposure Model<a class="anchor" aria-label="anchor" href="#wemo-wave-exposure-model"></a>
 </h1>
 </div>
 <div class="section level2">
-<h2 id="an-r-implementation-of-the-wave-exposure-model">An R Implementation of the Wave Exposure Model<a class="anchor" aria-label="anchor" href="#an-r-implementation-of-the-wave-exposure-model"></a>
+<h2 id="an-r-implementation">An R Implementation<a class="anchor" aria-label="anchor" href="#an-r-implementation"></a>
 </h2>
-<!-- badges: start -->
-<p><img src="reference/figures/logo.png" align="right" style="height: 200px; margin-left: 15px; margin-bottom: 5px;"><!-- badges: end --></p>
 <hr>
 <p><strong>WEMo (Wave Exposure Model)</strong> is an R package that implements a simplified hydrodynamic model to quantify wind-wave exposure in coastal and inland waters. It uses linear wave theory to estimate wave height and energy, accounting for local water depth effects like shoaling and wave breaking. It combines wind data, shoreline geometry, and bathymetry to estimate wave conditions through a reproducible and scriptable workflow in R.</p>
 <p>This package provides a modern, open-source, and accessible implementation of the original WEMo, which was developed by NOAA’s Center for Coastal Fisheries and Habitat Research and previously required a proprietary plug-in for ESRI’s ArcMap software. As the original tool is no longer compatible with modern GIS software, this R package provides a sustainable and license-free path forward for researchers and resource managers.</p>
@@ -75,7 +70,7 @@
 </h2>
 <ul>
 <li><p><strong>Quantitative Wave Exposure</strong>: Calculates wave height and Representative Wave Energy (RWE) based on wind, fetch, and bathymetry.</p></li>
-<li><p><strong>Data Preparation Tools</strong>: Includes convenience functions to download and prepare input data, such as historical wind observations from NOAA’s [Global Historic Climate Network hourly] dataset (<code><a href="reference/get_wind_data.html">get_wind_data()</a></code>) and bathymetry from NOAA’s [Continuously Updated Digital Elevation Model]{<a href="https://www.ncei.noaa.gov/products/coastal-elevation-models" class="external-link uri">https://www.ncei.noaa.gov/products/coastal-elevation-models</a>} dataset (<code><a href="reference/get_noaa_cudem.html">get_noaa_cudem()</a></code>).</p></li>
+<li><p><strong>Data Preparation Tools</strong>: Includes convenience functions to download and prepare input data, such as historical wind observations from NOAA’s <a href="https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly" class="external-link">Global Historic Climate Network hourly</a> dataset (<code><a href="reference/get_wind_data.html">get_wind_data()</a></code>) and bathymetry from NOAA’s <a href="https://www.ncei.noaa.gov/products/coastal-elevation-models" class="external-link">Continuously Updated Digital Elevation Model</a> dataset (<code><a href="reference/get_noaa_cudem.html">get_noaa_cudem()</a></code>).</p></li>
 <li><p><strong>Flexible Inputs</strong>: Works with standard R spatial objects (<code>sf</code> and <code>terra</code>), allowing users to easily integrate their own data.</p></li>
 <li><p><strong>Scenario Modeling</strong>: Designed for efficient re-analysis, making it easy to model the effects of changing conditions like sea-level rise or different wind regimes.</p></li>
 <li><p><strong>Visualization</strong>: Integrates with <code>ggplot2</code> to help visualize inputs and results.</p></li>
@@ -95,110 +90,7 @@
 <div class="section level2">
 <h2 id="example-workflow">Example Workflow<a class="anchor" aria-label="anchor" href="#example-workflow"></a>
 </h2>
-<p>This is a basic workflow demonstrating how to run the model using the package’s built-in example data. The example data are located in the immediate area around the NOAA Beaufort Lab on Pivers Island in Beaufort, North Carolina.</p>
-<div class="section level3">
-<h3 id="id_1-load-required-libraries">1. Load required libraries<a class="anchor" aria-label="anchor" href="#id_1-load-required-libraries"></a>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MSE-NCCOS-NOAA/WEMo" class="external-link">WEMo</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_2-load-the-packages-example-data">2. Load the package’s example data<a class="anchor" aria-label="anchor" href="#id_2-load-the-packages-example-data"></a>
-</h3>
-<p>A suite of example data is included with WEMo. The data are from the area around Pivers Island, Beaufort, North Carolina. They include:</p>
-<ul>
-<li>
-<code>PI_points</code>: 3 site points. A <code>sf</code> POINT object.</li>
-<li>
-<code>PI_shoreline</code>: a polygon of the Mean Higher High Water shoreline (0.522 m NAVD88). A <code>sf</code> MULTIPOLYGON object.</li>
-<li>
-<code>PI_wind_data</code>: hourly wind history from a nearby weather station. A <code>tibble</code>.</li>
-<li>
-<code>PI_bathy</code>: a topobathy raster storing elevations in m NAVD88. A <code>SpatRaster</code>,</li>
-</ul>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># read in the topobathy</span></span>
-<span><span class="va">PI_bathy</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"PI_bathy.tif"</span>, package <span class="op">=</span> <span class="st">"WEMo"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Plot input spatial data</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_bathy</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_shoreline</span>, fill <span class="op">=</span> <span class="st">"honeydew3"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_points</span>, color <span class="op">=</span> <span class="st">'red'</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"WEMo Inputs"</span>, </span>
-<span>       fill <span class="op">=</span> <span class="st">"Bathymetry\n(m NAVD88)"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 500556 cells.</span></span></code></pre></div>
-<p><img src="reference/figures/README-examine_input_data-1.png" alt="Map showing input spatial data" width="85%"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># WEMo needs a summary of wind speed and proportion by direction</span></span>
-<span><span class="va">wind_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summarize_wind_data.html">summarize_wind_data</a></span><span class="op">(</span></span>
-<span>  wind_data <span class="op">=</span> <span class="va">PI_wind_data</span>,</span>
-<span>  wind_percentile <span class="op">=</span> <span class="fl">0.95</span>,          <span class="co"># Use 95th percentile wind speed</span></span>
-<span>  directions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">350</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># Bin directions into 10-degree increments</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># create and print wind rose</span></span>
-<span><span class="fu"><a href="reference/plot_wind_rose.html">plot_wind_rose</a></span><span class="op">(</span>wind_data <span class="op">=</span> <span class="va">wind_summary</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-summarize_and_plot_wind_data-1.png" alt="Wind rose plot" width="85%"></p>
-</div>
-<div class="section level3">
-<h3 id="id_4-run-the-full-wemo-model">4. Run the full WEMo model<a class="anchor" aria-label="anchor" href="#id_4-run-the-full-wemo-model"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">wemo_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/wemo_full.html">wemo_full</a></span><span class="op">(</span></span>
-<span>  site_points <span class="op">=</span> <span class="va">PI_points</span>,</span>
-<span>  shoreline <span class="op">=</span> <span class="va">PI_shoreline</span>,</span>
-<span>  bathy <span class="op">=</span> <span class="va">PI_bathy</span>,</span>
-<span>  wind_data <span class="op">=</span> <span class="va">wind_summary</span>,</span>
-<span>  max_fetch <span class="op">=</span> <span class="fl">10000</span>, <span class="co"># Max distance (m) to calculate fetch</span></span>
-<span>  water_level <span class="op">=</span> <span class="fl">0.552</span> <span class="co"># Water level (m) relative to bathy vertical datum</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_5-examine-and-plot-final-results">5. Examine and plot final results<a class="anchor" aria-label="anchor" href="#id_5-examine-and-plot-final-results"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">wemo_results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 3 features and 9 fields</span></span>
-<span><span class="co">#&gt; Geometry type: POINT</span></span>
-<span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346986.4 ymax: 3843270</span></span>
-<span><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 18N</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 10</span></span>
-<span><span class="co">#&gt;    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch</span></span>
-<span><span class="co">#&gt;   &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;                     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1     1  31.6          0.102            0.141 220                        443.</span></span>
-<span><span class="co">#&gt; 2     2  22.8          0.0894           0.124 50                         355.</span></span>
-<span><span class="co">#&gt; 3     3  10.1          0.0755           0.112 170                        257.</span></span>
-<span><span class="co">#&gt; # ℹ 4 more variables: max_fetch &lt;dbl&gt;, avg_efetch &lt;dbl&gt;, max_efetch &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   geometry &lt;POINT [m]&gt;</span></span>
-<span></span>
-<span><span class="co"># Plot the average wave height at each point</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_shoreline</span>, fill <span class="op">=</span> <span class="st">"honeydew3"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wemo_results</span><span class="op">$</span><span class="va">wemo_final</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">avg_wave_height</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"WEMo Results: Average Wave Height"</span>, </span>
-<span>       color <span class="op">=</span> <span class="st">"Avg. Wave\nHeight (m)"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-plot_final_results-1.png" alt="Map of WEMo results" width="85%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Plot the wave height of the wave arriving at the site from each fetch ray</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_shoreline</span>, fill <span class="op">=</span> <span class="st">"honeydew3"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wemo_results</span><span class="op">$</span><span class="va">wemo_details</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">wave_height_final</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"H"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"WEMo Results: Final Wave Height"</span>, </span>
-<span>       color <span class="op">=</span> <span class="st">"Final Wave\nHeight (m)"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-plot_final_results-2.png" alt="Map of WEMo results" width="85%"></p>
-</div>
+<p>For step-by-step example workflow using the sample data included with the package, see the <a href="articles/getting-started.html"><strong>Getting Started</strong></a> guide.</p>
 </div>
 <div class="section level2">
 <h2 id="gathering-your-own-data">Gathering Your Own Data<a class="anchor" aria-label="anchor" href="#gathering-your-own-data"></a>
@@ -212,17 +104,17 @@
 </ul>
 <p>For a detailed, step-by-step tutorial on using these functions, please see the <a href="https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gathering-inputs.Rmd" class="external-link"><em>“Gathering Input Data for WEMo”</em> article</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="citing-wemo">Citing WEMo<a class="anchor" aria-label="anchor" href="#citing-wemo"></a>
-</h2>
+</div>
+<div class="section level1">
+<h1 id="citing-wemo">Citing WEMo<a class="anchor" aria-label="anchor" href="#citing-wemo"></a>
+</h1>
 <p>If you use WEMo in your research, please cite both the R package and the original publications that describe the model’s methodology.</p>
 <blockquote>
-<p>Walker, Q.A. (2024). <em>WEMo: An R Implementation of the Wave Exposure Model</em>. R package version 0.1.0.9000 <a href="https://github.com/MSE-NCCOS-NOAA/WEMo" class="external-link uri">https://github.com/MSE-NCCOS-NOAA/WEMo</a></p>
+<p>Walker, Q.A. (2026). <em>WEMo: An R Implementation of the Wave Exposure Model</em>. R package version 0.0.0.9100 <a href="https://github.com/MSE-NCCOS-NOAA/WEMo" class="external-link uri">https://github.com/MSE-NCCOS-NOAA/WEMo</a></p>
 </blockquote>
 <blockquote>
 <p>Malhotra, A., &amp; Fonseca, M. S. (2007). <em>WEMo (Wave Exposure Model): Formulation, Procedures and Validation</em>. NOAA Technical Memorandum NOS NCCOS 65. 28 pp.</p>
 </blockquote>
-</div>
 </div>
 <div class="section level1">
 <h1 id="legal-disclaimer">Legal Disclaimer<a class="anchor" aria-label="anchor" href="#legal-disclaimer"></a>

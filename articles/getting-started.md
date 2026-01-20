@@ -223,14 +223,14 @@ points](getting-started_files/figure-html/plot-shoreline-and-points-1.png)
 # PI_wind_data contains local wind observations from 2023 - 2024
 head(PI_wind_data)
 #> # A tibble: 6 × 7
-#>   code         time                 year month   day wind_direction wind_speed
-#>   <chr>        <dttm>              <dbl> <dbl> <dbl>          <dbl>      <dbl>
-#> 1 723097-93743 2002-01-02 14:00:00  2002     1     2             30        4.6
-#> 2 723097-93743 2002-01-02 15:00:00  2002     1     2             30        2.1
-#> 3 723097-93743 2002-01-02 16:00:00  2002     1     2             10        4.1
-#> 4 723097-93743 2002-01-02 17:00:00  2002     1     2             30        3.6
-#> 5 723097-93743 2002-01-02 18:00:00  2002     1     2             20        4.6
-#> 6 723097-93743 2002-01-02 19:00:00  2002     1     2             NA       NA
+#>   station_id  time                 year month   day wind_direction wind_speed
+#>   <fct>       <dttm>              <dbl> <dbl> <int>          <dbl>      <dbl>
+#> 1 USW00093765 2023-01-01 00:00:00  2023     1     1           209.       5   
+#> 2 USW00093765 2023-01-01 01:00:00  2023     1     1           225.       6.45
+#> 3 USW00093765 2023-01-01 02:00:00  2023     1     1           237.       4.88
+#> 4 USW00093765 2023-01-01 03:00:00  2023     1     1           230        4.43
+#> 5 USW00093765 2023-01-01 04:00:00  2023     1     1           220        3.6 
+#> 6 USW00093765 2023-01-01 05:00:00  2023     1     1           240        3.43
 ```
 
 WEMo wants a summary of the wind history data i.e. one proportion and
@@ -254,12 +254,12 @@ head(wind_data_summary)
 #> # A tibble: 6 × 4
 #>   direction     n proportion speed
 #>       <dbl> <int>      <dbl> <dbl>
-#> 1         0  4855       3.38  6.2 
-#> 2        10  6045       4.21  6.7 
-#> 3        20  6051       4.21  6.7 
-#> 4        30  5375       3.74  7.05
-#> 5        40  5307       3.69  7.2 
-#> 6        50  3784       2.63  7.2
+#> 1         0   439       2.54   7.2
+#> 2        10   558       3.23   7.7
+#> 3        20   988       5.71   8.8
+#> 4        30   836       4.83   7.7
+#> 5        40   822       4.75   7.2
+#> 6        50   546       3.16   6.2
 ```
 
 Plot the summarized wind data as a wind rose:
@@ -344,9 +344,9 @@ wemo_output$wemo_final
 #> # A tibble: 3 × 10
 #>    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch
 #>   <int> <dbl>           <dbl>           <dbl> <chr>                     <dbl>
-#> 1     1 31.3           0.101            0.141 220                        443.
-#> 2     2 22.6           0.0886           0.123 50                         355.
-#> 3     3  9.85          0.0745           0.111 170                        257.
+#> 1     1  56.4          0.119            0.183 340                        443.
+#> 2     2  37.7          0.103            0.166 270                        355.
+#> 3     3  17.2          0.0874           0.136 160                        257.
 #> # ℹ 4 more variables: max_fetch <dbl>, avg_efetch <dbl>, max_efetch <dbl>,
 #> #   geometry <POINT [m]>
 
@@ -372,12 +372,12 @@ head(wemo_output$wemo_details)
 #> # A tibble: 6 × 15
 #>   direction fetch  site efetch                          geometry distances     n
 #>       <dbl> <dbl> <int>  <dbl>                  <LINESTRING [m]> <list>    <int>
-#> 1         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <dbl>      4855
-#> 2        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <dbl>      6045
-#> 3        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <dbl>      6051
-#> 4        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <dbl>      5375
-#> 5        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <dbl>      5307
-#> 6        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <dbl>      3784
+#> 1         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <dbl>       439
+#> 2        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <dbl>       558
+#> 3        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <dbl>       988
+#> 4        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <dbl>       836
+#> 5        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <dbl>       822
+#> 6        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <dbl>       546
 #> # ℹ 8 more variables: proportion <dbl>, speed <dbl>, wave_height_final <dbl>,
 #> #   WEI <dbl>, wave_period <dbl>, wave_number <dbl>, celerity_final <dbl>,
 #> #   nnumber_final <dbl>
@@ -464,9 +464,9 @@ data.frame(
   RWE = round(results_SLR$wemo_final$RWE - results$wemo_final$RWE, 3)
 )
 #>   site max_wave_height avg_wave_height   RWE
-#> 1    1           0.002           0.000 0.631
-#> 2    2           0.001           0.001 0.795
-#> 3    3           0.000           0.000 0.013
+#> 1    1           0.001           0.001 1.561
+#> 2    2           0.000           0.001 0.940
+#> 3    3           0.000           0.000 0.112
 ```
 
 We see a slight increase in wave heights and RWE from raising sea level.
@@ -493,9 +493,9 @@ data.frame(
   RWE = round(results_windy$wemo_final$RWE - results$wemo_final$RWE, digits = 3)
 )
 #>   site max_wave_height avg_wave_height    RWE
-#> 1    1           0.041           0.030 34.013
-#> 2    2           0.036           0.026 23.861
-#> 3    3           0.033           0.022 10.794
+#> 1    1           0.052           0.035 61.227
+#> 2    2           0.049           0.030 40.111
+#> 3    3           0.041           0.026 19.001
 ```
 
 We see increases in wave heights up to 5 cm for max wave heights and 3.5
