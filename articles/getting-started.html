@@ -142,7 +142,7 @@ points around coordinates using <code><a href="../reference/generate_grid_points
 </div>
 </div>
 <div class="section level2">
-<h2 id="running-wemo">Running WEMo<a class="anchor" aria-label="anchor" href="#running-wemo"></a>
+<h2 id="setup-and-gather-input-data">Setup and Gather Input Data<a class="anchor" aria-label="anchor" href="#setup-and-gather-input-data"></a>
 </h2>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -294,7 +294,7 @@ Read more about controlling and customizing plots in
 </div>
 </div>
 <div class="section level2">
-<h2 id="run-wemo-with-wemo_full">Run WEMo with <code>wemo_full()</code><a class="anchor" aria-label="anchor" href="#run-wemo-with-wemo_full"></a>
+<h2 id="run-wemo">Run WEMo<a class="anchor" aria-label="anchor" href="#run-wemo"></a>
 </h2>
 <p>Now that all of our input data is gathered and inspected we’re ready
 to run the model. In this example, WEMo will:</p>
@@ -462,10 +462,10 @@ bathymetry each time using compute resources and time.</p>
 <span><span class="co">#&gt; 2    2           0.000           0.001 0.940</span></span>
 <span><span class="co">#&gt; 3    3           0.000           0.000 0.112</span></span></code></pre></div>
 <p>We see a slight increase in wave heights and RWE from raising water
-level. Note we didn’t redraw the shorelines and were already running the
-model at MHHW, meaning waves from our original run likely didn’t
-experience breaking or shoaling – both possible reasons why we don’t see
-a dramatic effect on the results.</p>
+level. Note that we didn’t redraw the shorelines and were already
+running the model at MHHW, meaning waves from our original run likely
+didn’t experience breaking or shoaling – both possible reasons why we
+don’t see a dramatic effect on the results.</p>
 </div>
 <div class="section level3">
 <h3 id="example-stronger-winds">Example: Stronger Winds<a class="anchor" aria-label="anchor" href="#example-stronger-winds"></a>
@@ -489,9 +489,9 @@ a dramatic effect on the results.</p>
 <span><span class="co">#&gt; 1    1           0.052           0.035 61.227</span></span>
 <span><span class="co">#&gt; 2    2           0.049           0.030 40.111</span></span>
 <span><span class="co">#&gt; 3    3           0.041           0.026 19.001</span></span></code></pre></div>
-<p>We see increases in wave heights up to 5 cm for max wave heights and
-3.5 cm for average wave heights. Also see a corresponding increase in
-RWE.</p>
+<p>We see increases in wave heights up to 5.2 cm for max wave heights
+and 3.5 cm for average wave heights. We also see a corresponding
+increase in RWE.</p>
 </div>
 <div class="section level3">
 <h3 id="comparing-results-scenarios">Comparing Results Scenarios<a class="anchor" aria-label="anchor" href="#comparing-results-scenarios"></a>
@@ -502,7 +502,7 @@ RWE.</p>
 <span><span class="va">results_all</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"1. Normal"</span><span class="op">)</span>, </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_SLR</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"2. SLR"</span><span class="op">)</span>,</span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"3. 25% Stronger Wind"</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"3. Windy"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Visualizing scenarios for each fetch ray</span></span>

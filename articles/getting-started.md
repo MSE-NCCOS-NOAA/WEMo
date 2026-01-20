@@ -89,7 +89,7 @@ Users can read in their own points as shapefiles or create a grid of
 points around coordinates using
 [`generate_grid_points()`](https://mse-nccos-noaa.github.io/WEMo/reference/generate_grid_points.md).
 
-## Running WEMo
+## Setup and Gather Input Data
 
 ### Installation
 
@@ -256,7 +256,7 @@ creates a `ggplot` object that can be saved or further manipulated to
 match your needs. Read more about controlling and customizing plots in
 `ggplot2` here: <https://ggplot2.tidyverse.org/>*
 
-## Run WEMo with `wemo_full()`
+## Run WEMo
 
 Now that all of our input data is gathered and inspected we’re ready to
 run the model. In this example, WEMo will:
@@ -440,10 +440,10 @@ data.frame(
 ```
 
 We see a slight increase in wave heights and RWE from raising water
-level. Note we didn’t redraw the shorelines and were already running the
-model at MHHW, meaning waves from our original run likely didn’t
-experience breaking or shoaling – both possible reasons why we don’t see
-a dramatic effect on the results.
+level. Note that we didn’t redraw the shorelines and were already
+running the model at MHHW, meaning waves from our original run likely
+didn’t experience breaking or shoaling – both possible reasons why we
+don’t see a dramatic effect on the results.
 
 ### Example: Stronger Winds
 
@@ -468,8 +468,9 @@ data.frame(
 #> 3    3           0.041           0.026 19.001
 ```
 
-We see increases in wave heights up to 5 cm for max wave heights and 3.5
-cm for average wave heights. Also see a corresponding increase in RWE.
+We see increases in wave heights up to 5.2 cm for max wave heights and
+3.5 cm for average wave heights. We also see a corresponding increase in
+RWE.
 
 ### Comparing Results Scenarios
 
@@ -480,7 +481,7 @@ cm for average wave heights. Also see a corresponding increase in RWE.
 results_all <- dplyr::bind_rows(
   dplyr::mutate(results$wemo_details, scenario = "1. Normal"), 
   dplyr::mutate(results_SLR$wemo_details, scenario = "2. SLR"),
-  dplyr::mutate(results_windy$wemo_details, scenario = "3. 25% Stronger Wind")
+  dplyr::mutate(results_windy$wemo_details, scenario = "3. Windy")
 )
 
 # Visualizing scenarios for each fetch ray
