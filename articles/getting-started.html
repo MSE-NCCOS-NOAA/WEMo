@@ -194,41 +194,12 @@ expect to be reached by fetch rays from your site.</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_bathy</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"Bathymetry (m NAVD88)"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 1. Try the standard way (works if package is installed)</span></span>
-<span><span class="va">bathy_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"PI_bathy.tif"</span>, package <span class="op">=</span> <span class="st">"WEMo"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 2. If that fails (GitHub Actions), search the whole project</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="va">bathy_path</span> <span class="op">==</span> <span class="st">""</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">bathy_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># We look for the file starting from two levels up and searching down</span></span>
-<span>  <span class="co"># 'recursive = TRUE' is the key here.</span></span>
-<span>  <span class="va">all_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"../.."</span>, </span>
-<span>                          pattern <span class="op">=</span> <span class="st">"PI_bathy.tif"</span>, </span>
-<span>                          recursive <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                          full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="co"># Filter to make sure we get the one in the inst/ folder, not a copy in docs/</span></span>
-<span>  <span class="va">bathy_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"inst/extdata/PI_bathy.tif"</span>, <span class="va">all_files</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># 3. Final validation</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bathy_path</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">bathy_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>   <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Could not find PI_bathy.tif. Check if it's been pushed to GitHub."</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">PI_bathy</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">bathy_path</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># plot the bathy raster</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_bathy</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"Bathymetry (m NAVD88)"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">&lt;SpatRaster&gt;</span> resampled to <span style="color: #00BB00;">500556</span> cells.</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/bathy-path-hidden-1.png" class="r-plt" alt="Map showing Bathymetric raster" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="site-points-1">Site Points<a class="anchor" aria-label="anchor" href="#site-points-1"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot site points</span></span>
 <span><span class="co"># PI_Points is a sf object containing 3 points</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
@@ -238,7 +209,7 @@ expect to be reached by fetch rays from your site.</p>
 <div class="section level4">
 <h4 id="shoreline-1">Shoreline<a class="anchor" aria-label="anchor" href="#shoreline-1"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot shoreline</span></span>
 <span><span class="co"># PI_shoreline is a polygon representing the MHHW shoreline (0.552 m NAVD88)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
@@ -248,7 +219,7 @@ expect to be reached by fetch rays from your site.</p>
 <div class="section level4">
 <h4 id="plot-all-input-spatial-data">Plot All Input Spatial Data<a class="anchor" aria-label="anchor" href="#plot-all-input-spatial-data"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot all input spatial data</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">PI_bathy</span><span class="op">)</span><span class="op">+</span></span>
@@ -261,7 +232,7 @@ expect to be reached by fetch rays from your site.</p>
 <div class="section level4">
 <h4 id="wind-1">Wind<a class="anchor" aria-label="anchor" href="#wind-1"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View first several rows of wind data</span></span>
 <span><span class="co"># PI_wind_data contains local wind observations from 2023 - 2024</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">PI_wind_data</span><span class="op">)</span></span>
@@ -276,7 +247,7 @@ expect to be reached by fetch rays from your site.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> USW00093765 2023-01-01 <span style="color: #949494;">05:00:00</span>  <span style="text-decoration: underline;">2</span>023     1     1           240        3.43</span></span></code></pre></div>
 <p>WEMo wants a summary of the wind history data i.e. one proportion and
 speed value for each direction.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarizing wind data</span></span>
 <span><span class="co"># create a vector from 0 to 350 by 10 to snap the input wind_directions to</span></span>
 <span><span class="va">wanted_directions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">350</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -301,7 +272,7 @@ speed value for each direction.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40   822       4.75   7.2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50   546       3.16   6.2</span></span></code></pre></div>
 <p>Plot the summarized wind data as a wind rose:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot wind data summary as a wind rose</span></span>
 <span><span class="va">wind_rose_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_wind_rose.html">plot_wind_rose</a></span><span class="op">(</span>wind_data <span class="op">=</span> <span class="va">wind_data_summary</span><span class="op">)</span></span>
 <span></span>
@@ -355,7 +326,7 @@ site</li>
 <code>depths_or_elev = "elev"</code>: indicates that the bathymetry
 file stores elevations (not water depths).</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wemo_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/wemo_full.html">wemo_full</a></span><span class="op">(</span></span>
 <span>  site_points <span class="op">=</span> <span class="va">PI_points</span>,</span>
 <span>  shoreline <span class="op">=</span> <span class="va">PI_shoreline</span>,</span>
@@ -368,11 +339,11 @@ file stores elevations (not water depths).</li>
 <span>  depths_or_elev <span class="op">=</span> <span class="st">"elev"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/wemo_full.html">wemo_full()</a></code> returns two objects</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wemo_output</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "wemo_details" "wemo_final"</span></span></code></pre></div>
 <p><code>wemo_final</code> contains the summary stats at each site</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wemo_output</span><span class="op">$</span><span class="va">wemo_final</span></span>
 <span><span class="co">#&gt; Simple feature collection with 3 features and 9 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POINT</span></span>
@@ -396,7 +367,7 @@ file stores elevations (not water depths).</li>
 <p><img src="getting-started_files/figure-html/display-final-wemo-results-1.png" class="r-plt" alt="Map Showing the results of WEMo model" width="576" style="display: block; margin: auto;"></p>
 <p><code>wemo_details</code> contains stats about the waves from each
 fetch ray</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wemo_output</span><span class="op">$</span><span class="va">wemo_details</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 6 features and 14 fields</span></span>
 <span><span class="co">#&gt; Geometry type: LINESTRING</span></span>
@@ -438,7 +409,7 @@ are.</p>
 <div class="section level3">
 <h3 id="saving-results">Saving Results<a class="anchor" aria-label="anchor" href="#saving-results"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">st_write</a></span><span class="op">(</span><span class="va">wemo_output</span><span class="op">$</span><span class="va">wemo_details</span>, <span class="st">"/path/to/save/wemo_details.shp"</span><span class="op">)</span></span>
 <span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html" class="external-link">st_write</a></span><span class="op">(</span><span class="va">wemo_output</span><span class="op">$</span><span class="va">wemo_final</span>, <span class="st">"/path/to/save/wemo_final.shp"</span><span class="op">)</span></span>
 <span></span>
@@ -456,7 +427,7 @@ how the model output changes with a different wind regime or with sea
 level rise? Running <code><a href="../reference/wemo_full.html">wemo_full()</a></code> again works, but
 re-computes fetch and bathymetry each time.</p>
 <p>For faster iteration, prepare inputs once:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_wemo_inputs.html">prepare_wemo_inputs</a></span><span class="op">(</span></span>
 <span>  site_points <span class="op">=</span> <span class="va">PI_points</span>,</span>
 <span>  shoreline <span class="op">=</span> <span class="va">PI_shoreline</span>,</span>
@@ -469,12 +440,12 @@ re-computes fetch and bathymetry each time.</p>
 <span>  depths_or_elev <span class="op">=</span> <span class="st">"elev"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Then run the model:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/WEMo.html">wemo</a></span><span class="op">(</span>fetch <span class="op">=</span> <span class="va">inputs</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="example-adding-sea-level-rise">Example: Adding Sea Level Rise<a class="anchor" aria-label="anchor" href="#example-adding-sea-level-rise"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add 0.3 m to each depth value</span></span>
 <span><span class="va">inputs_SLR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_depths.html">update_depths</a></span><span class="op">(</span><span class="va">inputs</span>, depth_diff <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="va">results_SLR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/WEMo.html">wemo</a></span><span class="op">(</span><span class="va">inputs_SLR</span><span class="op">)</span></span>
@@ -499,7 +470,7 @@ a dramatic effect on the results.</p>
 <div class="section level3">
 <h3 id="example-stronger-winds">Example: Stronger Winds<a class="anchor" aria-label="anchor" href="#example-stronger-winds"></a>
 </h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a copy of the inputs</span></span>
 <span><span class="va">inputs_windy</span> <span class="op">&lt;-</span> <span class="va">inputs</span></span>
 <span><span class="co"># Increase wind speed by 25%</span></span>
@@ -526,7 +497,7 @@ RWE.</p>
 <h3 id="comparing-results-senarios">Comparing Results Senarios<a class="anchor" aria-label="anchor" href="#comparing-results-senarios"></a>
 </h3>
 <p><em>this is a bit advanced, but a cool visual</em></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a data set to combine all results</span></span>
 <span><span class="va">results_all</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">wemo_details</span>, senario <span class="op">=</span> <span class="st">"1. Normal"</span><span class="op">)</span>, </span>

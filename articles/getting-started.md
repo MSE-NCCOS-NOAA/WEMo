@@ -143,37 +143,6 @@ ggplot() +
   labs(fill = "Bathymetry (m NAVD88)")
 ```
 
-``` r
-# 1. Try the standard way (works if package is installed)
-bathy_path <- system.file("extdata", "PI_bathy.tif", package = "WEMo")
-
-# 2. If that fails (GitHub Actions), search the whole project
-if (bathy_path == "" || !file.exists(bathy_path)) {
-  # We look for the file starting from two levels up and searching down
-  # 'recursive = TRUE' is the key here.
-  all_files <- list.files(path = "../..", 
-                          pattern = "PI_bathy.tif", 
-                          recursive = TRUE, 
-                          full.names = TRUE)
-  
-  # Filter to make sure we get the one in the inst/ folder, not a copy in docs/
-  bathy_path <- grep("inst/extdata/PI_bathy.tif", all_files, value = TRUE)[1]
-}
-
-# 3. Final validation
-if (is.na(bathy_path) || !file.exists(bathy_path)) {
-   stop("Could not find PI_bathy.tif. Check if it's been pushed to GitHub.")
-}
-
-PI_bathy <- terra::rast(bathy_path)
-
-# plot the bathy raster
-ggplot() +
-  geom_spatraster(data = PI_bathy)+
-  labs(fill = "Bathymetry (m NAVD88)")
-#> <SpatRaster> resampled to 500556 cells.
-```
-
 ![Map showing Bathymetric
 raster](getting-started_files/figure-html/bathy-path-hidden-1.png)
 
