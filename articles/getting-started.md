@@ -368,9 +368,8 @@ Additionally, the parameter `max_fetch` constrains the maximum distance
 that fetch rays are drawn. If you’d like to plot or save the full fetch
 rays the function
 [`find_fetch()`](https://mse-nccos-noaa.github.io/WEMo/reference/find_fetch.md)
-creates the fetch rays and returns a object that can be saved or
-plotted.* **\[Do i need this effective fetch explanation or can I refer
-to more source?\].**
+creates the fetch rays and returns an object that can be saved or
+plotted.*
 
 Most users will probably only want the data from `wemo_final`, but
 `wemo_details` can be useful to understand why the results in
@@ -392,9 +391,11 @@ write.csv(results_df, "/path/to/save/results.csv")
 [`wemo_full()`](https://mse-nccos-noaa.github.io/WEMo/reference/wemo_full.md)
 is great because it doesn’t require working with any intermediate
 products of WEMo. But what if you’d like to see how the model output
-changes with a different wind regime or with sea level rise? Running
+changes with a different wind regime or with different water levels?
+Running
 [`wemo_full()`](https://mse-nccos-noaa.github.io/WEMo/reference/wemo_full.md)
-again works, but re-computes fetch and bathymetry each time.
+again on modified inputs works, but asks your machine to re-compute
+fetch and bathymetry each time using compute resources and time.
 
 For faster iteration, prepare inputs once:
 
@@ -418,7 +419,7 @@ Then run the model:
 results <- wemo(fetch = inputs)
 ```
 
-### Example: Adding Sea Level Rise
+### Example: Increasing Water Level
 
 ``` r
 # add 0.3 m to each depth value
@@ -438,11 +439,11 @@ data.frame(
 #> 3    3           0.000           0.000 0.112
 ```
 
-We see a slight increase in wave heights and RWE from raising sea level.
-Note we didn’t change our shorelines and were already running the model
-at MHHW meaning waves from out original run likely didn’t experience
-breaking or shoaling – both possible reasons why we don’t see a dramatic
-effect on the results.
+We see a slight increase in wave heights and RWE from raising water
+level. Note we didn’t redraw the shorelines and were already running the
+model at MHHW, meaning waves from our original run likely didn’t
+experience breaking or shoaling – both possible reasons why we don’t see
+a dramatic effect on the results.
 
 ### Example: Stronger Winds
 
@@ -470,24 +471,25 @@ data.frame(
 We see increases in wave heights up to 5 cm for max wave heights and 3.5
 cm for average wave heights. Also see a corresponding increase in RWE.
 
-### Comparing Results Senarios
+### Comparing Results Scenarios
 
 *this is a bit advanced, but a cool visual*
 
 ``` r
 # make a data set to combine all results
 results_all <- dplyr::bind_rows(
-  dplyr::mutate(results$wemo_details, senario = "1. Normal"), 
-  dplyr::mutate(results_SLR$wemo_details, senario = "2. SLR"),
-  dplyr::mutate(results_windy$wemo_details, senario = "3. 25% Stronger Wind")
+  dplyr::mutate(results$wemo_details, scenario = "1. Normal"), 
+  dplyr::mutate(results_SLR$wemo_details, scenario = "2. SLR"),
+  dplyr::mutate(results_windy$wemo_details, scenario = "3. 25% Stronger Wind")
 )
 
+# Visualizing scenarios for each fetch ray
 ggplot()+
   geom_sf(data = results_all, aes(color = wave_height_final), linewidth = 1)+
   scale_color_viridis_c(option = "H")+
-  facet_grid(site~senario, labeller = "label_both")+
+  facet_grid(site~scenario, labeller = "label_both")+
   theme_bw()
 ```
 
 ![Map comparing WEMo results under different
-senarios](getting-started_files/figure-html/Comparing-Results-Senarios-1.png)
+scenarios](getting-started_files/figure-html/Comparing-Results-Scenarios-1.png)

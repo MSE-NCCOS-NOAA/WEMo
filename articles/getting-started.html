@@ -399,9 +399,8 @@ fetch rays. They are constrained by the fetch rays that surround them.
 Additionally, the parameter <code>max_fetch</code> constrains the
 maximum distance that fetch rays are drawn. If you’d like to plot or
 save the full fetch rays the function <code><a href="../reference/find_fetch.html">find_fetch()</a></code> creates
-the fetch rays and returns a object that can be saved or plotted.</em>
-<strong>[Do i need this effective fetch explanation or can I refer to
-more source?].</strong></p>
+the fetch rays and returns an object that can be saved or
+plotted.</em></p>
 <p>Most users will probably only want the data from
 <code>wemo_final</code>, but <code>wemo_details</code> can be useful to
 understand why the results in <code>wemo_final</code> are what they
@@ -423,9 +422,10 @@ are.</p>
 </h2>
 <p><code><a href="../reference/wemo_full.html">wemo_full()</a></code> is great because it doesn’t require working
 with any intermediate products of WEMo. But what if you’d like to see
-how the model output changes with a different wind regime or with sea
-level rise? Running <code><a href="../reference/wemo_full.html">wemo_full()</a></code> again works, but
-re-computes fetch and bathymetry each time.</p>
+how the model output changes with a different wind regime or with
+different water levels? Running <code><a href="../reference/wemo_full.html">wemo_full()</a></code> again on
+modified inputs works, but asks your machine to re-compute fetch and
+bathymetry each time using compute resources and time.</p>
 <p>For faster iteration, prepare inputs once:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_wemo_inputs.html">prepare_wemo_inputs</a></span><span class="op">(</span></span>
@@ -443,7 +443,7 @@ re-computes fetch and bathymetry each time.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/WEMo.html">wemo</a></span><span class="op">(</span>fetch <span class="op">=</span> <span class="va">inputs</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="example-adding-sea-level-rise">Example: Adding Sea Level Rise<a class="anchor" aria-label="anchor" href="#example-adding-sea-level-rise"></a>
+<h3 id="example-increasing-water-level">Example: Increasing Water Level<a class="anchor" aria-label="anchor" href="#example-increasing-water-level"></a>
 </h3>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add 0.3 m to each depth value</span></span>
@@ -461,9 +461,9 @@ re-computes fetch and bathymetry each time.</p>
 <span><span class="co">#&gt; 1    1           0.001           0.001 1.561</span></span>
 <span><span class="co">#&gt; 2    2           0.000           0.001 0.940</span></span>
 <span><span class="co">#&gt; 3    3           0.000           0.000 0.112</span></span></code></pre></div>
-<p>We see a slight increase in wave heights and RWE from raising sea
-level. Note we didn’t change our shorelines and were already running the
-model at MHHW meaning waves from out original run likely didn’t
+<p>We see a slight increase in wave heights and RWE from raising water
+level. Note we didn’t redraw the shorelines and were already running the
+model at MHHW, meaning waves from our original run likely didn’t
 experience breaking or shoaling – both possible reasons why we don’t see
 a dramatic effect on the results.</p>
 </div>
@@ -494,23 +494,24 @@ a dramatic effect on the results.</p>
 RWE.</p>
 </div>
 <div class="section level3">
-<h3 id="comparing-results-senarios">Comparing Results Senarios<a class="anchor" aria-label="anchor" href="#comparing-results-senarios"></a>
+<h3 id="comparing-results-scenarios">Comparing Results Scenarios<a class="anchor" aria-label="anchor" href="#comparing-results-scenarios"></a>
 </h3>
 <p><em>this is a bit advanced, but a cool visual</em></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a data set to combine all results</span></span>
 <span><span class="va">results_all</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">wemo_details</span>, senario <span class="op">=</span> <span class="st">"1. Normal"</span><span class="op">)</span>, </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_SLR</span><span class="op">$</span><span class="va">wemo_details</span>, senario <span class="op">=</span> <span class="st">"2. SLR"</span><span class="op">)</span>,</span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_details</span>, senario <span class="op">=</span> <span class="st">"3. 25% Stronger Wind"</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"1. Normal"</span><span class="op">)</span>, </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_SLR</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"2. SLR"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_details</span>, scenario <span class="op">=</span> <span class="st">"3. 25% Stronger Wind"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Visualizing scenarios for each fetch ray</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">results_all</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">wave_height_final</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_c</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"H"</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">site</span><span class="op">~</span><span class="va">senario</span>, labeller <span class="op">=</span> <span class="st">"label_both"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">site</span><span class="op">~</span><span class="va">scenario</span>, labeller <span class="op">=</span> <span class="st">"label_both"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started_files/figure-html/Comparing-Results-Senarios-1.png" class="r-plt" alt="Map comparing WEMo results under different senarios" width="864" style="display: block; margin: auto;"></p>
+<p><img src="getting-started_files/figure-html/Comparing-Results-Scenarios-1.png" class="r-plt" alt="Map comparing WEMo results under different scenarios" width="864" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
