@@ -124,7 +124,7 @@ ggplot() +
 ```
 
 
-```{r bathy-path-hidden, incldue = F, fig.alt = "Map showing Bathymetric raster"}
+```{r bathy-path-hidden, echo = F, message=FALSE, fig.alt = "Map showing Bathymetric raster"}
 # 1. Try the standard way (works if package is installed)
 bathy_path <- system.file("extdata", "PI_bathy.tif", package = "WEMo")
 
