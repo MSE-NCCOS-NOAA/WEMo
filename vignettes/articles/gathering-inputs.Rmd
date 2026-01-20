@@ -69,7 +69,7 @@ site_point <- st_as_sf(
 
 ## Wind Data
 
-Use `get_wind_data()` to retrieve and download wind observations from the NOAA Integrated Surface Database (ISD). The returned data frame includes timestamps, wind speed (m/s), and direction (degrees). 
+Use `get_wind_data()` to retrieve and download wind observations from the NOAA Global Historical Climate Network hourly (GHCNh). The returned data frame includes timestamps, wind speed (m/s), and direction (degrees). 
 
 ```{r download-wind-data, eval = T, warning=FALSE}
 # download wind data from 2020 - 2023 from the closest station to our point

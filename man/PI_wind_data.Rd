@@ -9,7 +9,7 @@
 
 A tibble with 184,947 rows and 73 columns
 \describe{
-\item{code}{the ISD station code}
+\item{station_id}{the GHCNh station ID}
 \item{time}{datetime when the observation was made}
 \item{year}{year when the observation was made}
 \item{month}{month when the observation was made}
@@ -25,7 +25,7 @@ created by:
 get_wind_data(
 site_point = NULL,
 years = 2023:2024,
-which_station = "723090-13754"
+which_station = "USW00093765"
 )
 }
 \usage{
