@@ -1,9 +1,7 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # WEMo
 
-## An R Implementation of the Wave Exposure Model
+## Wave Exposure Model: An R Implementation
 
 <!-- badges: start -->
 

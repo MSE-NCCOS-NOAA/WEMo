@@ -1,9 +1,7 @@
 
-# WEMo: Wave Exposure Model
+# WEMo
 
-## An R Implementation
-
-------------------------------------------------------------------------
+## Wave Exposure Model: An R Implementation
 
 **WEMo (Wave Exposure Model)** is an R package that implements a
 simplified hydrodynamic model to quantify wind-wave exposure in coastal

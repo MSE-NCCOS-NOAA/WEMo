@@ -1,9 +1,6 @@
 ---
 output: github_document
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -14,7 +11,7 @@ knitr::opts_chunk$set(
 ```
 
 # WEMo
-## An R Implementation of the Wave Exposure Model
+## Wave Exposure Model: An R Implementation
 <!-- badges: start -->
 <img src="man/figures/logo.png" align="right" style="height: 200px; margin-left: 15px; margin-bottom: 5px;" />
 <!-- badges: end -->

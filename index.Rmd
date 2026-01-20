@@ -11,10 +11,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# WEMo: Wave Exposure Model
-## An R Implementation
-
----
+# WEMo
+## Wave Exposure Model: An R Implementation
 
 **WEMo (Wave Exposure Model)** is an R package that implements a simplified hydrodynamic model to quantify wind-wave exposure in coastal and inland waters. It uses linear wave theory to estimate wave height and energy, accounting for local water depth effects like shoaling and wave breaking. It combines wind data, shoreline geometry, and bathymetry to estimate wave conditions through a reproducible and scriptable workflow in R.
 
