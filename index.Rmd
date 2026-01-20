@@ -64,7 +64,7 @@ WEMo provides several functions to help you acquire and prepare the necessary in
 
 For a detailed, step-by-step tutorial on using these functions, please see the [*"Gathering Input Data for WEMo"* article](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gathering-inputs.Rmd).
 
-## Citing WEMo
+# Citing WEMo
 
 If you use WEMo in your research, please cite both the R package and the original publications that describe the model's methodology.
 

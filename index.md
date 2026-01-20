@@ -1,0 +1,142 @@
+
+# WEMo: Wave Exposure Model
+
+## An R Implementation
+
+------------------------------------------------------------------------
+
+**WEMo (Wave Exposure Model)** is an R package that implements a
+simplified hydrodynamic model to quantify wind-wave exposure in coastal
+and inland waters. It uses linear wave theory to estimate wave height
+and energy, accounting for local water depth effects like shoaling and
+wave breaking. It combines wind data, shoreline geometry, and bathymetry
+to estimate wave conditions through a reproducible and scriptable
+workflow in R.
+
+This package provides a modern, open-source, and accessible
+implementation of the original WEMo, which was developed by NOAA’s
+Center for Coastal Fisheries and Habitat Research and previously
+required a proprietary plug-in for ESRI’s ArcMap software. As the
+original tool is no longer compatible with modern GIS software, this R
+package provides a sustainable and license-free path forward for
+researchers and resource managers.
+
+## Key Features
+
+- **Quantitative Wave Exposure**: Calculates wave height and
+  Representative Wave Energy (RWE) based on wind, fetch, and bathymetry.
+
+- **Data Preparation Tools**: Includes convenience functions to download
+  and prepare input data, such as historical wind observations from
+  NOAA’s [Global Historic Climate Network
+  hourly](https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly)
+  dataset (`get_wind_data()`) and bathymetry from NOAA’s [Continuously
+  Updated Digital Elevation
+  Model](https://www.ncei.noaa.gov/products/coastal-elevation-models)
+  dataset (`get_noaa_cudem()`).
+
+- **Flexible Inputs**: Works with standard R spatial objects (`sf` and
+  `terra`), allowing users to easily integrate their own data.
+
+- **Scenario Modeling**: Designed for efficient re-analysis, making it
+  easy to model the effects of changing conditions like sea-level rise
+  or different wind regimes.
+
+- **Visualization**: Integrates with `ggplot2` to help visualize inputs
+  and results.
+
+------------------------------------------------------------------------
+
+## Installation
+
+You can install the development version of `WEMo` from
+[GitHub](https://github.com/) with:
+
+``` r
+# If you don't have the 'remotes' package, install it first
+# install.packages("remotes")
+
+remotes::install_github("MSE-NCCOS-NOAA/WEMo")
+```
+
+## Example Workflow
+
+For step-by-step example workflow using the sample data included with
+the package, see the [**Getting
+Started**](articles/getting-started.html) guide.
+
+## Gathering Your Own Data
+
+WEMo provides several functions to help you acquire and prepare the
+necessary input for your area of interest
+
+- **Wind Data**: Download historical wind data from NOAA’s Global
+  Historical Climatology Network hourly (GHCNh) using `get_wind_data()`.
+
+- **Bathymetry Data**: Fetch bathymetric rasters from NOAA’s CUDEM
+  dataset using `get_noaa_cudem()`.
+
+- **Shoreline Polygon**: Generate a shoreline from a bathymetry raster
+  using `generate_shoreline_from_bathy()`.
+
+- **Site Points**: Create a regular grid of points for analysis using
+  `generate_grid_points()`.
+
+For a detailed, step-by-step tutorial on using these functions, please
+see the [*“Gathering Input Data for WEMo”*
+article](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gathering-inputs.Rmd).
+
+# Citing WEMo
+
+If you use WEMo in your research, please cite both the R package and the
+original publications that describe the model’s methodology.
+
+> Walker, Q.A. (2026). *WEMo: An R Implementation of the Wave Exposure
+> Model*. R package version 0.0.0.9100
+> <https://github.com/MSE-NCCOS-NOAA/WEMo>
+
+> Malhotra, A., & Fonseca, M. S. (2007). *WEMo (Wave Exposure Model):
+> Formulation, Procedures and Validation*. NOAA Technical Memorandum NOS
+> NCCOS 65. 28 pp.
+
+# Legal Disclaimer
+
+This repository is a software product and is not official communication
+of the National Oceanic and Atmospheric Administration (NOAA), or the
+United States Department of Commerce (DOC). All NOAA GitHub project code
+is provided on an ‘as is’ basis and the user assumes responsibility for
+its use. Any claims against the DOC or DOC bureaus stemming from the use
+of this GitHub project will be governed by all applicable Federal law.
+Any reference to specific commercial products, processes, or services by
+service mark, trademark, manufacturer, or otherwise, does not constitute
+or imply their endorsement, recommendation, or favoring by the DOC. The
+DOC seal and logo, or the seal and logo of a DOC bureau, shall not be
+used in any manner to imply endorsement of any commercial product or
+activity by the DOC or the United States Government.
+
+# License
+
+Software code created by U.S. Government employees is not subject to
+copyright in the United States (17 U.S.C. §105). The United
+States/Department of Commerce reserve all rights to seek and obtain
+copyright protection in countries other than the United States for
+Software authored in its entirety by the Department of Commerce. To this
+end, the Department of Commerce hereby grants to Recipient a
+royalty-free, nonexclusive license to use, copy, and create derivative
+works of the Software outside of the United States.
+
+# [Section 508](https://oceanservice.noaa.gov/accessibility-statement.html)
+
+The National Ocean Service is committed to making its website accessible
+to the widest possible audience, including people with disabilities, in
+accordance with Section 508 of the Rehabilitation Act (29 U.S.C. 794d).
+
+Section 508 is a federal law that requires agencies to provide
+individuals with disabilities equal access to electronic information and
+data comparable to those who do not have disabilities, unless an undue
+burden would be imposed on the agency.
+
+The Section 508 standards are the technical requirements and criteria
+that are used to measure conformance within this law. More information
+on Section 508 and the technical standards can be found at
+Section508.gov.
