@@ -41,7 +41,8 @@ WEMo requires four key inputs:
 
 Bathymetry describes underwater terrain, which influences wave growth
 and breaking. WEMo requires bathymetry as a raster (GeoTIF `.tif`),
-typically in meters relative to a vertical datum like NAVD88.
+typically expressed in meters relative to a vertical datum such as
+NAVD88.
 
 The function
 [`get_noaa_cudem()`](https://mse-nccos-noaa.github.io/WEMo/reference/get_noaa_cudem.md)
@@ -474,7 +475,8 @@ RWE.
 
 ### Comparing Results Scenarios
 
-*this is a bit advanced, but a cool visual*
+This example demonstrates advanced visualization techniques for
+comparing scenarios.
 
 ``` r
 # make a data set to combine all results

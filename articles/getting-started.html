@@ -102,8 +102,8 @@ calculated</p></li>
 </h4>
 <p>Bathymetry describes underwater terrain, which influences wave growth
 and breaking. WEMo requires bathymetry as a raster (GeoTIF
-<code>.tif</code>), typically in meters relative to a vertical datum
-like NAVD88.</p>
+<code>.tif</code>), typically expressed in meters relative to a vertical
+datum such as NAVD88.</p>
 <p>The function <code><a href="../reference/get_noaa_cudem.html">get_noaa_cudem()</a></code> provides access to NOAA’s
 Continuously Updated Digital Elevation Model <a href="https://www.ncei.noaa.gov/products/coastal-elevation-models" class="external-link">CUDEM</a>
 (<a href="https://www.ncei.noaa.gov/products/coastal-elevation-models" class="external-link uri">https://www.ncei.noaa.gov/products/coastal-elevation-models</a>)
@@ -496,7 +496,8 @@ increase in RWE.</p>
 <div class="section level3">
 <h3 id="comparing-results-scenarios">Comparing Results Scenarios<a class="anchor" aria-label="anchor" href="#comparing-results-scenarios"></a>
 </h3>
-<p><em>this is a bit advanced, but a cool visual</em></p>
+<p>This example demonstrates advanced visualization techniques for
+comparing scenarios.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a data set to combine all results</span></span>
 <span><span class="va">results_all</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>

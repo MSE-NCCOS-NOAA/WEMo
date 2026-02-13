@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/gathering-inputs: gathering-inputs.html
   articles/getting-started: getting-started.html
-last_built: 2026-01-20T21:35Z
+last_built: 2026-02-13T19:18Z
 urls:
   reference: https://mse-nccos-noaa.github.io/WEMo/reference
   article: https://mse-nccos-noaa.github.io/WEMo/articles
