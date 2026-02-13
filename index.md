@@ -66,7 +66,7 @@ Started**](articles/getting-started.html) guide.
 ## Gathering Your Own Data
 
 WEMo provides several functions to help you acquire and prepare the
-necessary input for your area of interest
+necessary inputs for your area of interest
 
 - **Wind Data**: Download historical wind data from NOAA’s Global
   Historical Climatology Network hourly (GHCNh) using `get_wind_data()`.
@@ -81,8 +81,8 @@ necessary input for your area of interest
   `generate_grid_points()`.
 
 For a detailed, step-by-step tutorial on using these functions, please
-see the [*“Gathering Input Data for WEMo”*
-article](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/HEAD/vignettes/articles/gathering-inputs.Rmd).
+see the [**“Gathering Input Data for WEMo”**
+article](https://mse-nccos-noaa.github.io/WEMo/articles/gathering-inputs.html).
 
 # Citing WEMo
 

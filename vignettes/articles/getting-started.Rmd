@@ -46,7 +46,7 @@ WEMo requires four key inputs:
 
 ### Bathymetry
 
-Bathymetry describes underwater terrain, which influences wave growth and breaking. WEMo requires bathymetry as a raster (GeoTIF `.tif`), typically in meters relative to a vertical datum like NAVD88. 
+Bathymetry describes underwater terrain, which influences wave growth and breaking. WEMo requires bathymetry as a raster (GeoTIF `.tif`), typically expressed in meters relative to a vertical datum such as NAVD88. 
 
 The function `get_noaa_cudem()` provides access to NOAA's Continuously Updated Digital Elevation Model [CUDEM](https://www.ncei.noaa.gov/products/coastal-elevation-models) (<https://www.ncei.noaa.gov/products/coastal-elevation-models>) allowing users to quickly download and incorporate CUDEM topobathy data in their workflow.
 
@@ -386,7 +386,7 @@ We see increases in wave heights up to `r diff_max_cm` cm for max wave heights a
 
 ## Comparing Results Scenarios
 
-*this is a bit advanced, but a cool visual*
+This example demonstrates advanced visualization techniques for comparing scenarios.
 
 ```{r Comparing-Results-Scenarios, fig.dim=c(9, 6), fig.alt="Map comparing WEMo results under different scenarios"}
 # make a data set to combine all results
