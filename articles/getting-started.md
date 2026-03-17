@@ -340,17 +340,17 @@ head(wemo_output$wemo_details)
 #> Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346795.2 ymax: 3843312
 #> Projected CRS: NAD83 / UTM zone 18N
 #> # A tibble: 6 × 15
-#>   direction fetch  site efetch                          geometry distances     n
-#>       <dbl> <dbl> <int>  <dbl>                  <LINESTRING [m]> <list>    <int>
-#> 1         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <dbl>       439
-#> 2        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <dbl>       558
-#> 3        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <dbl>       988
-#> 4        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <dbl>       836
-#> 5        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <dbl>       822
-#> 6        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <dbl>       546
-#> # ℹ 8 more variables: proportion <dbl>, speed <dbl>, wave_height_final <dbl>,
-#> #   WEI <dbl>, wave_period <dbl>, wave_number <dbl>, celerity_final <dbl>,
-#> #   nnumber_final <dbl>
+#>   direction fetch  site efetch distances       n proportion speed
+#>       <dbl> <dbl> <int>  <dbl> <list>      <int>      <dbl> <dbl>
+#> 1         0  806.     1   692. <dbl [692]>   439       2.54   7.2
+#> 2        10  696.     1   670. <dbl [670]>   558       3.23   7.7
+#> 3        20  782.     1   596. <dbl [597]>   988       5.71   8.8
+#> 4        30  518.     1   518. <dbl [518]>   836       4.83   7.7
+#> 5        40  340.     1   340. <dbl [341]>   822       4.75   7.2
+#> 6        50  241.     1   241. <dbl [242]>   546       3.16   6.2
+#> # ℹ 7 more variables: wave_height_final <dbl>, WEI <dbl>, wave_period <dbl>,
+#> #   wave_number <dbl>, celerity_final <dbl>, nnumber_final <dbl>,
+#> #   geometry <LINESTRING [m]>
 
 # wemo_output$wemo_details can be plotted with input data 
 ggplot()+

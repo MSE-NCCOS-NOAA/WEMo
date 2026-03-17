@@ -10,11 +10,11 @@
 Source:
 [`DESCRIPTION`](https://github.com/MSE-NCCOS-NOAA/WEMo/blob/master/DESCRIPTION)
 
-Walker Q (2026). *WEMo: Wave Energy Model*. R package version
+Walker Q (2026). *WEMo: Wave Exposure Model (WEMo)*. R package version
 0.0.0.9000, <https://github.com/MSE-NCCOS-NOAA/WEMo>.
 
     @Manual{,
-      title = {WEMo: Wave Energy Model},
+      title = {WEMo: Wave Exposure Model (WEMo)},
       author = {Quentin Walker},
       year = {2026},
       note = {R package version 0.0.0.9000},

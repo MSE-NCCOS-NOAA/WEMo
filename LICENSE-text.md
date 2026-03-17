@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2024
-    COPYRIGHT HOLDER: WEMo authors
+    YEAR: 2026
+    COPYRIGHT HOLDER: Quentin Walker (NOAA NCCOS)

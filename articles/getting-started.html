@@ -375,17 +375,17 @@ fetch ray</p>
 <span><span class="co">#&gt; Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346795.2 ymax: 3843312</span></span>
 <span><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 18N</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 15</span></span></span>
-<span><span class="co">#&gt;   direction fetch  site efetch                          geometry distances     n</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;LINESTRING [m]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0  806.     1   692. (346536.4 3842620, 346536.4 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       439</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10  696.     1   670. (346536.4 3842620, 346652.7 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       558</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20  782.     1   596. (346536.4 3842620, 346740.3 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       988</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30  518.     1   518. (346536.4 3842620, 346795.2 3843… <span style="color: #949494;">&lt;dbl&gt;</span>       836</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40  340.     1   340. (346536.4 3842620, 346755.1 3842… <span style="color: #949494;">&lt;dbl&gt;</span>       822</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50  241.     1   241. (346536.4 3842620, 346721.2 3842… <span style="color: #949494;">&lt;dbl&gt;</span>       546</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: proportion &lt;dbl&gt;, speed &lt;dbl&gt;, wave_height_final &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   WEI &lt;dbl&gt;, wave_period &lt;dbl&gt;, wave_number &lt;dbl&gt;, celerity_final &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   nnumber_final &lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt;   direction fetch  site efetch distances       n proportion speed</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         0  806.     1   692. <span style="color: #949494;">&lt;dbl [692]&gt;</span>   439       2.54   7.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        10  696.     1   670. <span style="color: #949494;">&lt;dbl [670]&gt;</span>   558       3.23   7.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        20  782.     1   596. <span style="color: #949494;">&lt;dbl [597]&gt;</span>   988       5.71   8.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        30  518.     1   518. <span style="color: #949494;">&lt;dbl [518]&gt;</span>   836       4.83   7.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        40  340.     1   340. <span style="color: #949494;">&lt;dbl [341]&gt;</span>   822       4.75   7.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        50  241.     1   241. <span style="color: #949494;">&lt;dbl [242]&gt;</span>   546       3.16   6.2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: wave_height_final &lt;dbl&gt;, WEI &lt;dbl&gt;, wave_period &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   wave_number &lt;dbl&gt;, celerity_final &lt;dbl&gt;, nnumber_final &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   geometry &lt;LINESTRING [m]&gt;</span></span></span>
 <span></span>
 <span><span class="co"># wemo_output$wemo_details can be plotted with input data </span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
