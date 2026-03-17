@@ -4,7 +4,7 @@
 \name{WEMo-package}
 \alias{WEMo}
 \alias{WEMo-package}
-\title{WEMo: Wave Energy Model}
+\title{WEMo: Wave Exposure Model (WEMo)}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Quentin Walker \email{quetin.walker@noaa.gov} (\href{https://orcid.org/0000-0002-1375-822X}{ORCID})
+\strong{Maintainer}: Quentin Walker \email{quentin.walker@noaa.gov} (\href{https://orcid.org/0000-0002-1375-822X}{ORCID})
 
 }
 \keyword{internal}
