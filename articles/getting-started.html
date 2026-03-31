@@ -460,7 +460,7 @@ bathymetry each time using compute resources and time.</p>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height   RWE</span></span>
 <span><span class="co">#&gt; 1    1           0.001           0.001 1.561</span></span>
 <span><span class="co">#&gt; 2    2           0.000           0.001 0.940</span></span>
-<span><span class="co">#&gt; 3    3           0.000           0.000 0.112</span></span></code></pre></div>
+<span><span class="co">#&gt; 3    3           0.000           0.000 0.089</span></span></code></pre></div>
 <p>We see a slight increase in wave heights and RWE from raising water
 level. Note that we didn’t redraw the shorelines and were already
 running the model at MHHW, meaning waves from our original run likely
@@ -486,9 +486,9 @@ don’t see a dramatic effect on the results.</p>
 <span>  RWE <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span> <span class="op">-</span> <span class="va">results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height    RWE</span></span>
-<span><span class="co">#&gt; 1    1           0.052           0.035 61.227</span></span>
-<span><span class="co">#&gt; 2    2           0.049           0.030 40.111</span></span>
-<span><span class="co">#&gt; 3    3           0.041           0.026 19.001</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    1           0.052           0.035 61.228</span></span>
+<span><span class="co">#&gt; 2    2           0.049           0.030 40.112</span></span>
+<span><span class="co">#&gt; 3    3           0.041           0.026 18.980</span></span></code></pre></div>
 <p>We see increases in wave heights up to 5.2 cm for max wave heights
 and 3.5 cm for average wave heights. We also see a corresponding
 increase in RWE.</p>

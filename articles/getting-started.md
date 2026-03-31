@@ -437,7 +437,7 @@ data.frame(
 #>   site max_wave_height avg_wave_height   RWE
 #> 1    1           0.001           0.001 1.561
 #> 2    2           0.000           0.001 0.940
-#> 3    3           0.000           0.000 0.112
+#> 3    3           0.000           0.000 0.089
 ```
 
 We see a slight increase in wave heights and RWE from raising water
@@ -464,9 +464,9 @@ data.frame(
   RWE = round(results_windy$wemo_final$RWE - results$wemo_final$RWE, digits = 3)
 )
 #>   site max_wave_height avg_wave_height    RWE
-#> 1    1           0.052           0.035 61.227
-#> 2    2           0.049           0.030 40.111
-#> 3    3           0.041           0.026 19.001
+#> 1    1           0.052           0.035 61.228
+#> 2    2           0.049           0.030 40.112
+#> 3    3           0.041           0.026 18.980
 ```
 
 We see increases in wave heights up to 5.2 cm for max wave heights and

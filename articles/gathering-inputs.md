@@ -161,11 +161,11 @@ head(wind_data_summary)
 #>   direction     n proportion speed
 #>       <dbl> <int>      <dbl> <dbl>
 #> 1         0   504       1.49  7.2 
-#> 2        10   504       1.49  7.7 
-#> 3        20   558       1.65  8.2 
-#> 4        30   745       2.21  8.42
-#> 5        40   753       2.23  8.8 
-#> 6        50   764       2.26  8.2
+#> 2        10   503       1.49  7.7 
+#> 3        20   563       1.67  8.2 
+#> 4        30   755       2.24  8.37
+#> 5        40   761       2.25  8.8 
+#> 6        50   767       2.27  8.2
 
 # make a wind rose
 plot_wind_rose(wind_data_summary)
