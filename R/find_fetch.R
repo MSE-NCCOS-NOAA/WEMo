@@ -116,6 +116,11 @@ find_fetch <- function(site_points, polygon_layer,
     site_points_not_on_land <- site_points
   }
 
+  # Check if any points remain and throw an error if there aren't any
+  if (nrow(site_points_not_on_land) == 0) {
+    stop("All site_points are on land after filtering. Check inputs or CRS alignment.")
+  }
+
   # Store coordinates for speed
   coords <- sf::st_coordinates(site_points_not_on_land)
 
