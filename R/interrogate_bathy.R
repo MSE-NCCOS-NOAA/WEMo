@@ -78,6 +78,10 @@ interrogate_bathy <- function(fetch,
         )
         warning(msg, call. = FALSE)
       }
+
+      # if depths are negative, replace with shallow water
+      depths <- pmax(depths, 0.001)
+
       tibble::tibble(
         geometry = fetch_ray$geometry,
         bathy = list(extracted_bathy[["bathy"]]),
