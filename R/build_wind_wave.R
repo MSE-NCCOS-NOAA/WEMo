@@ -104,11 +104,11 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
   # ---- Calculate wave celerity ----
   if(avg_depth / l1 < 0.05){
     # Shallow water celerity approximation
-    celer1 <- sqrt(G * avg_depth)
+    celer1 <- sqrt(G * max(avg_depth, 1e-6))
     celerity[1] <- celer1
   } else {
     # General celerity formula
-    celer1 <- sqrt(G / k1 * tanh(avg_depth / k1))
+    celer1 <- sqrt(G / k1 * tanh(avg_depth * k1))
     celerity[1] <- celer1
   }
 
@@ -150,7 +150,7 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
     if(depths[j] / l2 < 0.05){
       celer2 <- sqrt(G * depths[j])
     } else {
-      celer2 <- sqrt(G / k2 * tanh(depths[j] / k2))
+      celer2 <- sqrt(G / k2 * tanh(depths[j] * k2))
     }
     celerity[j] <- celer2
 
