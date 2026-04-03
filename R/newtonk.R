@@ -20,23 +20,36 @@
 newtonk <- function(h, ko) {
   eps <- 1e-6
 
+  # Prevent pathological depths
+  h <- max(h, 0.001)
+
+  # Initial guess
   k <- ko * tanh(ko * h)
 
-  if (abs(k - ko) < eps) {
-    return(k)
-  }
-
   for (i in 1:20) {
-    f <- ko * h - k * h * tanh(k * h)
-    fp <- -h * (h * k * 1 / cosh((h * k) ^ 2) + tanh(h * k))
+    kh <- k * h
+
+    tanh_kh <- tanh(kh)
+    sech2_kh <- 1 / cosh(kh)^2
+
+    f  <- ko - k * tanh_kh
+    fp <- -tanh_kh - k * h * sech2_kh
+
+    # Guard against divide-by-zero
+    if (abs(fp) < 1e-10) break
+
     kn <- k - f / fp
 
-    if (abs(kn - k) / kn < eps) {
+    # Prevent negative or zero k
+    if (kn <= 0) kn <- k / 2
+
+    # Convergence check
+    if (abs(kn - k) < eps * max(1, k)) {
       return(kn)
     }
 
     k <- kn
   }
 
-  return(kn)
+  return(k)
 }
