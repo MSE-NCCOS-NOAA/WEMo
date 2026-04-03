@@ -314,9 +314,9 @@ wemo_output$wemo_final
 #> # A tibble: 3 × 10
 #>    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch
 #>   <int> <dbl>           <dbl>           <dbl> <chr>                     <dbl>
-#> 1     1  56.4          0.119            0.183 340                        443.
-#> 2     2  37.7          0.103            0.166 270                        355.
-#> 3     3  17.2          0.0874           0.136 160                        257.
+#> 1     1  59.2          0.121            0.195 330                        443.
+#> 2     2  39.1          0.104            0.166 270                        355.
+#> 3     3  17.1          0.0872           0.136 160                        257.
 #> # ℹ 4 more variables: max_fetch <dbl>, avg_efetch <dbl>, max_efetch <dbl>,
 #> #   geometry <POINT [m]>
 
@@ -435,9 +435,9 @@ data.frame(
   RWE = round(results_SLR$wemo_final$RWE - results$wemo_final$RWE, 3)
 )
 #>   site max_wave_height avg_wave_height   RWE
-#> 1    1           0.001           0.001 1.561
-#> 2    2           0.000           0.001 0.940
-#> 3    3           0.000           0.000 0.089
+#> 1    1          -0.001               0 0.030
+#> 2    2           0.000               0 0.154
+#> 3    3           0.000               0 0.117
 ```
 
 We see a slight increase in wave heights and RWE from raising water
@@ -464,13 +464,13 @@ data.frame(
   RWE = round(results_windy$wemo_final$RWE - results$wemo_final$RWE, digits = 3)
 )
 #>   site max_wave_height avg_wave_height    RWE
-#> 1    1           0.052           0.035 61.228
-#> 2    2           0.049           0.030 40.112
-#> 3    3           0.041           0.026 18.980
+#> 1    1           0.057           0.036 65.305
+#> 2    2           0.049           0.031 42.676
+#> 3    3           0.041           0.026 18.914
 ```
 
-We see increases in wave heights up to 5.2 cm for max wave heights and
-3.5 cm for average wave heights. We also see a corresponding increase in
+We see increases in wave heights up to 5.7 cm for max wave heights and
+3.6 cm for average wave heights. We also see a corresponding increase in
 RWE.
 
 ### Comparing Results Scenarios

@@ -353,9 +353,9 @@ file stores elevations (not water depths).</li>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
 <span><span class="co">#&gt;    site   RWE avg_wave_height max_wave_height direction_of_max_wave avg_fetch</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1  56.4          0.119            0.183 340                        443.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2  37.7          0.103            0.166 270                        355.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3  17.2          0.087<span style="text-decoration: underline;">4</span>           0.136 160                        257.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1  59.2          0.121            0.195 330                        443.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2  39.1          0.104            0.166 270                        355.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3  17.1          0.087<span style="text-decoration: underline;">2</span>           0.136 160                        257.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: max_fetch &lt;dbl&gt;, avg_efetch &lt;dbl&gt;, max_efetch &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   geometry &lt;POINT [m]&gt;</span></span></span>
 <span></span>
@@ -458,9 +458,9 @@ bathymetry each time using compute resources and time.</p>
 <span>  RWE <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results_SLR</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span> <span class="op">-</span> <span class="va">results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height   RWE</span></span>
-<span><span class="co">#&gt; 1    1           0.001           0.001 1.561</span></span>
-<span><span class="co">#&gt; 2    2           0.000           0.001 0.940</span></span>
-<span><span class="co">#&gt; 3    3           0.000           0.000 0.089</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    1          -0.001               0 0.030</span></span>
+<span><span class="co">#&gt; 2    2           0.000               0 0.154</span></span>
+<span><span class="co">#&gt; 3    3           0.000               0 0.117</span></span></code></pre></div>
 <p>We see a slight increase in wave heights and RWE from raising water
 level. Note that we didn’t redraw the shorelines and were already
 running the model at MHHW, meaning waves from our original run likely
@@ -486,11 +486,11 @@ don’t see a dramatic effect on the results.</p>
 <span>  RWE <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results_windy</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span> <span class="op">-</span> <span class="va">results</span><span class="op">$</span><span class="va">wemo_final</span><span class="op">$</span><span class="va">RWE</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   site max_wave_height avg_wave_height    RWE</span></span>
-<span><span class="co">#&gt; 1    1           0.052           0.035 61.228</span></span>
-<span><span class="co">#&gt; 2    2           0.049           0.030 40.112</span></span>
-<span><span class="co">#&gt; 3    3           0.041           0.026 18.980</span></span></code></pre></div>
-<p>We see increases in wave heights up to 5.2 cm for max wave heights
-and 3.5 cm for average wave heights. We also see a corresponding
+<span><span class="co">#&gt; 1    1           0.057           0.036 65.305</span></span>
+<span><span class="co">#&gt; 2    2           0.049           0.031 42.676</span></span>
+<span><span class="co">#&gt; 3    3           0.041           0.026 18.914</span></span></code></pre></div>
+<p>We see increases in wave heights up to 5.7 cm for max wave heights
+and 3.6 cm for average wave heights. We also see a corresponding
 increase in RWE.</p>
 </div>
 <div class="section level3">
