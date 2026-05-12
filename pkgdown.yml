@@ -1,10 +1,10 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/gathering-inputs: gathering-inputs.html
   articles/getting-started: getting-started.html
-last_built: 2026-04-03T18:53Z
+last_built: 2026-05-12T20:36Z
 urls:
   reference: https://mse-nccos-noaa.github.io/WEMo/reference
   article: https://mse-nccos-noaa.github.io/WEMo/articles

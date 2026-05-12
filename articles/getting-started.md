@@ -95,6 +95,7 @@ points around coordinates using
 ### Installation
 
 ``` r
+
 # Ensure you have the remotes package installed, if not download and install it
 if(!require(remotes)) install.packages("remotes")
 
@@ -105,6 +106,7 @@ remotes::install_github("MSE-NCCOS-NOAA/WEMo", force = TRUE)
 ### Load Libraries
 
 ``` r
+
 # Load WEMo into your environment
 library(WEMo)
 
@@ -135,6 +137,7 @@ This raster should cover the full extent of the area that you might
 expect to be reached by fetch rays from your site.
 
 ``` r
+
 # load bathymetry
 PI_bathy <- terra::rast(x = system.file("extdata", "PI_bathy.tif", package = "WEMo"))
 
@@ -150,6 +153,7 @@ raster](getting-started_files/figure-html/bathy-path-hidden-1.png)
 #### Site Points
 
 ``` r
+
 # Plot site points
 # PI_Points is a sf object containing 3 points
 ggplot()+
@@ -162,6 +166,7 @@ points](getting-started_files/figure-html/import-and-plot-points-1.png)
 #### Shoreline
 
 ``` r
+
 # Plot shoreline
 # PI_shoreline is a polygon representing the MHHW shoreline (0.552 m NAVD88)
 ggplot()+
@@ -174,6 +179,7 @@ shoreline](getting-started_files/figure-html/import-and-plot-shoreline-1.png)
 #### Plot All Input Spatial Data
 
 ``` r
+
 # plot all input spatial data
 ggplot()+
   geom_spatraster(data = PI_bathy)+
@@ -189,6 +195,7 @@ points](getting-started_files/figure-html/plot-shoreline-and-points-1.png)
 #### Wind
 
 ``` r
+
 # View first several rows of wind data
 # PI_wind_data contains local wind observations from 2023 - 2024
 head(PI_wind_data)
@@ -207,6 +214,7 @@ WEMo wants a summary of the wind history data i.e. one proportion and
 speed value for each direction.
 
 ``` r
+
 # Summarizing wind data
 # create a vector from 0 to 350 by 10 to snap the input wind_directions to
 wanted_directions <- seq(from = 0, to = 350, by = 10)
@@ -235,6 +243,7 @@ head(wind_data_summary)
 Plot the summarized wind data as a wind rose:
 
 ``` r
+
 # Plot wind data summary as a wind rose
 wind_rose_plot <- plot_wind_rose(wind_data = wind_data_summary)
 
@@ -281,6 +290,7 @@ We also set a few modeling parameters:
   elevations (not water depths).
 
 ``` r
+
 wemo_output <- wemo_full(
   site_points = PI_points,
   shoreline = PI_shoreline,
@@ -298,6 +308,7 @@ wemo_output <- wemo_full(
 returns two objects
 
 ``` r
+
 names(wemo_output)
 #> [1] "wemo_details" "wemo_final"
 ```
@@ -305,6 +316,7 @@ names(wemo_output)
 `wemo_final` contains the summary stats at each site
 
 ``` r
+
 wemo_output$wemo_final
 #> Simple feature collection with 3 features and 9 fields
 #> Geometry type: POINT
@@ -333,24 +345,24 @@ model](getting-started_files/figure-html/display-final-wemo-results-1.png)
 `wemo_details` contains stats about the waves from each fetch ray
 
 ``` r
+
 head(wemo_output$wemo_details)
-#> Simple feature collection with 6 features and 14 fields
+#> Simple feature collection with 6 features and 13 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
 #> Bounding box:  xmin: 346536.4 ymin: 3842620 xmax: 346795.2 ymax: 3843312
 #> Projected CRS: NAD83 / UTM zone 18N
-#> # A tibble: 6 × 15
-#>   direction fetch  site efetch distances       n proportion speed
-#>       <dbl> <dbl> <int>  <dbl> <list>      <int>      <dbl> <dbl>
-#> 1         0  806.     1   692. <dbl [692]>   439       2.54   7.2
-#> 2        10  696.     1   670. <dbl [670]>   558       3.23   7.7
-#> 3        20  782.     1   596. <dbl [597]>   988       5.71   8.8
-#> 4        30  518.     1   518. <dbl [518]>   836       4.83   7.7
-#> 5        40  340.     1   340. <dbl [341]>   822       4.75   7.2
-#> 6        50  241.     1   241. <dbl [242]>   546       3.16   6.2
-#> # ℹ 7 more variables: wave_height_final <dbl>, WEI <dbl>, wave_period <dbl>,
-#> #   wave_number <dbl>, celerity_final <dbl>, nnumber_final <dbl>,
-#> #   geometry <LINESTRING [m]>
+#> # A tibble: 6 × 14
+#>   direction fetch  site efetch     n proportion speed wave_height_final   WEI
+#>       <dbl> <dbl> <int>  <dbl> <int>      <dbl> <dbl>             <dbl> <dbl>
+#> 1         0  806.     1   692.   439       2.54   7.2            0.145   74.0
+#> 2        10  696.     1   670.   558       3.23   7.7            0.156   90.9
+#> 3        20  782.     1   596.   988       5.71   8.8            0.174  122. 
+#> 4        30  518.     1   518.   836       4.83   7.7            0.139   65.1
+#> 5        40  340.     1   340.   822       4.75   7.2            0.108   30.4
+#> 6        50  241.     1   241.   546       3.16   6.2            0.0781  12.2
+#> # ℹ 5 more variables: wave_period <dbl>, wave_number <dbl>,
+#> #   celerity_final <dbl>, nnumber_final <dbl>, geometry <LINESTRING [m]>
 
 # wemo_output$wemo_details can be plotted with input data 
 ggplot()+
@@ -379,6 +391,7 @@ Most users will probably only want the data from `wemo_final`, but
 ### Saving Results
 
 ``` r
+
 sf::st_write(wemo_output$wemo_details, "/path/to/save/wemo_details.shp")
 sf::st_write(wemo_output$wemo_final, "/path/to/save/wemo_final.shp")
 
@@ -401,6 +414,7 @@ fetch and bathymetry each time using compute resources and time.
 For faster iteration, prepare inputs once:
 
 ``` r
+
 inputs <- prepare_wemo_inputs(
   site_points = PI_points,
   shoreline = PI_shoreline,
@@ -417,12 +431,14 @@ inputs <- prepare_wemo_inputs(
 Then run the model:
 
 ``` r
+
 results <- wemo(fetch = inputs)
 ```
 
 ### Example: Increasing Water Level
 
 ``` r
+
 # add 0.3 m to each depth value
 inputs_SLR <- update_depths(inputs, depth_diff = 0.3)
 results_SLR <- wemo(inputs_SLR)
@@ -449,6 +465,7 @@ don’t see a dramatic effect on the results.
 ### Example: Stronger Winds
 
 ``` r
+
 # Create a copy of the inputs
 inputs_windy <- inputs
 # Increase wind speed by 25%
@@ -479,6 +496,7 @@ This example demonstrates advanced visualization techniques for
 comparing scenarios.
 
 ``` r
+
 # make a data set to combine all results
 results_all <- dplyr::bind_rows(
   dplyr::mutate(results$wemo_details, scenario = "1. Normal"), 

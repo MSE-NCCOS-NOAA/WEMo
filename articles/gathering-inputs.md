@@ -31,6 +31,7 @@ help is available online.
 First, ensure the latest version of WEMo is downloaded
 
 ``` r
+
 # Ensure you have the remotes package installed, if not download and install it
 if(!require(remotes)) install.packages("remotes")
 
@@ -41,6 +42,7 @@ remotes::install_github("MSE-NCCOS-NOAA/WEMo")
 Then load the necessary libraries
 
 ``` r
+
 library(WEMo)
 
 library(sf)
@@ -59,6 +61,7 @@ we’ll collect data for an example analysis in Sinepuxent Bay near
 Assateague Island National Seashore, Maryland.
 
 ``` r
+
 # create a point at an area of interest in Sinepuxent Bay Maryland
 site_point <- st_as_sf(
   data.frame(lon = -75.168008, lat = 38.223823),
@@ -76,6 +79,7 @@ Historical Climate Network hourly (GHCNh). The returned data frame
 includes timestamps, wind speed (m/s), and direction (degrees).
 
 ``` r
+
 # download wind data from 2020 - 2023 from the closest station to our point
 wind_data <- get_wind_data(site_point, 2020:2023, which_station = 1)
 #> Using 1st closest GHCN station
@@ -104,6 +108,7 @@ Setting `which_station` to `"ask"` provides a list and an interactive
 map of the 5 closest stations and allows you to choose which you’d like.
 
 ``` r
+
 wind_data <- get_wind_data(site_point, 2020:2024, which_station = "ask")
 ```
 
@@ -146,6 +151,7 @@ prepares data gathered from the
 function to be used in WEMo.
 
 ``` r
+
 # create a vector from 0 to 350 by 10 to snap the input wind_directions to
 wanted_directions <- seq(from = 0, to = 350, by = 10)
 
@@ -196,6 +202,7 @@ the `wind_speed` column is 0. However, `NA` values in the
 You can save wind data to as a csv file to be used with other analyses.
 
 ``` r
+
 # Check if "data" folder exists, create if not
 if (!dir.exists("data")) {
   dir.create("data")
@@ -227,6 +234,7 @@ This function takes a input point and radius and downloads topo-bathy
 .tif raster tiles that intersect that radius.
 
 ``` r
+
 # extract lon and lat from our site_point
 lon = sf::st_coordinates(site_point)[1]
 lat = sf::st_coordinates(site_point)[2]
@@ -305,6 +313,7 @@ system with units in meters. We’ll convert the bathy to a local UTM grid
 (18N for our site in Sinepuxent Bay, Maryland)
 
 ``` r
+
 # Convert to UTM Zone 18N EPSG:26918
 bathy <- terra::project(
   bathy,
@@ -325,6 +334,7 @@ Inlet, MD (Station ID:
 draw the shoreline for the analysis.
 
 ``` r
+
 # MSL at Ocean City Inlet - for the shoreline definition and for use later in the workflow
 water_level <- -0.141 # meters NAVD88 (match the bathy data)
 
@@ -335,7 +345,6 @@ shoreline <- generate_shoreline_from_bathy(
   save_output = TRUE,
   filename = "data/Shoreline_MSL.shp"
 )
-#> |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          
 
 # plot the shoreline
 ggplot() +
@@ -368,6 +377,7 @@ to generate a rectangular grid of points. These are the points where
 WEMo will simulate wave exposure.
 
 ``` r
+
 # convert the site_point to a utm grid to work with meters
 site_point <- sf::st_transform(site_point, crs = 26918) # NAD83 / UTM zone 18N
 
@@ -380,6 +390,7 @@ grid_points <- generate_grid_points(
 ```
 
 ``` r
+
 # plot the grid with the original site point
 ggplot() + 
   geom_sf(data = grid_points)+
@@ -397,6 +408,7 @@ expansion distances or grid resolution are set independently.
 Create a plot with all the inputs together
 
 ``` r
+
 ggplot() +
   geom_spatraster(data = bathy) +
   geom_sf(data = shoreline, fill = "honeydew3") +
@@ -415,6 +427,7 @@ We can constrain the input data to fix these problems and make a nice
 plot:
 
 ``` r
+
 # Get extent of the grid points
 grid_ext <- terra::ext(grid_points)
 
@@ -461,6 +474,7 @@ That’s a pretty plot
 The input data is now ready for WEMo:
 
 ``` r
+
 # run WEMo at each of the 36 grid points that we made
 results <- wemo_full(
   site_points = grid_points,

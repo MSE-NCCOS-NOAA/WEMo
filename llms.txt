@@ -52,6 +52,7 @@ You can install the development version of `WEMo` from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # If you don't have the 'remotes' package, install it first
 # install.packages("remotes")
 
