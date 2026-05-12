@@ -99,7 +99,7 @@ wemo <- function(fetch){
     dplyr::right_join(start_points, by = dplyr::join_by('site')) %>%
     sf::st_as_sf()
 
-  wemo_details <- wemo_details[, !(names(wemo_details) %in% c("depths", "bathy", "distance"))]
+  wemo_details <- wemo_details[, !(names(wemo_details) %in% c("depths", "bathy", "distances"))]
 
   return(list(
     wemo_details = wemo_details,
