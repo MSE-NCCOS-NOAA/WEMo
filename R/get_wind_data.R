@@ -83,7 +83,9 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
     LAT <- sf::st_coordinates(site_point)[[1,2]]
     LON <- sf::st_coordinates(site_point)[[1,1]]
 
-    station <- worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'table')
+    station <- suppressWarnings(
+      worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'table')
+    )
 
     if(which_station == "ask"){
       inventory_raw <- worldmet::import_ghcn_inventory(database = 'hourly')
@@ -108,7 +110,10 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
       inventory <- dplyr::right_join(station, inventory, by = dplyr::join_by("id")) %>%
         dplyr::arrange(.data$distance)
 
-      map <- worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'map')
+      map <- suppressWarnings(
+        worldmet::import_ghcn_stations(lat = LAT, lng = LON, crs = sf::st_crs(site_point), n_max = 5, return = 'map')
+      )
+
       print(map)
     }
 
