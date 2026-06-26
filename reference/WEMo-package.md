@@ -22,3 +22,8 @@ Useful links:
 
 **Maintainer**: Quentin Walker <quentin.walker@noaa.gov>
 ([ORCID](https://orcid.org/0000-0002-1375-822X))
+
+Authors:
+
+- Quentin Walker <quentin.walker@noaa.gov>
+  ([ORCID](https://orcid.org/0000-0002-1375-822X))
