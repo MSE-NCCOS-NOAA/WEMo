@@ -151,7 +151,13 @@ get_wind_data <- function(site_point, years, which_station = 'ask') {
   }
 
   # Download NOAA met data for the specified years
-  met_data <- worldmet::import_ghcn_hourly(station = station_code, year = years, append_codes = FALSE)
+  # met_data <- worldmet::import_ghcn_hourly(station = station_code, year = years, append_codes = FALSE)
+
+  # temp fix while worldmet struggles with this station
+  met_data <- lapply(years, function(y) {
+    worldmet::import_ghcn_hourly(station = station_code, year = y, append_codes = FALSE, progress = FALSE)
+  }) %>%
+    dplyr::bind_rows()
 
   # check if returned met data is blank
   if (is.null(met_data) || nrow(met_data) == 0) {

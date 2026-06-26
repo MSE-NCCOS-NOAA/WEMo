@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Quentin Walker \email{quentin.walker@noaa.gov} (\href{https://orcid.org/0000-0002-1375-822X}{ORCID})
 
+Authors:
+\itemize{
+  \item Quentin Walker \email{quentin.walker@noaa.gov} (\href{https://orcid.org/0000-0002-1375-822X}{ORCID})
+}
+
 }
 \keyword{internal}
