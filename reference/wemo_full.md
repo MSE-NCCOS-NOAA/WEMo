@@ -41,7 +41,7 @@ wemo_full(
 - wind_data:
 
   A data frame with wind direction (`direction`), speed (`speed`), and
-  proporation wind blows from the direction (`proportion`)
+  proportion wind blows from the direction (`proportion`)
 
 - directions:
 
