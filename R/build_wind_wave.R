@@ -37,6 +37,20 @@
 #' result <- build_wind_wave(fetch, depths, distances, wind_speed)
 #'
 build_wind_wave <- function(fetch, depths, distances, wind_speed){
+  # Check and return zeros if the input wind_speed is 0 or NA
+  if (is.na(wind_speed) || wind_speed <= 0) {
+    df <- data.frame(
+      wave_height_final = 0,
+      WEI = 0,
+      wave_period = 0,
+      wave_number = 0,
+      celerity_final = 0,
+      nnumber_final = 0
+    )
+
+    return(df)
+  }
+
   # Check if the input list lengths are consistent: depths should have one more element than distances
   if(length(depths) != length(distances) + 1) {
     stop("Distance vector must be shorter than depth vectors by length of one")
