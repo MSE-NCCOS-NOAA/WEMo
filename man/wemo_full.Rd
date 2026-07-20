@@ -27,7 +27,7 @@ shoreline features.}
 or positive depending on \code{depths_or_elev}).}
 
 \item{wind_data}{A data frame with wind direction (\code{direction}), speed
-(\code{speed}), and proporation wind blows from the direction (\code{proportion})}
+(\code{speed}), and proportion wind blows from the direction (\code{proportion})}
 
 \item{directions}{Numeric vector of directions (in degrees) to cast fetch
 lines.}

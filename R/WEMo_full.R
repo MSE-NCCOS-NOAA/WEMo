@@ -30,7 +30,7 @@
 #' @param bathy A `SpatRaster` containing bathymetric data (in meters, negative
 #'   or positive depending on `depths_or_elev`).
 #' @param wind_data A data frame with wind direction (`direction`), speed
-#'   (`speed`), and proporation wind blows from the direction (`proportion`)
+#'   (`speed`), and proportion wind blows from the direction (`proportion`)
 #' @param directions Numeric vector of directions (in degrees) to cast fetch
 #'   lines.
 #' @param max_fetch Maximum fetch length (in map units). Default is 10,000.
