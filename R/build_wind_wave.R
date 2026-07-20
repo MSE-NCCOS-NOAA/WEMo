@@ -69,6 +69,9 @@ build_wind_wave <- function(fetch, depths, distances, wind_speed){
     return(df)
   }
 
+  # Clean up any NA, non-finite, or zero/negative depths
+  depths[!is.finite(depths) | depths <= 0] <- 0.001
+
   # ---- Constants ----
   G <- 9.80665 # acceleration due to gravity (m/s^2)
   A_goda <- 0.17 # empirical constant for Goda breaking height
