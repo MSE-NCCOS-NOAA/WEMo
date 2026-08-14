@@ -37,8 +37,22 @@
 #' result <- build_wind_wave(fetch, depths, distances, wind_speed)
 #'
 build_wind_wave <- function(fetch, depths, distances, wind_speed){
-  # Check and return zeros if the input wind_speed is 0 or NA
-  if (is.na(wind_speed) || wind_speed <= 0) {
+  # Check and return NA if the input wind_speed is NA
+  if (is.na(wind_speed)) {
+    df <- data.frame(
+      wave_height_final = NA,
+      WEI = NA,
+      wave_period = NA,
+      wave_number = NA,
+      celerity_final = NA,
+      nnumber_final = NA
+    )
+
+    return(df)
+  }
+
+  # Check and return 0 if the input wind_speed is 0
+  if (wind_speed <= 0) {
     df <- data.frame(
       wave_height_final = 0,
       WEI = 0,

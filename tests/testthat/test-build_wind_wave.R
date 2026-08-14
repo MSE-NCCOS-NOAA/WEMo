@@ -84,10 +84,10 @@ test_that("build_wind_wave handles wind_speed = NA", {
   )
 
   # All physical metrics should evaluate cleanly to zero
-  expect_equal(result$wave_height_final, 0)
-  expect_equal(result$WEI, 0)
-  expect_equal(result$wave_period, 0)
-  expect_equal(result$wave_number, 0)
-  expect_equal(result$celerity_final, 0)
-  expect_equal(result$nnumber_final, 0)
+  expect_equal(result$wave_height_final, NA)
+  expect_equal(result$WEI, NA)
+  expect_equal(result$wave_period, NA)
+  expect_equal(result$wave_number, NA)
+  expect_equal(result$celerity_final, NA)
+  expect_equal(result$nnumber_final, NA)
 })
